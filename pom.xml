@@ -24,6 +24,7 @@
     <modules>
         <module>application</module>
         <module>common</module>
+        <module>user</module>
         <module>infrastructure</module>
     </modules>
 

@@ -63,6 +63,13 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
+
+        <!--   User Management Module     -->
+        <dependency>
+            <groupId>com.fernirx</groupId>
+            <artifactId>user</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <!-- ========== Build ========= -->
