@@ -1,15 +1,11 @@
-package com.fernirx.lms.user.dtos;
+package com.fernirx.lms.user.dtos.response;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class UserDTO {
+public class UserResponseDTO {
     private int id;
     private int roleId;
     private String username;
