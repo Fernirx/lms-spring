@@ -5,6 +5,7 @@ import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
 import com.fernirx.lms.user.dtos.UserDTO;
 import com.fernirx.lms.user.mapper.UserMapper;
 import com.fernirx.lms.user.repository.UserRepository;
+import com.fernirx.lms.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,26 +16,19 @@ import java.util.List;
 @RequestMapping(ApiConstants.USERS_PATH)
 public class UserController {
 
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository,
-                          UserMapper userMapper) {
-        this.userRepository=userRepository;
-        this.userMapper=userMapper;
+    public UserController(UserService userService) {
+        this.userService=userService;
     }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUser() {
-        return ResponseEntity.ok(userMapper.toListDto(userRepository.findAll()));
+        return ResponseEntity.ok(userService.getAllUser());
     }
 
     @GetMapping("/{id}")
     private ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
-        return ResponseEntity
-                .ok(userMapper
-                        .toDto(userRepository
-                                .findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException("User",id))));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 }
