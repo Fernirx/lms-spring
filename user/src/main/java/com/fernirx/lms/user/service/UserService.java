@@ -1,35 +1,54 @@
 package com.fernirx.lms.user.service;
 
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
-import com.fernirx.lms.user.dtos.UserDTO;
-import com.fernirx.lms.user.mapper.UserMapper;
+import com.fernirx.lms.user.dtos.request.UserRequestDTO;
+import com.fernirx.lms.user.dtos.response.UserResponseDTO;
+import com.fernirx.lms.user.entity.User;
+import com.fernirx.lms.user.mapper.UserRequestMapper;
+import com.fernirx.lms.user.mapper.UserResponseMapper;
 import com.fernirx.lms.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserResponseMapper userResponseMapper;
+    private final UserRequestMapper userRequestMapper;
 
     public UserService(UserRepository userRepository,
-                       UserMapper userMapper) {
+                       UserResponseMapper userResponseMapper,
+                       UserRequestMapper userRequestMapper) {
         this.userRepository=userRepository;
-        this.userMapper=userMapper;
+        this.userResponseMapper=userResponseMapper;
+        this.userRequestMapper=userRequestMapper;
     }
 
-    public List<UserDTO> getAllUser() {
-       return userMapper.toListDto(userRepository.findAll());
+    public List<UserResponseDTO> getAllUser() {
+       return userResponseMapper.toListDto(userRepository.findAll());
     }
 
-    public UserDTO getUserById(int id) {
-        UserDTO user =  userMapper
+    public UserResponseDTO getUserById(int id) {
+        UserResponseDTO user =  userResponseMapper
                             .toDto(userRepository
                                     .findById(id)
                                     .orElseThrow(() -> new ResourceNotFoundException("User",id)));
         return user;
+    }
+
+    public User createUser(UserRequestDTO userRequest) {
+        if(userRepository.findUserByUsername(userRequest.getUsername()) != null)
+            return null;
+
+        User user = userRequestMapper.toEntity(userRequest);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdateAt(LocalDateTime.now());
+        user.setEnable(false);
+
+        return  userRepository.save(user);
     }
 
 }
