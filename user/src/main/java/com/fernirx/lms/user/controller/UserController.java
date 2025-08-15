@@ -1,6 +1,7 @@
 package com.fernirx.lms.user.controller;
 
 import com.fernirx.lms.common.constants.ApiConstants;
+import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
 import com.fernirx.lms.user.dtos.UserDTO;
 import com.fernirx.lms.user.mapper.UserMapper;
 import com.fernirx.lms.user.repository.UserRepository;
@@ -29,7 +30,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<UserDTO> getUser(@PathVariable int id) {
-        return ResponseEntity.ok(userMapper.toDto(userRepository.findById(id).orElseThrow()));
+    private ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
+        return ResponseEntity
+                .ok(userMapper
+                        .toDto(userRepository
+                                .findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("User",id))));
     }
 }
