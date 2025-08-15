@@ -39,8 +39,12 @@ public class UserService {
         return user;
     }
 
+    public boolean isExists(String username) {
+        return userRepository.findUserByUsername(username) != null;
+    }
+
     public User createUser(UserRequestDTO userRequest) {
-        if(userRepository.findUserByUsername(userRequest.getUsername()) != null)
+        if(isExists(userRequest.getUsername()))
             return null;
 
         User user = userRequestMapper.toEntity(userRequest);
