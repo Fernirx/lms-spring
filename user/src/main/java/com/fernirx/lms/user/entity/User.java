@@ -37,7 +37,7 @@ public class User {
     @NotNull
     @ColumnDefault("0")
     @Column(name = "enable", nullable = false)
-    private Boolean enable = false;
+    private Boolean isDelete = false;
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
