@@ -1,9 +1,7 @@
-package com.fernirx.lms.user.dtos.request;
+package com.fernirx.lms.user.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 public class UserRequestDTO {

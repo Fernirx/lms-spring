@@ -1,4 +1,4 @@
-package com.fernirx.lms.user.dtos.response;
+package com.fernirx.lms.user.dto.response;
 
 import lombok.Data;
 

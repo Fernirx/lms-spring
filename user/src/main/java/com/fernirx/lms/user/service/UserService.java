@@ -1,15 +1,12 @@
 package com.fernirx.lms.user.service;
 
-import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
-import com.fernirx.lms.user.dtos.request.UserRequestDTO;
-import com.fernirx.lms.user.dtos.response.UserResponseDTO;
+import com.fernirx.lms.user.dto.request.UserRequestDTO;
+import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.entity.User;
-import com.fernirx.lms.user.mapper.UserRequestMapper;
-import com.fernirx.lms.user.mapper.UserResponseMapper;
+import com.fernirx.lms.user.mapper.UserMapper;
 import com.fernirx.lms.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -17,23 +14,20 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserResponseMapper userResponseMapper;
-    private final UserRequestMapper userRequestMapper;
+    private final UserMapper userMapper;
 
     public UserService(UserRepository userRepository,
-                       UserResponseMapper userResponseMapper,
-                       UserRequestMapper userRequestMapper) {
-        this.userRepository=userRepository;
-        this.userResponseMapper=userResponseMapper;
-        this.userRequestMapper=userRequestMapper;
+                       UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     public List<UserResponseDTO> getAllUser() {
-       return userResponseMapper.toListDto(userRepository.findAll());
+       return userMapper.toListDto(userRepository.findAll());
     }
 
     public UserResponseDTO getUserById(int id) {
-        UserResponseDTO user =  userResponseMapper
+        UserResponseDTO user =  userMapper
                             .toDto(userRepository
                                     .findById(id)
                                     .orElseThrow());
@@ -48,7 +42,7 @@ public class UserService {
         if(isExists(userRequest.getUsername()))
             return null;
 
-        User user = userRequestMapper.toEntity(userRequest);
+        User user = userMapper.toEntity(userRequest);
         user.setCreatedAt(ZonedDateTime.now());
         user.setUpdatedAt(ZonedDateTime.now());
         user.setIsDelete(false);
