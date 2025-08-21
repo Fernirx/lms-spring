@@ -37,8 +37,8 @@ public class UserController {
     public ResponseEntity<?> createUser(@RequestBody UserRequestDTO user) {
         if(userService.createUser(user) == null) {
             return ResponseEntity
-                    .status(ErrorCategory.CONFLICT.getHttpStatus())
-                    .body(ErrorCategory.CONFLICT.getDescription());
+                    .status(HttpStatus.CONFLICT)
+                    .body("");
         }
         else return ResponseEntity
                 .status(HttpStatus.CREATED)
