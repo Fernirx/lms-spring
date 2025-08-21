@@ -35,7 +35,7 @@ public class UserService {
         UserResponseDTO user =  userResponseMapper
                             .toDto(userRepository
                                     .findById(id)
-                                    .orElseThrow(() -> new ResourceNotFoundException("User",id)));
+                                    .orElseThrow());
         return user;
     }
 
@@ -49,7 +49,7 @@ public class UserService {
 
         User user = userRequestMapper.toEntity(userRequest);
         user.setCreatedAt(LocalDateTime.now());
-        user.setUpdateAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         user.setEnable(false);
 
         return  userRepository.save(user);
