@@ -50,7 +50,7 @@ public class UserService {
         User user = userRequestMapper.toEntity(userRequest);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
-        user.setEnable(false);
+        user.setIsDelete(false);
 
         return  userRepository.save(user);
     }
