@@ -1,10 +1,8 @@
 package com.fernirx.lms.user.controller;
 
 import com.fernirx.lms.common.constants.ApiConstants;
-import com.fernirx.lms.common.dtos.responses.ErrorResponse;
-import com.fernirx.lms.common.enums.ErrorCategory;
-import com.fernirx.lms.user.dtos.request.UserRequestDTO;
-import com.fernirx.lms.user.dtos.response.UserResponseDTO;
+import com.fernirx.lms.user.dto.request.UserRequestDTO;
+import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
