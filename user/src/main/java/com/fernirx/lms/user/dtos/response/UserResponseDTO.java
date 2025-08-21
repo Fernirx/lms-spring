@@ -2,7 +2,7 @@ package com.fernirx.lms.user.dtos.response;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Data
 public class UserResponseDTO {
@@ -10,6 +10,6 @@ public class UserResponseDTO {
     private int roleId;
     private String username;
     private boolean isEnable;
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+    private ZonedDateTime createdAt;
+    private ZonedDateTime updateAt;
 }

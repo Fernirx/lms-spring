@@ -10,6 +10,7 @@ import com.fernirx.lms.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -48,8 +49,8 @@ public class UserService {
             return null;
 
         User user = userRequestMapper.toEntity(userRequest);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
+        user.setCreatedAt(ZonedDateTime.now());
+        user.setUpdatedAt(ZonedDateTime.now());
         user.setIsDelete(false);
 
         return  userRepository.save(user);
