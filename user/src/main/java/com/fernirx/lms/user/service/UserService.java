@@ -5,22 +5,18 @@ import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.entity.User;
 import com.fernirx.lms.user.mapper.UserMapper;
 import com.fernirx.lms.user.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    public UserService(UserRepository userRepository,
-                       UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     public List<UserResponseDTO> getAllUser() {
        return userMapper.toListDto(userRepository.findAll());
