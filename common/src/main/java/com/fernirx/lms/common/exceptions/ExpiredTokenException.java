@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Getter
 public class ExpiredTokenException extends LmsException {
-    public ExpiredTokenException () {
+
+    public ExpiredTokenException() {
         super(ErrorCode.EXPIRED_TOKEN);
     }
 }

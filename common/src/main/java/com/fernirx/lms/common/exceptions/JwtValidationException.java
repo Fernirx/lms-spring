@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class JwtValidationException extends LmsException {
+
     public JwtValidationException() {
         super(ErrorCode.JWT_VALIDATION_FAILED);
     }

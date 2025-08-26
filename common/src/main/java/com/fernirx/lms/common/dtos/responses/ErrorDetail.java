@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(name = "Error Detail", description = "Specific details of the error in the system")
 public class ErrorDetail {
-
     @Schema(description = "Error code", example = "ERR_VALIDATION")
     private ErrorCode code;
 

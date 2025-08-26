@@ -1,12 +1,12 @@
 package com.fernirx.lms.infrastructure.security;
 
 import com.fernirx.lms.common.constants.ApiConstants;
-import com.fernirx.lms.common.exceptions.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,43 +22,65 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtils jwtUtils;
+    private static final List<String> SKIP_PATHS = List.of(
+            ApiConstants.AUTH_PATH + ApiConstants.LOGIN_PATH,
+            ApiConstants.AUTH_PATH + ApiConstants.REFRESH_TOKEN_PATH
+    );
+
+    private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 
+    // ==== Filter ====
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        String path = request.getServletPath();
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        List<String> skipPaths = List.of(
-                ApiConstants.AUTH_PATH + ApiConstants.LOGIN_PATH,
-                ApiConstants.AUTH_PATH + ApiConstants.REFRESH_TOKEN_PATH
-        );
-
-        if (skipPaths.contains(path)) {
+        if (shouldSkipAuthentication(request.getServletPath())) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = parseJwt(request);
-        if (token != null && jwtUtils.validateAccessToken(token)) {
-            var username = jwtUtils.extractUsername(token);
-            CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
-
-            UsernamePasswordAuthenticationToken  authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = extractJwtToken(request);
+        if (isValidToken(token)) {
+            setAuthenticationContext(token, request);
         }
         filterChain.doFilter(request, response);
     }
 
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
+    // ==== PRIVATE HELPERS ====
 
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
+    private boolean shouldSkipAuthentication(String path) {
+        return SKIP_PATHS.contains(path);
+    }
+
+    private String extractJwtToken(HttpServletRequest request) {
+        String headerAuth = request.getHeader(ApiConstants.AUTHORIZATION_HEADER);
+
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(ApiConstants.BEARER_PREFIX)) {
+            return headerAuth.substring(ApiConstants.BEARER_PREFIX_LENGTH);
         }
         return null;
     }
+
+    private boolean isValidToken(String token) {
+        return token != null && jwtProvider.validateAccessToken(token);
+    }
+
+    private void setAuthenticationContext(String token, HttpServletRequest request) {
+        String username = jwtProvider.extractUsername(token);
+        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
 }

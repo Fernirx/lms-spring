@@ -12,6 +12,7 @@ import java.util.Optional;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
+
     // ========== SYSTEM ERRORS ==========
     METHOD_NOT_ALLOWED("ERR_METHOD_NOT_ALLOWED", ErrorMessages.METHOD_NOT_ALLOWED,
             ErrorCategory.METHOD_NOT_ALLOWED, HttpStatus.METHOD_NOT_ALLOWED, Priority.MEDIUM),
@@ -114,22 +115,22 @@ public enum ErrorCode {
     private final HttpStatus httpStatus;
     private final Priority priority;
 
-    @JsonValue
-    public String getCode() {
-        return code;
-    }
-
     public static Optional<ErrorCode> fromCode(String code) {
         return Arrays.stream(values())
                 .filter(e -> e.getCode().equals(code))
                 .findFirst();
     }
 
+    @JsonValue
+    public String getCode() {
+        return code;
+    }
+
     public boolean isCategory(ErrorCategory category) {
         return this.category == category;
     }
 
-    public int getLevel(){
+    public int getLevel() {
         return this.priority.getLevel();
     }
 }

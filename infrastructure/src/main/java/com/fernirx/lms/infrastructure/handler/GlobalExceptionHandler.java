@@ -5,8 +5,6 @@ import com.fernirx.lms.common.dtos.responses.ErrorResponse;
 import com.fernirx.lms.common.enums.ErrorCategory;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.LmsException;
-import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
-import com.fernirx.lms.common.exceptions.ValidationException;
 import com.fernirx.lms.common.utils.ErrorResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,26 +21,14 @@ import java.util.Optional;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(LmsException.class)
-    public ResponseEntity<ErrorResponse> handleLmsException(LmsException ex) {
-        log.error(ex.getMessage(), ex);
-        return buildErrorResponse(ex.getErrorCode());
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        log.error(ex.getMessage(), ex);
-        return buildErrorResponse(ex.getErrorCode());
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
-        log.error(ex.getMessage(), ex);
+    public ResponseEntity<ErrorResponse> handleBusinessExceptions(LmsException ex) {
+        logException(ex);
         return buildErrorResponse(ex.getErrorCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        log.error(ex.getMessage(), ex);
+        logException(ex);
         List<ErrorDetail> details = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> {
                     Optional<ErrorCode> optional = ErrorCode.fromCode(fieldError.getDefaultMessage());
@@ -52,10 +38,15 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(details);
     }
 
+    private void logException(Exception ex) {
+        log.error("[BusinessException] {} - {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
+    }
+
+
     public ResponseEntity<ErrorResponse> buildErrorResponse(ErrorCode errorCode) {
         ErrorDetail detail = ErrorDetail.of(errorCode, errorCode.getMessage());
         ErrorCategory category = errorCode.getCategory();
-        
+
         ErrorResponse errorResponse = ErrorResponse.of(
                 category,
                 category.getMessage(),

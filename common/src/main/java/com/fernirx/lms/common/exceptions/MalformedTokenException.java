@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class MalformedTokenException extends LmsException {
+
     public MalformedTokenException() {
         super(ErrorCode.INVALID_TOKEN_FORMAT);
     }

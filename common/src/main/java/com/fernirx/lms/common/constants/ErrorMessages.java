@@ -55,6 +55,6 @@ public final class ErrorMessages {
     public static final String PREREQUISITE_NOT_FOUND = "Course prerequisite not found";
 
     private ErrorMessages() {
-        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+        throw new UnsupportedOperationException("This is a constants class and cannot be instantiated");
     }
 }

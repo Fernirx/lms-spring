@@ -19,7 +19,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(name = "Error Response", description = "Error API response wrapper")
 public class ErrorResponse {
-
     @Schema(description = "Timestamp of error", example = "2025-08-04T20:00:00+07:00")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private ZonedDateTime timestamp;

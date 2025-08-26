@@ -57,14 +57,12 @@ public final class ValidationConstants {
     // Course offering group codes: VARCHAR(10)
     public static final int GROUP_CODE_MAX_LENGTH = 10;
 
-    // ========== REGEX PATTERNS ==========
+    // ========== PATTERNS ==========
 
-    // Contact patterns;
+    // Contact patterns
     public static final String PHONE_PATTERN = "^\\+[1-9]\\d{1,14}$";
     public static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$";
     public static final String NAME_PATTERN = "^[a-zA-ZÀ-ỹ\\s]{1,100}$";
-
-    // ========== CODE PATTERNS ==========
 
     // Student codes: UG + 2 digits + 3 digits + 5 digits
     public static final String STUDENT_CODE_PATTERN = "^UG[0-9]{2}[0-9]{3}[0-9]{5}$";
@@ -128,6 +126,6 @@ public final class ValidationConstants {
     public static final double MAX_TUITION_AMOUNT = 9999999999.99;
 
     private ValidationConstants() {
-        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+        throw new UnsupportedOperationException("This is a constants class and cannot be instantiated");
     }
 }

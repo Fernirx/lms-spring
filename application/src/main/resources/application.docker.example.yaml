@@ -4,7 +4,7 @@
 spring:
   config:
     activate:
-      on-profile: docker   # Kích hoạt profile 'docker'
+      on-profile: docker
 
   # === Application Metadata ===
   application:
@@ -21,8 +21,8 @@ spring:
   # === JPA & Hibernate ===
   jpa:
     hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:update}       # update/none
-    show-sql: ${JPA_SHOW_SQL:true}          # true/false
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:true}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -42,12 +42,12 @@ server:
 
 # === JWT Configuration ===
 jwt:
-  secret: ${JWT_SECRET}  # Base64 encoded
-  expiration: ${JWT_EXPIRATION:86400000}  # 24 hours
-  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}  # 7 days
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
   issuer: ${JWT_ISSUER:LMS}
 
-# === Swagger/OpenAPI Configuration (for dev/docs) ===
+# === Swagger/OpenAPI Configuration ===
 springdoc:
   api-docs:
     path: ${SWAGGER_API_DOCS_PATH:/v3/api-docs}

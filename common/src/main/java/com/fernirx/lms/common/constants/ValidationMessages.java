@@ -1,6 +1,7 @@
 package com.fernirx.lms.common.constants;
 
 public final class ValidationMessages {
+
     // ========== COMMON VALIDATION MESSAGES ==========
     public static final String REQUIRED_MESSAGE = "This field cannot be empty";
     public static final String INVALID_FORMAT_MESSAGE = "Invalid format";
@@ -28,6 +29,6 @@ public final class ValidationMessages {
     public static final String GROUP_CODE_MESSAGE = "Group code must be 2 digits";
 
     private ValidationMessages() {
-        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+        throw new UnsupportedOperationException("This is a constants class and cannot be instantiated");
     }
 }

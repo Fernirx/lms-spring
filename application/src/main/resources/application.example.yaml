@@ -1,9 +1,10 @@
+# application.template.yaml
+
 # === Profile Activation ===
-# This file is loaded when the 'local' profile is active
 spring:
   config:
     activate:
-      on-profile: profile-name # Recommended profile name for local development
+      on-profile: profile-name
 
   # === Application Metadata ===
   application:
@@ -11,25 +12,20 @@ spring:
 
   # === Database Configuration ===
   datasource:
-    # URL to your MySQL database. Add flags for timezone and auto-create database (for dev).
+    # URL to your MySQL database inside Docker network
     url: jdbc:mysql://localhost:3306/your_database_name?serverTimezone=${database.timezone:Asia/Ho_Chi_Minh}&createDatabaseIfNotExist=true
-    username: your_db_username # <-- Replace with your DB username
-    password: your_db_password # <-- Replace with your DB password
+    username: your_db_username
+    password: your_db_password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # === JPA & Hibernate ===
   jpa:
     hibernate:
-      # Use 'update' for dev convenience, or 'none' if using Flyway.
-      # For production, it must be 'none'.
       ddl-auto: update
-    # Show SQL queries in the console (recommended for dev, disable for prod).
     show-sql: true
     properties:
       hibernate:
-        # Use the correct dialect for MySQL 8.
         dialect: org.hibernate.dialect.MySQL8Dialect
-        # Format the SQL output for better readability (recommended for dev, disable for prod).
         format_sql: true
 
   # === File Upload Configuration ===
@@ -40,19 +36,18 @@ spring:
 
 # === Server Configuration ===
 server:
-  # The application port. Use a placeholder with a default value.
   port: ${server.port:8080}
   servlet:
     context-path: /api/your-project-name
 
 # === JWT Configuration ===
 jwt:
-  secret: your_base64_encoded_secret_at_least_512_bits  # Base64 encoded
-  expiration: 86400000  # 24 hours
-  refresh-expiration: 604800000  # 7 days
+  secret: your_base64_encoded_secret_at_least_512_bits
+  expiration: 86400000
+  refresh-expiration: 604800000
   issuer: LMS
 
-# === Swagger/OpenAPI Configuration (for dev/docs) ===
+# === Swagger/OpenAPI Configuration ===
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -64,7 +59,6 @@ springdoc:
   show-actuator: true
 
 # === Actuator Configuration ===
-# Endpoints for monitoring and health checks (adjust for dev vs. prod).
 management:
   endpoints:
     web:

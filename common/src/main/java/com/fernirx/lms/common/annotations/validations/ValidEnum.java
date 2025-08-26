@@ -11,9 +11,14 @@ import java.lang.annotation.*;
 @Documented
 public @interface ValidEnum {
     String message() default "must be one of the values in the enum";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
+
     Class<? extends Enum<?>> enumClass();
+
     boolean allowNull() default false;
+
     boolean ignoreCase() default false;
 }

@@ -34,6 +34,6 @@ public final class MessageConstants {
     public static final String CHOOSE_FILE = "Choose file";
 
     private MessageConstants() {
-        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+        throw new UnsupportedOperationException("This is a constants class and cannot be instantiated");
     }
 }

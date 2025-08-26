@@ -17,7 +17,6 @@ import java.time.ZonedDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(name = "Success Response", description = "Success API response wrapper")
 public class SuccessResponse<T> {
-
     @Schema(description = "Timestamp of response", example = "2025-08-04T20:00:00+07:00")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private ZonedDateTime timestamp;

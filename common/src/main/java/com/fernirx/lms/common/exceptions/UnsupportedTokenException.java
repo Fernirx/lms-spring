@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class UnsupportedTokenException extends LmsException {
+
     public UnsupportedTokenException() {
         super(ErrorCode.UNSUPPORTED_TOKEN);
     }
