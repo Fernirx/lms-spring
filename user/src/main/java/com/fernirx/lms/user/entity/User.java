@@ -3,15 +3,17 @@ package com.fernirx.lms.user.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User {
     @Id
@@ -39,13 +41,13 @@ public class User {
     private Boolean isDelete = false;
 
     @NotNull
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreatedDate
     @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
+    private Instant createdAt;
 
     @NotNull
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
-    private ZonedDateTime updatedAt;
+    private Instant updatedAt;
 
 }

@@ -107,7 +107,11 @@ public enum ErrorCode {
     STUDENT_CREDITS_NOT_FOUND("STUDENT_CREDITS_NOT_FOUND", ErrorMessages.STUDENT_CREDITS_NOT_FOUND,
             ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
     PREREQUISITE_NOT_FOUND("PREREQUISITE_NOT_FOUND", ErrorMessages.PREREQUISITE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW);
+            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
+
+    // ========== Others ==========
+    USERNAME_ALREADY_EXISTS("USERNAME_ALREADY_EXISTS",ErrorMessages.USERNAME_ALREADY_EXISTS,
+            ErrorCategory.CONFLICT,HttpStatus.CONFLICT,Priority.LOW);
 
     private final String code;
     private final String message;

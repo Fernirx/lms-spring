@@ -1,14 +1,17 @@
 package com.fernirx.lms.user.service;
 
+import com.fernirx.lms.common.enums.ErrorCode;
+import com.fernirx.lms.common.exceptions.LmsException;
+import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
+import com.fernirx.lms.user.entity.Role;
 import com.fernirx.lms.user.entity.User;
 import com.fernirx.lms.user.mapper.UserMapper;
 import com.fernirx.lms.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -16,6 +19,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
     private final UserMapper userMapper;
 
     public List<UserResponseDTO> getAllUser() {
@@ -23,27 +27,25 @@ public class UserService {
     }
 
     public UserResponseDTO getUserById(int id) {
-        UserResponseDTO user =  userMapper
-                            .toDto(userRepository
-                                    .findById(id)
-                                    .orElseThrow());
-        return user;
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.toDto(user);
     }
 
     public boolean isExists(String username) {
         return userRepository.findUserByUsername(username) != null;
     }
 
-    public User createUser(UserRequestDTO userRequest) {
+    public UserResponseDTO createUser(UserRequestDTO userRequest) {
         if(isExists(userRequest.getUsername()))
-            return null;
+           throw new LmsException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
         User user = userMapper.toEntity(userRequest);
-        user.setCreatedAt(ZonedDateTime.now());
-        user.setUpdatedAt(ZonedDateTime.now());
-        user.setIsDelete(false);
+        Role role = roleService.getRoleById(userRequest.getRoleId());
+        user.setRole(role);
+        userRepository.save(user);
 
-        return  userRepository.save(user);
+        return  userMapper.toDto(user);
     }
 
 }
