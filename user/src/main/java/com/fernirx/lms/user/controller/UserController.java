@@ -1,11 +1,12 @@
 package com.fernirx.lms.user.controller;
 
 import com.fernirx.lms.common.constants.ApiConstants;
+import com.fernirx.lms.common.constants.MessageConstants;
+import com.fernirx.lms.common.dtos.responses.SuccessResponse;
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,25 +21,22 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAllUser() {
-        return ResponseEntity.ok(userService.getAllUser());
+    public ResponseEntity<SuccessResponse<List<UserResponseDTO>>> getAllUser() {
+        List<UserResponseDTO> users = userService.getAllUser();
+        return ResponseEntity.ok(
+                SuccessResponse.of("User retrieved successfully",users)
+        );
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<UserResponseDTO> getUserById(@PathVariable int id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    private ResponseEntity<SuccessResponse<UserResponseDTO>> getUserById(@PathVariable int id) {
+        UserResponseDTO user = userService.getUserById(id);
+        return ResponseEntity.ok(SuccessResponse.of("User retrieved successfully",user));
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserRequestDTO user) {
-        if(userService.createUser(user) == null) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("");
-        }
-        else return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body("Create successful!");
-
+    public ResponseEntity<SuccessResponse<UserResponseDTO>> createUser(@RequestBody UserRequestDTO user) {
+        UserResponseDTO userResponse = userService.createUser(user);
+        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_CREATE,userResponse));
     }
 }
