@@ -54,7 +54,10 @@ public final class ErrorMessages {
     public static final String STUDENT_CREDITS_NOT_FOUND = "Student credits not found";
     public static final String PREREQUISITE_NOT_FOUND = "Course prerequisite not found";
 
+    // ========== RESOURCE ALREADY EXISTS MESSAGES ==========
     public static final String USERNAME_ALREADY_EXISTS = "USERNAME_ALREADY_EXISTS";
+
+
     private ErrorMessages() {
         throw new UnsupportedOperationException("This is a constants class and cannot be instantiated");
     }

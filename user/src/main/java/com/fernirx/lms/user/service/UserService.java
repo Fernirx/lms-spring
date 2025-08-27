@@ -32,12 +32,8 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    public boolean isExists(String username) {
-        return userRepository.findUserByUsername(username) != null;
-    }
-
     public UserResponseDTO createUser(UserRequestDTO userRequest) {
-        if(isExists(userRequest.getUsername()))
+        if(userRepository.existsByUsername((userRequest.getUsername())))
            throw new LmsException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
         User user = userMapper.toEntity(userRequest);
@@ -46,6 +42,24 @@ public class UserService {
         userRepository.save(user);
 
         return  userMapper.toDto(user);
+    }
+
+    public Boolean softDeleteUser(int id) {
+        if(!userRepository.existsById(id))
+            throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
+
+        User user = userRepository.getUsersById(id);
+        user.setIsDelete(true);
+        userRepository.save(user);
+        return true;
+    }
+
+    public Boolean hardDelete(int id) {
+        if(!userRepository.existsById(id))
+            throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
+
+        userRepository.removeUserById(id);
+        return true;
     }
 
 }

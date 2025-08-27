@@ -109,7 +109,7 @@ public enum ErrorCode {
     PREREQUISITE_NOT_FOUND("PREREQUISITE_NOT_FOUND", ErrorMessages.PREREQUISITE_NOT_FOUND,
             ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
 
-    // ========== Others ==========
+    // ========== RESOURCE ALREADY EXISTS MESSAGES ==========
     USERNAME_ALREADY_EXISTS("USERNAME_ALREADY_EXISTS",ErrorMessages.USERNAME_ALREADY_EXISTS,
             ErrorCategory.CONFLICT,HttpStatus.CONFLICT,Priority.LOW);
 
