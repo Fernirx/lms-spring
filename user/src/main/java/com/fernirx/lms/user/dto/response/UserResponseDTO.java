@@ -11,7 +11,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class UserResponseDTO {
     private int id;
-    private int roleId;
+    private RoleResponseDTO role;
     private String username;
     private Boolean isDelete;
     private Instant createdAt;

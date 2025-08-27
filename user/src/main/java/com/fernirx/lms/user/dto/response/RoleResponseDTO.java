@@ -1,0 +1,13 @@
+package com.fernirx.lms.user.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RoleResponseDTO {
+    private Integer id;
+    private String name;
+}
