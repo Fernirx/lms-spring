@@ -13,7 +13,7 @@ public class UserResponseDTO {
     private int id;
     private int roleId;
     private String username;
-    private boolean isEnable;
+    private Boolean isDelete;
     private Instant createdAt;
     private Instant updatedAt;
 }

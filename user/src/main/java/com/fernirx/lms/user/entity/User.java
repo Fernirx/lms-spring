@@ -1,5 +1,6 @@
 package com.fernirx.lms.user.entity;
 
+import com.fernirx.lms.common.constants.ValidationConstants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,11 +27,9 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @Size(max = 255)
     @Column(name = "username")
     private String username;
 
-    @Size(max = 255)
     @NotNull
     @Column(name = "password", nullable = false)
     private String password;

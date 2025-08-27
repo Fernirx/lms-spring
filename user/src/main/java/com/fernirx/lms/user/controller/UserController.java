@@ -39,4 +39,10 @@ public class UserController {
         UserResponseDTO userResponse = userService.createUser(user);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_CREATE,userResponse));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable int id) {
+        userService.softDeleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 }

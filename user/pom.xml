@@ -9,8 +9,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <!-- ========== Project Info ========= -->
     <artifactId>user</artifactId>
+    <name>lms-user</name>
+    <packaging>jar</packaging>
+    <description>User Spring Boot application module</description>
 
+    <!-- ========== Properties ========= -->
     <properties>
         <maven.compiler.source>24</maven.compiler.source>
         <maven.compiler.target>24</maven.compiler.target>
@@ -18,6 +23,19 @@
     </properties>
 
     <dependencies>
+        <!--    Module     -->
+        <dependency>
+            <groupId>com.fernirx</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fernirx</groupId>
+            <artifactId>infrastructure</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--    Web     -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -46,13 +64,6 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-        </dependency>
-
-        <!--    Module     -->
-        <dependency>
-            <groupId>com.fernirx</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!--    Security     -->
