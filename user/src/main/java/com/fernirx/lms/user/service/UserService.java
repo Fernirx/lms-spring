@@ -10,6 +10,7 @@ import com.fernirx.lms.user.entity.User;
 import com.fernirx.lms.user.mapper.UserMapper;
 import com.fernirx.lms.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final UserMapper userMapper;
+    private PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> getActiveUsers() {
        return userMapper.toListDto(userRepository.findUsersByIsDelete(false));
@@ -42,7 +44,11 @@ public class UserService {
 
         User user = userMapper.toEntity(userRequest);
         Role role = roleService.getRoleById(userRequest.getRoleId());
+        String passwordEncoded = passwordEncoder.encode(user.getPassword());
+
         user.setRole(role);
+        user.setPassword(passwordEncoded);
+
         userRepository.save(user);
 
         return  userMapper.toDto(user);
