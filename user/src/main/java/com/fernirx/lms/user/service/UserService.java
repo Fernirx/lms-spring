@@ -22,8 +22,12 @@ public class UserService {
     private final RoleService roleService;
     private final UserMapper userMapper;
 
+    public List<UserResponseDTO> getActiveUsers() {
+       return userMapper.toListDto(userRepository.findUsersByIsDelete(false));
+    }
+
     public List<UserResponseDTO> getAllUser() {
-       return userMapper.toListDto(userRepository.findAll());
+        return userMapper.toListDto(userRepository.findAll());
     }
 
     public UserResponseDTO getUserById(int id) {
@@ -54,7 +58,7 @@ public class UserService {
         return true;
     }
 
-    public Boolean hardDelete(int id) {
+    public Boolean hardDeleteUser(int id) {
         if(!userRepository.existsById(id))
             throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
 
