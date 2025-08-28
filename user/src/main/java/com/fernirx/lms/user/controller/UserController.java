@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<SuccessResponse<List<UserResponseDTO>>> getAllUser() {
-        List<UserResponseDTO> users = userService.getAllUser();
+        List<UserResponseDTO> users = userService.getActiveUsers();
         return ResponseEntity.ok(
                 SuccessResponse.of("User retrieved successfully",users)
         );
