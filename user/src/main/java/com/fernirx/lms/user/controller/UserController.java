@@ -6,6 +6,7 @@ import com.fernirx.lms.common.dtos.responses.SuccessResponse;
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse<UserResponseDTO>> createUser(@RequestBody UserRequestDTO user) {
+    public ResponseEntity<SuccessResponse<UserResponseDTO>> createUser(@Valid @RequestBody UserRequestDTO user) {
         UserResponseDTO userResponse = userService.createUser(user);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_CREATE,userResponse));
     }

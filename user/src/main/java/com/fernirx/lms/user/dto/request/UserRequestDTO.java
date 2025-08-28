@@ -1,7 +1,10 @@
 package com.fernirx.lms.user.dto.request;
 
 import com.fernirx.lms.common.constants.ValidationConstants;
+import com.fernirx.lms.common.constants.ValidationMessages;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,17 +14,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDTO {
-    @NotBlank(message = "Username is required")
+    @NotBlank
     @Size(max = ValidationConstants.USERNAME_MAX_LENGTH,
-            min = ValidationConstants.USERNAME_MIN_LENGTH,
-            message = "Username must be between {min} and {max} character")
+            min = ValidationConstants.USERNAME_MIN_LENGTH)
     private String username;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank
     @Size(max = ValidationConstants.PASSWORD_MAX_LENGTH,
-            min = ValidationConstants.PASSWORD_MIN_LENGTH,
-            message = "Password must be between {min} and {max} character")
+            min = ValidationConstants.PASSWORD_MIN_LENGTH)
+    @Pattern(regexp = ValidationConstants.PASSWORD_PATTERN)
     private String password;
 
+    @NotNull
     private int roleId;
 }
