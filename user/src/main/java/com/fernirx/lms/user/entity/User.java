@@ -6,15 +6,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User {
     @Id
@@ -39,14 +41,12 @@ public class User {
     @Column(name = "enable", nullable = false)
     private Boolean isDelete = false;
 
-    @NotNull
-    @CreatedDate
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at",nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @NotNull
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at",nullable = false)
+    private LocalDateTime updatedAt;
 
 }
