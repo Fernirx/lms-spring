@@ -6,8 +6,11 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -30,15 +33,13 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    @NotNull
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at",nullable = false)
+    private LocalDateTime createdAt;
 
-    @NotNull
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at",nullable = false)
+    private LocalDateTime updatedAt;
 
     @OneToMany
     private Set<User> users = new LinkedHashSet<>();
