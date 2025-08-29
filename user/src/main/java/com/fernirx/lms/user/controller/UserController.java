@@ -24,41 +24,41 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @StandardResponseDoc(value="Get all user")
+    @StandardResponseDoc(value = "Get all user")
     public ResponseEntity<SuccessResponse<List<UserResponseDTO>>> getAllUser() {
         List<UserResponseDTO> users = userService.getActiveUsers();
         return ResponseEntity.ok(
-                SuccessResponse.of("User retrieved successfully",users)
+                SuccessResponse.of("User retrieved successfully", users)
         );
     }
 
     @GetMapping("/{id}")
-    @StandardResponseDoc(value="Get a user",description = "Get a user by ID from Lms System")
+    @StandardResponseDoc(value = "Get a user", description = "Get a user by ID from Lms System")
     private ResponseEntity<SuccessResponse<UserResponseDTO>> getUserById(@PathVariable int id) {
         UserResponseDTO user = userService.getUserById(id);
-        return ResponseEntity.ok(SuccessResponse.of("User retrieved successfully",user));
+        return ResponseEntity.ok(SuccessResponse.of("User retrieved successfully", user));
     }
 
     @PostMapping
     @StandardResponseDoc(
-            value="Create a user",
+            value = "Create a user",
             description = "Create a new user in the Lms System with Username, Password, RoleId")
     public ResponseEntity<SuccessResponse<UserResponseDTO>> createUser(@Valid @RequestBody UserRequestDTO user) {
         UserResponseDTO userResponse = userService.createUser(user);
-        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_CREATE,userResponse));
+        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_CREATE, userResponse));
     }
 
     @DeleteMapping("/{id}")
-    @StandardResponseDoc(value="Delete a user",description = "Delete a user by ID from Lms System")
+    @StandardResponseDoc(value = "Delete a user", description = "Delete a user by ID from Lms System")
     public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable int id) {
         userService.softDeleteUser(id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_DELETE));
     }
 
     @PutMapping
-    @StandardResponseDoc(value="Update a user information",description = "Change user information from Lms System")
+    @StandardResponseDoc(value = "Update a user information", description = "Change user information from Lms System")
     public ResponseEntity<SuccessResponse<UserResponseDTO>> updateUser(@RequestBody UserUpdateDTO request) {
         UserResponseDTO user = userService.updateUser(request);
-        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE,user));
+        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE, user));
     }
 }

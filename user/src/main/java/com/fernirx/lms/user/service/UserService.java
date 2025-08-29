@@ -2,7 +2,6 @@ package com.fernirx.lms.user.service;
 
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.DuplicateEntryException;
-import com.fernirx.lms.common.exceptions.LmsException;
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
 import com.fernirx.lms.user.dto.request.UserUpdateDTO;
@@ -27,7 +26,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> getActiveUsers() {
-       return userMapper.toListDto(userRepository.findUsersByIsDelete(false));
+        return userMapper.toListDto(userRepository.findUsersByIsDelete(false));
     }
 
     public List<UserResponseDTO> getAllUser() {
@@ -41,8 +40,8 @@ public class UserService {
     }
 
     public UserResponseDTO createUser(UserRequestDTO userRequest) {
-        if(userRepository.existsByUsername((userRequest.getUsername())))
-           throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        if (userRepository.existsByUsername((userRequest.getUsername())))
+            throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
         User user = userMapper.toEntity(userRequest);
         Role role = roleService.getRoleById(userRequest.getRoleId());
@@ -53,11 +52,11 @@ public class UserService {
 
         userRepository.save(user);
 
-        return  userMapper.toDto(user);
+        return userMapper.toDto(user);
     }
 
     public void checkUserId(int id) {
-        if(!userRepository.existsById(id))
+        if (!userRepository.existsById(id))
             throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
     }
 
