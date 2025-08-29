@@ -5,6 +5,7 @@ import com.fernirx.lms.common.constants.ApiConstants;
 import com.fernirx.lms.common.constants.MessageConstants;
 import com.fernirx.lms.common.dtos.responses.SuccessResponse;
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
+import com.fernirx.lms.user.dto.request.UserUpdateDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.service.UserService;
 import jakarta.validation.Valid;
@@ -52,5 +53,12 @@ public class UserController {
     public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable int id) {
         userService.softDeleteUser(id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_DELETE));
+    }
+
+    @PutMapping
+    @StandardResponseDoc(value="Update a user information",description = "Change user information from Lms System")
+    public ResponseEntity<SuccessResponse<UserResponseDTO>> updateUser(@RequestBody UserUpdateDTO request) {
+        UserResponseDTO user = userService.updateUser(request);
+        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE,user));
     }
 }

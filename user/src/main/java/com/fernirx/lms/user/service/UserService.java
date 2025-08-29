@@ -5,6 +5,7 @@ import com.fernirx.lms.common.exceptions.DuplicateEntryException;
 import com.fernirx.lms.common.exceptions.LmsException;
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
+import com.fernirx.lms.user.dto.request.UserUpdateDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.entity.Role;
 import com.fernirx.lms.user.entity.User;
@@ -72,6 +73,26 @@ public class UserService {
         checkUserId(id);
         userRepository.removeUserById(id);
         return true;
+    }
+
+    public UserResponseDTO updateUser(UserUpdateDTO userRequest) {
+        checkUserId(userRequest.getId());
+
+        User user = userRepository.getUsersById(userRequest.getId());
+
+        if (userRequest.getRoleId() != null) {
+            Role role = roleService.getRoleById(userRequest.getRoleId());
+            user.setRole(role);
+        }
+        if (userRequest.getPassword() != null) {
+            String passwordEncoded = passwordEncoder.encode(userRequest.getPassword());
+            user.setPassword(passwordEncoded);
+        }
+        if (userRequest.getUsername() != null) user.setUsername(userRequest.getUsername());
+        if (userRequest.getIsDelete() != null) user.setIsDelete(userRequest.getIsDelete());
+
+        userRepository.save(user);
+        return userMapper.toDto(user);
     }
 
 }

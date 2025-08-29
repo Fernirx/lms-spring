@@ -2,6 +2,7 @@ package com.fernirx.lms.user.mapper;
 
 
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
+import com.fernirx.lms.user.dto.request.UserUpdateDTO;
 import com.fernirx.lms.user.dto.response.RoleResponseDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.entity.Role;
