@@ -1,6 +1,7 @@
 package com.fernirx.lms.user.service;
 
 import com.fernirx.lms.common.enums.ErrorCode;
+import com.fernirx.lms.common.exceptions.DuplicateEntryException;
 import com.fernirx.lms.common.exceptions.LmsException;
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
 import com.fernirx.lms.user.dto.request.UserRequestDTO;
@@ -22,7 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final UserMapper userMapper;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> getActiveUsers() {
        return userMapper.toListDto(userRepository.findUsersByIsDelete(false));
@@ -40,7 +41,7 @@ public class UserService {
 
     public UserResponseDTO createUser(UserRequestDTO userRequest) {
         if(userRepository.existsByUsername((userRequest.getUsername())))
-           throw new LmsException(ErrorCode.USERNAME_ALREADY_EXISTS);
+           throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
         User user = userMapper.toEntity(userRequest);
         Role role = roleService.getRoleById(userRequest.getRoleId());
@@ -54,10 +55,13 @@ public class UserService {
         return  userMapper.toDto(user);
     }
 
-    public Boolean softDeleteUser(int id) {
+    public void checkUserId(int id) {
         if(!userRepository.existsById(id))
             throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
+    }
 
+    public Boolean softDeleteUser(int id) {
+        checkUserId(id);
         User user = userRepository.getUsersById(id);
         user.setIsDelete(true);
         userRepository.save(user);
@@ -65,9 +69,7 @@ public class UserService {
     }
 
     public Boolean hardDeleteUser(int id) {
-        if(!userRepository.existsById(id))
-            throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
-
+        checkUserId(id);
         userRepository.removeUserById(id);
         return true;
     }
