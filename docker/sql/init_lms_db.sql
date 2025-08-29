@@ -24,7 +24,7 @@ USE `lms_db` ;
 DROP TABLE IF EXISTS `lms_db`.`institutions` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`institutions` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `code` VARCHAR(6) NOT NULL,
     `short_name` VARCHAR(20) NOT NULL,
     `full_name` VARCHAR(200) NOT NULL,
@@ -43,7 +43,7 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`roles` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`roles` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL COMMENT 'Student, Teacher, dept_head, acad_affairs',
   `description` TEXT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -61,11 +61,11 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `role_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `role_id` BIGINT NOT NULL,
   `username` VARCHAR(50) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `enable` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_delete` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -85,7 +85,7 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`departments` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`departments` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(6) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `description` TEXT NULL DEFAULT NULL,
@@ -103,8 +103,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`majors` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`majors` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `department_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `department_id` BIGINT NOT NULL,
   `code` VARCHAR(8) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `degree_level` ENUM('Bachelor', 'Engineer', 'Phd') NOT NULL DEFAULT 'Bachelor',
@@ -132,9 +132,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`teachers` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`teachers` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `department_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `department_id` BIGINT NOT NULL,
   `code` VARCHAR(8) NOT NULL,
   `first_name` VARCHAR(100) NOT NULL,
   `last_name` VARCHAR(100) NOT NULL,
@@ -173,9 +173,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`classes` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`classes` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `teacher_id` INT NOT NULL,
-  `major_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `teacher_id` BIGINT NOT NULL,
+  `major_id` BIGINT NOT NULL,
   `code` VARCHAR(8) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `cohort_year` YEAR NOT NULL,
@@ -204,9 +204,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`students` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`students` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `class_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `class_id` BIGINT NOT NULL,
   `code` VARCHAR(12) NOT NULL,
   `first_name` VARCHAR(100) NOT NULL,
   `last_name` VARCHAR(100) NOT NULL,
@@ -245,7 +245,7 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`offices` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`offices` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(6) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `description` TEXT NULL,
@@ -262,9 +262,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`employees` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`employees` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `office_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `office_id` BIGINT NOT NULL,
   `code` VARCHAR(8) NOT NULL,
   `first_name` VARCHAR(100) NOT NULL,
   `last_name` VARCHAR(100) NOT NULL,
@@ -302,7 +302,7 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`school_years` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`school_years` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(9) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `start_year` YEAR(4) NOT NULL,
@@ -325,8 +325,8 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`semesters` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`semesters` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `school_year_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `school_year_id` BIGINT NOT NULL,
   `code` VARCHAR(6) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `start_date` DATE NOT NULL,
@@ -354,8 +354,8 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`subjects` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`subjects` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `major_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `major_id` BIGINT NOT NULL,
   `code` VARCHAR(8) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `type` ENUM('Theory', 'Practical') NOT NULL DEFAULT 'Theory',
@@ -382,9 +382,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`course_offerings` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`course_offerings` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `subject_id` INT NOT NULL,
-  `semester_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `subject_id` BIGINT NOT NULL,
+  `semester_id` BIGINT NOT NULL,
   `group_code` VARCHAR(10) NOT NULL,
   `capacity` INT NOT NULL DEFAULT 0,
   `start_date` DATE NOT NULL,
@@ -416,7 +416,7 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`classrooms` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`classrooms` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(8) NOT NULL,
   `location` VARCHAR(100) NOT NULL,
   `capacity` INT NOT NULL,
@@ -435,9 +435,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`course_assignments` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`course_assignments` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `offering_id` INT NOT NULL,
-  `teacher_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `offering_id` BIGINT NOT NULL,
+  `teacher_id` BIGINT NOT NULL,
   `status` ENUM('Pending', 'Approved', 'Rejected', 'Canceled') NOT NULL DEFAULT 'Pending',
   `cancel_reason` TEXT NULL DEFAULT NULL,
   `canceled_at` DATE NULL DEFAULT NULL,
@@ -466,9 +466,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`schedules` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`schedules` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `classroom_id` INT NOT NULL,
-  `assignment_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `classroom_id` BIGINT NOT NULL,
+  `assignment_id` BIGINT NOT NULL,
   `day_of_week` ENUM('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun') NOT NULL,
   `start_time` TIME NOT NULL,
   `end_time` TIME NOT NULL,
@@ -495,9 +495,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`registrations` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`registrations` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `student_id` INT NOT NULL,
-  `offering_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `student_id` BIGINT NOT NULL,
+  `offering_id` BIGINT NOT NULL,
   `status` ENUM('Registered', 'Cancelled') NOT NULL DEFAULT 'Registered',
   `cancelled_at` TIMESTAMP NULL DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -526,9 +526,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`tuition_fees` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`tuition_fees` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `student_id` INT NOT NULL,
-  `semester_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `student_id` BIGINT NOT NULL,
+  `semester_id` BIGINT NOT NULL,
   `amount_due` DECIMAL(12,2) NOT NULL,
   `amount_paid` DECIMAL(12,2) NOT NULL DEFAULT 0,
   `due_date` DATE NOT NULL,
@@ -557,12 +557,12 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`notices` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`notices` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(200) NOT NULL,
   `content` TEXT NOT NULL,
-  `created_by` INT NOT NULL,
+  `created_by` BIGINT NOT NULL,
   `audience` ENUM('AllStudents', 'AllTeachers', 'All', 'Department', 'Specific') NOT NULL DEFAULT 'All',
-  `target_id` INT NULL DEFAULT NULL,
+  `target_id` BIGINT NULL DEFAULT NULL,
   `valid_from` DATE NULL DEFAULT NULL,
   `valid_to` DATE NULL DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -583,11 +583,11 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`course_documents` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`course_documents` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `offering_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `offering_id` BIGINT NOT NULL,
   `title` VARCHAR(200) NOT NULL,
   `file_url` VARCHAR(255) NOT NULL,
-  `uploaded_by` INT NOT NULL,
+  `uploaded_by` BIGINT NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -612,9 +612,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`grades` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`grades` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `registration_id` INT NOT NULL,
-  `entered_by` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `registration_id` BIGINT NOT NULL,
+  `entered_by` BIGINT NOT NULL,
   `process_score` DECIMAL(5,2) UNSIGNED NULL DEFAULT 0,
   `midterm_score` DECIMAL(5,2) UNSIGNED NULL DEFAULT 0,
   `final_score` DECIMAL(5,2) UNSIGNED NULL DEFAULT 0,
@@ -648,11 +648,11 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`course_assignment_changes` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`course_assignment_changes` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `assignment_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `assignment_id` BIGINT NOT NULL,
   `old_schedule` TEXT NOT NULL,
   `new_schedule` TEXT NOT NULL,
-  `changed_by` INT NOT NULL,
+  `changed_by` BIGINT NOT NULL,
   `note` TEXT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -678,9 +678,9 @@ COLLATE = utf8mb4_unicode_520_ci;
 DROP TABLE IF EXISTS `lms_db`.`department_heads` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`department_heads` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `teacher_id` INT NOT NULL,
-  `department_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `teacher_id` BIGINT NOT NULL,
+  `department_id` BIGINT NOT NULL,
   `start_date` DATE NOT NULL,
   `end_date` DATE NULL DEFAULT NULL,
   `note` TEXT NULL DEFAULT NULL,
@@ -709,8 +709,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`teacher_majors` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`teacher_majors` (
-  `teacher_id` INT NOT NULL,
-  `major_id` INT NOT NULL,
+  `teacher_id` BIGINT NOT NULL,
+  `major_id` BIGINT NOT NULL,
   `is_primary` TINYINT(1) NOT NULL DEFAULT 0,
   `note` TEXT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -737,9 +737,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`exam_schedules` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`exam_schedules` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `offering_id` INT NOT NULL,
-  `classroom_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `offering_id` BIGINT NOT NULL,
+  `classroom_id` BIGINT NOT NULL,
   `exam_date` DATE NOT NULL,
   `start_time` TIME NOT NULL,
   `note` TEXT NULL,
@@ -767,9 +767,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`office_heads` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`office_heads` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `employee_id` INT NOT NULL,
-  `office_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `employee_id` BIGINT NOT NULL,
+  `office_id` BIGINT NOT NULL,
   `start_date` DATE NOT NULL,
   `end_date` DATE NULL DEFAULT NULL,
   `note` TEXT NULL DEFAULT NULL,
@@ -798,9 +798,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`conduct_scores` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`conduct_scores` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `student_id` INT NOT NULL,
-  `semester_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `student_id` BIGINT NOT NULL,
+  `semester_id` BIGINT NOT NULL,
   `score` DECIMAL(4,2) NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -827,9 +827,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`student_credits` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`student_credits` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `student_id` INT NOT NULL,
-  `semester_id` INT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `student_id` BIGINT NOT NULL,
+  `semester_id` BIGINT NOT NULL,
   `total_credits` INT NOT NULL,
   `passed_credits` INT NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -857,8 +857,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `lms_db`.`course_prerequisites` ;
 
 CREATE TABLE IF NOT EXISTS `lms_db`.`course_prerequisites` (
-  `subject_id` INT NOT NULL,
-  `required_subject_id` INT NOT NULL,
+  `subject_id` BIGINT NOT NULL,
+  `required_subject_id` BIGINT NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`subject_id`, `required_subject_id`),
