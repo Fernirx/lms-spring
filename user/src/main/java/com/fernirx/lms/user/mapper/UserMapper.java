@@ -1,7 +1,7 @@
 package com.fernirx.lms.user.mapper;
 
 
-import com.fernirx.lms.user.dto.request.UserRequestDTO;
+import com.fernirx.lms.user.dto.request.UserCreateDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.entity.User;
 import org.mapstruct.Mapper;
@@ -10,8 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    //  User
-    User toEntity(UserRequestDTO user);
+    User toEntity(UserCreateDTO user);
 
     UserResponseDTO toDto(User user);
 

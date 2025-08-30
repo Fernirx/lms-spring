@@ -3,7 +3,7 @@ package com.fernirx.lms.user.service;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.DuplicateEntryException;
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
-import com.fernirx.lms.user.dto.request.UserRequestDTO;
+import com.fernirx.lms.user.dto.request.UserCreateDTO;
 import com.fernirx.lms.user.dto.request.UserUpdateDTO;
 import com.fernirx.lms.user.dto.response.UserResponseDTO;
 import com.fernirx.lms.user.entity.Role;
@@ -39,7 +39,7 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    public UserResponseDTO createUser(UserRequestDTO userRequest) {
+    public UserResponseDTO createUser(UserCreateDTO userRequest) {
         if (userRepository.existsByUsername((userRequest.getUsername())))
             throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
@@ -91,6 +91,7 @@ public class UserService {
         if (userRequest.getIsDelete() != null) user.setIsDelete(userRequest.getIsDelete());
 
         userRepository.save(user);
+
         return userMapper.toDto(user);
     }
 
