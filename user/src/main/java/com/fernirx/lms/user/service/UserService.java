@@ -33,7 +33,7 @@ public class UserService {
         return userMapper.toListDto(userRepository.findAll());
     }
 
-    public UserResponseDTO getUserById(int id) {
+    public UserResponseDTO getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toDto(user);
@@ -55,12 +55,12 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    public void checkUserId(int id) {
+    public void checkUserId(Long id) {
         if (!userRepository.existsById(id))
             throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
     }
 
-    public Boolean softDeleteUser(int id) {
+    public Boolean softDeleteUser(Long id) {
         checkUserId(id);
         User user = userRepository.getUsersById(id);
         user.setIsDelete(true);
@@ -68,7 +68,7 @@ public class UserService {
         return true;
     }
 
-    public Boolean hardDeleteUser(int id) {
+    public Boolean hardDeleteUser(Long id) {
         checkUserId(id);
         userRepository.removeUserById(id);
         return true;

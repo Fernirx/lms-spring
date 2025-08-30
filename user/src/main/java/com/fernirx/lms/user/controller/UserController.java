@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @StandardResponseDoc(value = "Get a user", description = "Get a user by ID from Lms System")
-    private ResponseEntity<SuccessResponse<UserResponseDTO>> getUserById(@PathVariable int id) {
+    private ResponseEntity<SuccessResponse<UserResponseDTO>> getUserById(@PathVariable Long id) {
         UserResponseDTO user = userService.getUserById(id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_FETCH_DATA, user));
     }
@@ -48,7 +48,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @StandardResponseDoc(value = "Delete a user", description = "Delete a user by ID from Lms System")
-    public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable int id) {
+    public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.softDeleteUser(id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_DELETE));
     }

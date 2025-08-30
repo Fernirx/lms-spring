@@ -13,7 +13,7 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public Role getRoleById(int id) {
+    public Role getRoleById(Long id) {
         return roleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ROLE_NOT_FOUND));
     }

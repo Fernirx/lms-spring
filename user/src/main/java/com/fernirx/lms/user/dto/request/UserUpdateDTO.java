@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateDTO {
-    private Integer id;
-    private Integer roleId;
+    private Long id;
+    private Long roleId;
     private String username;
     private String password;
     private Boolean isDelete;
