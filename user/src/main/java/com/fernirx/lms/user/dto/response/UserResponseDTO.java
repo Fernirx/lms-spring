@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDTO {
-    private int id;
+    private Long id;
     private RoleResponseDTO role;
     private String username;
     private Boolean isDelete;

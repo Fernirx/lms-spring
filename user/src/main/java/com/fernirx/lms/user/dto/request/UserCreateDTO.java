@@ -25,5 +25,5 @@ public class UserCreateDTO {
     private String password;
 
     @NotNull
-    private int roleId;
+    private Long roleId;
 }
