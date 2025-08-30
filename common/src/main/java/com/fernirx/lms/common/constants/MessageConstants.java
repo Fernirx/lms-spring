@@ -3,6 +3,7 @@ package com.fernirx.lms.common.constants;
 public final class MessageConstants {
 
     // ========== SUCCESS MESSAGES ==========
+    public static final String SUCCESS_FETCH_DATA = "Data retrieved successfully";
     public static final String SUCCESS_CREATE = "Created successfully";
     public static final String SUCCESS_UPDATE = "Updated successfully";
     public static final String SUCCESS_DELETE = "Deleted successfully";

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDTO {
+public class UserCreateDTO {
     @NotBlank
     @Size(max = ValidationConstants.USERNAME_MAX_LENGTH,
             min = ValidationConstants.USERNAME_MIN_LENGTH)
