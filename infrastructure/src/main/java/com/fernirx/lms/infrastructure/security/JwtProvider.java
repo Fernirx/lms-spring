@@ -44,7 +44,7 @@ public class JwtProvider {
         );
     }
 
-    public String generateRefreshToken(int userId, String username) {
+    public String generateRefreshToken(long userId, String username) {
         return createToken(
                 SecurityConstants.JWT_REFRESH_TOKEN,
                 userId,
@@ -57,7 +57,7 @@ public class JwtProvider {
     public String refreshAccessToken(String accessToken, String refreshToken) {
         validateRefreshToken(refreshToken);
 
-        int userId = Integer.parseInt(extractSubject(refreshToken));
+        long userId = Long.parseLong(extractSubject(refreshToken));
         String username = extractUsername(refreshToken);
         List<String> authorities = extractAuthoritiesIgnoreExpiry(accessToken);
 
@@ -73,7 +73,7 @@ public class JwtProvider {
     public String rotateRefreshToken(String oldRefreshToken) {
         validateRefreshToken(oldRefreshToken);
 
-        int userId = Integer.parseInt(extractSubject(oldRefreshToken));
+        long userId = Long.parseLong(extractSubject(oldRefreshToken));
         String username = extractUsername(oldRefreshToken);
 
         return generateRefreshToken(userId, username);
@@ -127,7 +127,7 @@ public class JwtProvider {
 
     // ==== PRIVATE HELPERS ====
 
-    private String createToken(String type, int userId, String username,
+    private String createToken(String type, long userId, String username,
                                List<String> authorities, long expirationMillis) {
         Map<String, Object> claims =buildClaims(type, username, authorities);
         return buildJwtToken(String.valueOf(userId), claims, expirationMillis);
