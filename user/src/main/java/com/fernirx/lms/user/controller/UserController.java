@@ -53,10 +53,11 @@ public class UserController {
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_DELETE));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @StandardResponseDoc(value = "Update a user information", description = "Change user information from Lms System")
-    public ResponseEntity<SuccessResponse<UserResponseDTO>> updateUser(@RequestBody UserUpdateDTO request) {
-        UserResponseDTO user = userService.updateUser(request);
+    public ResponseEntity<SuccessResponse<UserResponseDTO>> updateUser(@Valid @RequestBody UserUpdateDTO request,
+                                                                       @PathVariable Long id) {
+        UserResponseDTO user = userService.updateUser(request,id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE, user));
     }
 }

@@ -74,10 +74,10 @@ public class UserService {
         return true;
     }
 
-    public UserResponseDTO updateUser(UserUpdateDTO userRequest) {
-        checkUserId(userRequest.getId());
+    public UserResponseDTO updateUser(UserUpdateDTO userRequest,Long id) {
+        checkUserId(id);
 
-        User user = userRepository.getUsersById(userRequest.getId());
+        User user = userRepository.getUsersById(id);
 
         if (userRequest.getRoleId() != null) {
             Role role = roleService.getRoleById(userRequest.getRoleId());
