@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void removeUserById(Long id);
 
     List<User> findUsersByIsDelete(Boolean isDelete);
+
+    User getUserById(Long id);
 }

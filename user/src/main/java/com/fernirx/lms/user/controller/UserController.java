@@ -4,9 +4,9 @@ import com.fernirx.lms.common.annotations.docs.StandardResponseDoc;
 import com.fernirx.lms.common.constants.ApiConstants;
 import com.fernirx.lms.common.constants.MessageConstants;
 import com.fernirx.lms.common.dtos.responses.SuccessResponse;
-import com.fernirx.lms.user.dto.request.UserCreateDTO;
-import com.fernirx.lms.user.dto.request.UserUpdateDTO;
-import com.fernirx.lms.user.dto.response.UserResponseDTO;
+import com.fernirx.lms.user.dto.request.UserCreateRequest;
+import com.fernirx.lms.user.dto.request.UserUpdateRequest;
+import com.fernirx.lms.user.dto.response.UserResponse;
 import com.fernirx.lms.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,8 +23,8 @@ public class UserController {
 
     @GetMapping
     @StandardResponseDoc(value = "Get all user")
-    public ResponseEntity<SuccessResponse<List<UserResponseDTO>>> getAllUser() {
-        List<UserResponseDTO> users = userService.getActiveUsers();
+    public ResponseEntity<SuccessResponse<List<UserResponse>>> getAllUser() {
+        List<UserResponse> users = userService.getActiveUsers();
         return ResponseEntity.ok(
                 SuccessResponse.of(MessageConstants.SUCCESS_FETCH_DATA, users)
         );
@@ -32,8 +32,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     @StandardResponseDoc(value = "Get a user", description = "Get a user by ID from Lms System")
-    private ResponseEntity<SuccessResponse<UserResponseDTO>> getUserById(@PathVariable Long id) {
-        UserResponseDTO user = userService.getUserById(id);
+    private ResponseEntity<SuccessResponse<UserResponse>> getUserById(@PathVariable Long id) {
+        UserResponse user = userService.getUserById(id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_FETCH_DATA, user));
     }
 
@@ -41,8 +41,8 @@ public class UserController {
     @StandardResponseDoc(
             value = "Create a user",
             description = "Create a new user in the Lms System with Username, Password, RoleId")
-    public ResponseEntity<SuccessResponse<UserResponseDTO>> createUser(@Valid @RequestBody UserCreateDTO user) {
-        UserResponseDTO userResponse = userService.createUser(user);
+    public ResponseEntity<SuccessResponse<UserResponse>> createUser(@Valid @RequestBody UserCreateRequest user) {
+        UserResponse userResponse = userService.createUser(user);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_CREATE, userResponse));
     }
 
@@ -55,9 +55,9 @@ public class UserController {
 
     @PutMapping("/{id}")
     @StandardResponseDoc(value = "Update a user information", description = "Change user information from Lms System")
-    public ResponseEntity<SuccessResponse<UserResponseDTO>> updateUser(@Valid @RequestBody UserUpdateDTO request,
-                                                                       @PathVariable Long id) {
-        UserResponseDTO user = userService.updateUser(request,id);
+    public ResponseEntity<SuccessResponse<UserResponse>> updateUser(@Valid @PathVariable Long id,
+                                                                    @RequestBody UserUpdateRequest request) {
+        UserResponse user = userService.updateUser(request,id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE, user));
     }
 }

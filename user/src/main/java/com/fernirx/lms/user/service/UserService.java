@@ -3,9 +3,9 @@ package com.fernirx.lms.user.service;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.DuplicateEntryException;
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
-import com.fernirx.lms.user.dto.request.UserCreateDTO;
-import com.fernirx.lms.user.dto.request.UserUpdateDTO;
-import com.fernirx.lms.user.dto.response.UserResponseDTO;
+import com.fernirx.lms.user.dto.request.UserCreateRequest;
+import com.fernirx.lms.user.dto.request.UserUpdateRequest;
+import com.fernirx.lms.user.dto.response.UserResponse;
 import com.fernirx.lms.user.entity.Role;
 import com.fernirx.lms.user.entity.User;
 import com.fernirx.lms.user.mapper.UserMapper;
@@ -25,21 +25,21 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserResponseDTO> getActiveUsers() {
+    public List<UserResponse> getActiveUsers() {
         return userMapper.toListDto(userRepository.findUsersByIsDelete(false));
     }
 
-    public List<UserResponseDTO> getAllUser() {
+    public List<UserResponse> getAllUser() {
         return userMapper.toListDto(userRepository.findAll());
     }
 
-    public UserResponseDTO getUserById(Long id) {
+    public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toDto(user);
     }
 
-    public UserResponseDTO createUser(UserCreateDTO userRequest) {
+    public UserResponse createUser(UserCreateRequest userRequest) {
         if (userRepository.existsByUsername((userRequest.getUsername())))
             throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
@@ -60,6 +60,10 @@ public class UserService {
             throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
     }
 
+    public Boolean checkUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
     public Boolean softDeleteUser(Long id) {
         checkUserId(id);
         User user = userRepository.getUsersById(id);
@@ -74,11 +78,13 @@ public class UserService {
         return true;
     }
 
-    public UserResponseDTO updateUser(UserUpdateDTO userRequest,Long id) {
+    public UserResponse updateUser(UserUpdateRequest userRequest, Long id) {
         checkUserId(id);
-
-        User user = userRepository.getUsersById(id);
-
+        User user = userRepository.getUserById(id);
+        if(!user.getUsername().equals(userRequest.getUsername()) &&
+                checkUsername(userRequest.getUsername()))
+            throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        else user.setUsername(userRequest.getUsername());
         if (userRequest.getRoleId() != null) {
             Role role = roleService.getRoleById(userRequest.getRoleId());
             user.setRole(role);
@@ -87,12 +93,10 @@ public class UserService {
             String passwordEncoded = passwordEncoder.encode(userRequest.getPassword());
             user.setPassword(passwordEncoded);
         }
-        if (userRequest.getUsername() != null) user.setUsername(userRequest.getUsername());
         if (userRequest.getIsDelete() != null) user.setIsDelete(userRequest.getIsDelete());
 
         userRepository.save(user);
 
         return userMapper.toDto(user);
     }
-
 }
