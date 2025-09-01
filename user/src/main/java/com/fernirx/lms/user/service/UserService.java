@@ -1,5 +1,6 @@
 package com.fernirx.lms.user.service;
 
+import com.fernirx.lms.common.constants.MessageConstants;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.DuplicateEntryException;
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
@@ -25,12 +26,13 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserResponse> getActiveUsers() {
-        return userMapper.toListDto(userRepository.findUsersByIsDelete(false));
-    }
-
-    public List<UserResponse> getAllUser() {
-        return userMapper.toListDto(userRepository.findAll());
+    public List<UserResponse> getUsersByStatus(String status) {
+        status = status.toLowerCase();
+        return switch (status) {
+            case "active" -> userMapper.toListDto(userRepository.findUsersByIsDelete(false));
+            case "deleted" -> userMapper.toListDto(userRepository.findUsersByIsDelete(true));
+            default -> throw new IllegalArgumentException(MessageConstants.ERROR_BAD_REQUEST);
+        };
     }
 
     public UserResponse getUserById(Long id) {
@@ -78,7 +80,7 @@ public class UserService {
         return true;
     }
 
-    public UserResponse updateUser(UserUpdateRequest userRequest, Long id) {
+    public UserResponse updateUser(Long id, UserUpdateRequest userRequest) {
         checkUserId(id);
         User user = userRepository.getUserById(id);
         if(!user.getUsername().equals(userRequest.getUsername()) &&
@@ -93,10 +95,17 @@ public class UserService {
             String passwordEncoded = passwordEncoder.encode(userRequest.getPassword());
             user.setPassword(passwordEncoded);
         }
-        if (userRequest.getIsDelete() != null) user.setIsDelete(userRequest.getIsDelete());
 
         userRepository.save(user);
 
         return userMapper.toDto(user);
+    }
+
+    public void restoreUser(Long id) {
+        checkUserId(id);
+        User user = userRepository.getUserById(id);
+        if(!user.getIsDelete()) return;
+        user.setIsDelete(false);
+        userRepository.save(user);
     }
 }

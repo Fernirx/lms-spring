@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @RestController
 @RequestMapping(ApiConstants.USERS_PATH)
 @AllArgsConstructor
@@ -22,12 +24,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @StandardResponseDoc(value = "Get all user")
-    public ResponseEntity<SuccessResponse<List<UserResponse>>> getAllUser() {
-        List<UserResponse> users = userService.getActiveUsers();
-        return ResponseEntity.ok(
-                SuccessResponse.of(MessageConstants.SUCCESS_FETCH_DATA, users)
-        );
+    @StandardResponseDoc(value = "Get users by status")
+    public ResponseEntity<SuccessResponse<List<UserResponse>>> getUsersByStatus(@RequestParam String status) {
+        List<UserResponse> users= userService.getUsersByStatus(status);
+        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_FETCH_DATA, users));
     }
 
     @GetMapping("/{id}")
@@ -46,6 +46,14 @@ public class UserController {
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_CREATE, userResponse));
     }
 
+    @PutMapping("/{id}")
+    @StandardResponseDoc(value = "Update a user information", description = "Change user information from Lms System")
+    public ResponseEntity<SuccessResponse<UserResponse>> updateUser(@Valid @PathVariable Long id,
+                                                                    @RequestBody UserUpdateRequest request) {
+        UserResponse user = userService.updateUser(id,request);
+        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE, user));
+    }
+
     @DeleteMapping("/{id}")
     @StandardResponseDoc(value = "Delete a user", description = "Delete a user by ID from Lms System")
     public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable Long id) {
@@ -53,11 +61,10 @@ public class UserController {
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_DELETE));
     }
 
-    @PutMapping("/{id}")
-    @StandardResponseDoc(value = "Update a user information", description = "Change user information from Lms System")
-    public ResponseEntity<SuccessResponse<UserResponse>> updateUser(@Valid @PathVariable Long id,
-                                                                    @RequestBody UserUpdateRequest request) {
-        UserResponse user = userService.updateUser(request,id);
-        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE, user));
+    @PutMapping("/{id}/restore")
+    @StandardResponseDoc(value = "Restore user activity status", description = "Restore user activity status ")
+    public ResponseEntity<SuccessResponse<Void>> restoreUser(@PathVariable Long id) {
+        userService.restoreUser(id);
+        return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_UPDATE));
     }
 }
