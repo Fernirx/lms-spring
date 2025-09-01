@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @StandardResponseDoc(value = "Get a user", description = "Get a user by ID from Lms System")
-    private ResponseEntity<SuccessResponse<UserResponse>> getUserById(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<UserResponse>> getUserById(@PathVariable Long id) {
         UserResponse user = userService.getUserById(id);
         return ResponseEntity.ok(SuccessResponse.of(MessageConstants.SUCCESS_FETCH_DATA, user));
     }
