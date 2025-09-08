@@ -2,7 +2,7 @@ package com.fernirx.lms.common.dtos.responses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fernirx.lms.common.enums.ErrorCategory;
+import com.fernirx.lms.common.enums.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,31 +17,50 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(name = "Error Response", description = "Error API response wrapper")
+@Schema(
+        name = "ErrorResponse",
+        title = "Error Response",
+        description = "Standard error response structure for all API errors, providing comprehensive error information"
+)
 public class ErrorResponse {
-    @Schema(description = "Timestamp of error", example = "2025-08-04T20:00:00+07:00")
+    @Schema(
+            description = "ISO 8601 timestamp indicating when the error occurred",
+            example = "2025-08-04T20:00:00+07:00"
+    )
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private ZonedDateTime timestamp;
 
-    @Schema(description = "Error category", example = "VALIDATION", implementation = ErrorCategory.class)
-    private ErrorCategory category;
+    @Schema(
+            description = "Main error code representing the type of error that occurred",
+            example = "VALIDATION_ERROR",
+            implementation = ErrorCode.class
+    )
+    private ErrorCode code;
 
-    @Schema(description = "Detailed error message", example = "Invalid input parameters")
+    @Schema(
+            description = "Human-readable error message describing what went wrong",
+            example = "Invalid input parameters provided",
+            minLength = 1,
+            maxLength = 500
+    )
     private String message;
 
-    @Schema(description = "List of field-specific errors")
-    private List<ErrorDetail> errors;
+    @Schema(
+            description = "List of detailed error information, typically for field-specific validation errors. Can be null or empty for single errors",
+            nullable = true
+    )
+    private List<ErrorDetail> details;
 
-    public static ErrorResponse of(ErrorCategory category, String message, List<ErrorDetail> errors) {
+    public static ErrorResponse of(ErrorCode code, String message, List<ErrorDetail> details) {
         return ErrorResponse.builder()
                 .timestamp(ZonedDateTime.now())
-                .category(category)
+                .code(code)
                 .message(message)
-                .errors(errors)
+                .details(details)
                 .build();
     }
 
-    public static ErrorResponse of(ErrorCategory category, String message, ErrorDetail error) {
-        return of(category, message, List.of(error));
+    public static ErrorResponse of(ErrorCode code, String message) {
+        return of(code, message, null);
     }
 }
