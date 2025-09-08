@@ -1,6 +1,5 @@
 package com.fernirx.lms.user.service;
 
-import com.fernirx.lms.common.constants.MessageConstants;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.DuplicateEntryException;
 import com.fernirx.lms.common.exceptions.ResourceNotFoundException;
@@ -20,92 +19,142 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserResponse> getUsersByStatus(String status) {
-        status = status.toLowerCase();
-        return switch (status) {
-            case "active" -> userMapper.toListDto(userRepository.findUsersByIsDelete(false));
-            case "deleted" -> userMapper.toListDto(userRepository.findUsersByIsDelete(true));
-            default -> throw new IllegalArgumentException(MessageConstants.ERROR_BAD_REQUEST);
-        };
+    public List<UserResponse> getUsersByStatus(boolean status) {
+        List<User> users = userRepository.findUsersByIsDelete(status);
+        return userMapper.toListDto(users);
     }
 
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        "user",
+                        "id",
+                        id
+                ));
+
         return userMapper.toDto(user);
     }
 
     public UserResponse createUser(UserCreateRequest userRequest) {
-        if (userRepository.existsByUsername((userRequest.getUsername())))
-            throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        // Validate username uniqueness
+        validateUsernameNotExists(userRequest.getUsername());
 
+        // Build user entity from request
         User user = userMapper.toEntity(userRequest);
-        Role role = roleService.getRoleById(userRequest.getRoleId());
-        String passwordEncoded = passwordEncoder.encode(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Encode password for security
+        user.setRole(roleService.getRoleById(userRequest.getRoleId()));
 
-        user.setRole(role);
-        user.setPassword(passwordEncoded);
-
+        // Persist to database
         userRepository.save(user);
 
         return userMapper.toDto(user);
     }
 
-    public void checkUserId(Long id) {
-        if (!userRepository.existsById(id))
-            throw new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND);
-    }
+    public UserResponse updateUser(Long id, UserUpdateRequest userRequest) {
+        // Retrieve existing user
+        User user = userRepository.getUserById(id);
 
-    public Boolean checkUsername(String username) {
-        return userRepository.existsByUsername(username);
+        // Validate username change if applicable
+        validateUsernameForUpdate(user, userRequest.getUsername());
+
+        // Update basic fields
+        user.setUsername(userRequest.getUsername());
+
+        // Optional: Update role if provided
+        if (userRequest.getRoleId() != null) {
+            user.setRole(roleService.getRoleById(userRequest.getRoleId()));
+        }
+
+        // Optional: Update password if provided
+        if (userRequest.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        }
+
+        // Persist changes to database
+        userRepository.save(user);
+
+        return userMapper.toDto(user);
     }
 
     public Boolean softDeleteUser(Long id) {
         checkUserId(id);
+
+        // Mark user as deleted instead of removing from DB
         User user = userRepository.getUsersById(id);
         user.setIsDelete(true);
         userRepository.save(user);
+
         return true;
     }
 
     public Boolean hardDeleteUser(Long id) {
         checkUserId(id);
-        userRepository.removeUserById(id);
+        userRepository.removeUserById(id); // Permanent removal
         return true;
-    }
-
-    public UserResponse updateUser(Long id, UserUpdateRequest userRequest) {
-        checkUserId(id);
-        User user = userRepository.getUserById(id);
-        if(!user.getUsername().equals(userRequest.getUsername()) &&
-                checkUsername(userRequest.getUsername()))
-            throw new DuplicateEntryException(ErrorCode.USERNAME_ALREADY_EXISTS);
-        else user.setUsername(userRequest.getUsername());
-        if (userRequest.getRoleId() != null) {
-            Role role = roleService.getRoleById(userRequest.getRoleId());
-            user.setRole(role);
-        }
-        if (userRequest.getPassword() != null) {
-            String passwordEncoded = passwordEncoder.encode(userRequest.getPassword());
-            user.setPassword(passwordEncoded);
-        }
-
-        userRepository.save(user);
-
-        return userMapper.toDto(user);
     }
 
     public void restoreUser(Long id) {
         checkUserId(id);
+
         User user = userRepository.getUserById(id);
-        if(!user.getIsDelete()) return;
+
+        // Early return if user is already active
+        if (!user.getIsDelete()) {
+            return;
+        }
+
+        // Restore user to active status
         user.setIsDelete(false);
         userRepository.save(user);
+    }
+
+    // ==================== PRIVATE HELPER METHODS ====================
+
+    private void checkUserId(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    ErrorCode.USER_NOT_FOUND,
+                    "user",
+                    "id",
+                    id
+            );
+        }
+    }
+
+    private Boolean checkUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    private void validateUsernameNotExists(String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw new DuplicateEntryException(
+                    ErrorCode.USERNAME_EXISTS,
+                    "user",
+                    "username",
+                    username
+            );
+        }
+    }
+
+    private void validateUsernameForUpdate(User user, String newUsername) {
+        // Check if username is actually being changed
+        boolean isUsernameChanged = !user.getUsername().equals(newUsername);
+        boolean isNewUsernameExists = checkUsername(newUsername);
+
+        // Only throw exception if changing to an existing username
+        if (isUsernameChanged && isNewUsernameExists) {
+            throw new DuplicateEntryException(
+                    ErrorCode.USERNAME_EXISTS,
+                    "user",
+                    "username",
+                    newUsername
+            );
+        }
     }
 }
