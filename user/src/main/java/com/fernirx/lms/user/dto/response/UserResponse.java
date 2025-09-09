@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserResponse {
     private Long id;
-    private RoleResponse role;
+    private String roleName;
     private String username;
     private Boolean isDelete;
     private LocalDateTime createdAt;

@@ -1,6 +1,7 @@
 package com.fernirx.lms.user.dto.request;
 
 import com.fernirx.lms.common.constants.ValidationConstants;
+import com.fernirx.lms.common.utils.MessageFormatter;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

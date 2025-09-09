@@ -1,12 +1,11 @@
 package com.fernirx.lms.common.exceptions;
 
+import com.fernirx.lms.common.constants.ApiMessages;
 import com.fernirx.lms.common.enums.ErrorCode;
-import lombok.Getter;
 
-@Getter
 public class InvalidTokenException extends LmsException {
 
     public InvalidTokenException() {
-        super(ErrorCode.INVALID_TOKEN);
+        super(ErrorCode.TOKEN_INVALID, ApiMessages.TOKEN_EXPIRED);
     }
 }

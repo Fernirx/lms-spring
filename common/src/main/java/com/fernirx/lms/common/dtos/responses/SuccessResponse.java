@@ -15,16 +15,32 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(name = "Success Response", description = "Success API response wrapper")
+@Schema(
+        name = "SuccessResponse",
+        title = "Success Response",
+        description = "Standard success response wrapper for all successful API operations, containing optional data payload"
+)
 public class SuccessResponse<T> {
-    @Schema(description = "Timestamp of response", example = "2025-08-04T20:00:00+07:00")
+    @Schema(
+            description = "ISO 8601 timestamp indicating when the successful response was generated",
+            example = "2025-08-04T20:00:00+07:00"
+    )
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private ZonedDateTime timestamp;
 
-    @Schema(description = "Human-readable success message", example = "Operation successful")
+    @Schema(
+            description = "Human-readable success message describing the completed operation",
+            example = "User successfully created",
+            minLength = 1,
+            maxLength = 500
+    )
     private String message;
 
-    @Schema(description = "Response payload data")
+    @Schema(
+            description = "Response payload containing the requested data. Can be any type (object, array, primitive) or null for operations without return data",
+            nullable = true,
+            anyOf = {Object.class, String.class, Number.class, Boolean.class}
+    )
     private T data;
 
     public static <T> SuccessResponse<T> of(String message, T data) {

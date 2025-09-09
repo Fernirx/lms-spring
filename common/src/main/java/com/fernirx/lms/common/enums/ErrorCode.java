@@ -1,7 +1,6 @@
 package com.fernirx.lms.common.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fernirx.lms.common.constants.ErrorMessages;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,111 +12,81 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-    // ========== SYSTEM ERRORS ==========
-    METHOD_NOT_ALLOWED("ERR_METHOD_NOT_ALLOWED", ErrorMessages.METHOD_NOT_ALLOWED,
-            ErrorCategory.METHOD_NOT_ALLOWED, HttpStatus.METHOD_NOT_ALLOWED, Priority.MEDIUM),
-    TOO_MANY_REQUESTS("ERR_TOO_MANY_REQUESTS", ErrorMessages.TOO_MANY_REQUESTS,
-            ErrorCategory.RATE_LIMITING, HttpStatus.TOO_MANY_REQUESTS, Priority.HIGH),
-    SERVICE_UNAVAILABLE("ERR_SERVICE_UNAVAILABLE", ErrorMessages.SERVICE_UNAVAILABLE,
-            ErrorCategory.SERVER, HttpStatus.INTERNAL_SERVER_ERROR, Priority.CRITICAL),
+    // ========== SYSTEM ERRORS (5xx) ==========
+    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR),
+    SERVICE_UNAVAILABLE("SERVICE_UNAVAILABLE", HttpStatus.SERVICE_UNAVAILABLE),
 
-    // ========== VALIDATION ERRORS ==========
-    REQUIRED_FIELD("ERR_REQUIRED", ErrorMessages.REQUIRED_FIELD,
-            ErrorCategory.VALIDATION, HttpStatus.BAD_REQUEST, Priority.LOW),
-    INVALID_EMAIL("ERR_INVALID_EMAIL", ErrorMessages.INVALID_EMAIL,
-            ErrorCategory.VALIDATION, HttpStatus.BAD_REQUEST, Priority.LOW),
-    VALUE_TOO_SHORT("ERR_TOO_SHORT", ErrorMessages.VALUE_TOO_SHORT,
-            ErrorCategory.VALIDATION, HttpStatus.BAD_REQUEST, Priority.LOW),
-    INVALID_PHONE("ERR_INVALID_PHONE", ErrorMessages.INVALID_PHONE,
-            ErrorCategory.VALIDATION, HttpStatus.BAD_REQUEST, Priority.LOW),
+    // ========== CLIENT ERRORS (4xx) ==========
+    BAD_REQUEST("BAD_REQUEST", HttpStatus.BAD_REQUEST),
+    REQUIRED_FIELD("REQUIRED_FIELD", HttpStatus.BAD_REQUEST),
+    INVALID_EMAIL_FORMAT("INVALID_EMAIL_FORMAT", HttpStatus.BAD_REQUEST),
+    INVALID_LENGTH("INVALID_LENGTH", HttpStatus.BAD_REQUEST),
+    INVALID_FORMAT("INVALID_FORMAT", HttpStatus.BAD_REQUEST),
+    INVALID_RANGE("INVALID_RANGE", HttpStatus.BAD_REQUEST),
+    VALIDATION_ERROR("VALIDATION_ERROR", HttpStatus.BAD_REQUEST),
+    METHOD_NOT_ALLOWED("METHOD_NOT_ALLOWED", HttpStatus.METHOD_NOT_ALLOWED),
+    TOO_MANY_REQUESTS("TOO_MANY_REQUESTS", HttpStatus.TOO_MANY_REQUESTS),
+    INVALID_ENUM("INVALID_ENUM", HttpStatus.BAD_REQUEST),
 
-    // ========== AUTHENTICATION ERRORS ==========
-    INVALID_CREDENTIALS("AUTH_INVALID_CREDENTIALS", ErrorMessages.INVALID_CREDENTIALS,
-            ErrorCategory.AUTHENTICATION, HttpStatus.UNAUTHORIZED, Priority.HIGH),
-    ACCESS_DENIED("AUTH_ACCESS_DENIED", ErrorMessages.ACCESS_DENIED,
-            ErrorCategory.AUTHORIZATION, HttpStatus.FORBIDDEN, Priority.MEDIUM),
-    INVALID_TOKEN("AUTH_INVALID_TOKEN", ErrorMessages.INVALID_TOKEN,
-            ErrorCategory.AUTHENTICATION, HttpStatus.UNAUTHORIZED, Priority.HIGH),
-    JWT_VALIDATION_FAILED("AUTH_JWT_VALIDATION_FAILED", ErrorMessages.JWT_VALIDATION_FAILED,
-            ErrorCategory.AUTHENTICATION, HttpStatus.UNAUTHORIZED, Priority.HIGH),
-    EXPIRED_TOKEN("AUTH_EXPIRED_TOKEN", ErrorMessages.EXPIRED_TOKEN,
-            ErrorCategory.AUTHENTICATION, HttpStatus.UNAUTHORIZED, Priority.MEDIUM),
-    INVALID_TOKEN_TYPE("AUTH_INVALID_TOKEN_TYPE", ErrorMessages.INVALID_TOKEN_TYPE,
-            ErrorCategory.AUTHENTICATION, HttpStatus.UNAUTHORIZED, Priority.HIGH),
-    INVALID_TOKEN_FORMAT("AUTH_INVALID_TOKEN_FORMAT", ErrorMessages.INVALID_TOKEN_FORMAT,
-            ErrorCategory.AUTHENTICATION, HttpStatus.BAD_REQUEST, Priority.HIGH),
-    UNSUPPORTED_TOKEN("AUTH_UNSUPPORTED_TOKEN", ErrorMessages.UNSUPPORTED_TOKEN,
-            ErrorCategory.AUTHENTICATION, HttpStatus.UNAUTHORIZED, Priority.HIGH),
+    // ========== AUTHENTICATION & AUTHORIZATION ERRORS (401/403) ==========
+    UNAUTHORIZED("UNAUTHORIZED", HttpStatus.UNAUTHORIZED),
+    INVALID_CREDENTIALS("INVALID_CREDENTIALS", HttpStatus.UNAUTHORIZED),
+    TOKEN_EXPIRED("TOKEN_EXPIRED", HttpStatus.UNAUTHORIZED),
+    TOKEN_INVALID("TOKEN_INVALID", HttpStatus.UNAUTHORIZED),
+    INVALID_TOKEN_TYPE("INVALID_TOKEN_TYPE", HttpStatus.UNAUTHORIZED),
+    UNSUPPORTED_TOKEN("UNSUPPORTED_TOKEN", HttpStatus.UNAUTHORIZED),
+    JWT_VALIDATION_FAILED("JWT_VALIDATION_FAILED", HttpStatus.UNAUTHORIZED),
+    MALFORMED_TOKEN("MALFORMED_TOKEN", HttpStatus.UNAUTHORIZED),
+    ACCESS_DENIED("ACCESS_DENIED", HttpStatus.FORBIDDEN),
+    INSUFFICIENT_PERMISSIONS("INSUFFICIENT_PERMISSIONS", HttpStatus.FORBIDDEN),
 
-    // ========== RESOURCE NOT FOUND ERRORS ==========
-    USER_NOT_FOUND("USER_NOT_FOUND", ErrorMessages.USER_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    COURSE_NOT_FOUND("COURSE_NOT_FOUND", ErrorMessages.COURSE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    ROLE_NOT_FOUND("ROLE_NOT_FOUND", ErrorMessages.ROLE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    DEPARTMENT_NOT_FOUND("DEPARTMENT_NOT_FOUND", ErrorMessages.DEPARTMENT_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    MAJOR_NOT_FOUND("MAJOR_NOT_FOUND", ErrorMessages.MAJOR_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    TEACHER_NOT_FOUND("TEACHER_NOT_FOUND", ErrorMessages.TEACHER_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    CLASS_NOT_FOUND("CLASS_NOT_FOUND", ErrorMessages.CLASS_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    STUDENT_NOT_FOUND("STUDENT_NOT_FOUND", ErrorMessages.STUDENT_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    OFFICE_NOT_FOUND("OFFICE_NOT_FOUND", ErrorMessages.OFFICE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    EMPLOYEE_NOT_FOUND("EMPLOYEE_NOT_FOUND", ErrorMessages.EMPLOYEE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    SCHOOL_YEAR_NOT_FOUND("SCHOOL_YEAR_NOT_FOUND", ErrorMessages.SCHOOL_YEAR_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    SEMESTER_NOT_FOUND("SEMESTER_NOT_FOUND", ErrorMessages.SEMESTER_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    SUBJECT_NOT_FOUND("SUBJECT_NOT_FOUND", ErrorMessages.SUBJECT_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    OFFERING_NOT_FOUND("OFFERING_NOT_FOUND", ErrorMessages.OFFERING_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    CLASSROOM_NOT_FOUND("CLASSROOM_NOT_FOUND", ErrorMessages.CLASSROOM_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    ASSIGNMENT_NOT_FOUND("ASSIGNMENT_NOT_FOUND", ErrorMessages.ASSIGNMENT_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    REGISTRATION_NOT_FOUND("REGISTRATION_NOT_FOUND", ErrorMessages.REGISTRATION_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    TUITION_NOT_FOUND("TUITION_NOT_FOUND", ErrorMessages.TUITION_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    NOTICE_NOT_FOUND("NOTICE_NOT_FOUND", ErrorMessages.NOTICE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    DOCUMENT_NOT_FOUND("DOCUMENT_NOT_FOUND", ErrorMessages.DOCUMENT_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    GRADE_NOT_FOUND("GRADE_NOT_FOUND", ErrorMessages.GRADE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    ASSIGNMENT_CHANGE_NOT_FOUND("ASSIGNMENT_CHANGE_NOT_FOUND", ErrorMessages.ASSIGNMENT_CHANGE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    DEPT_HEAD_NOT_FOUND("DEPT_HEAD_NOT_FOUND", ErrorMessages.DEPT_HEAD_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    TEACHER_MAJOR_NOT_FOUND("TEACHER_MAJOR_NOT_FOUND", ErrorMessages.TEACHER_MAJOR_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    EXAM_SCHEDULE_NOT_FOUND("EXAM_SCHEDULE_NOT_FOUND", ErrorMessages.EXAM_SCHEDULE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    OFFICE_HEAD_NOT_FOUND("OFFICE_HEAD_NOT_FOUND", ErrorMessages.OFFICE_HEAD_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    CONDUCT_SCORE_NOT_FOUND("CONDUCT_SCORE_NOT_FOUND", ErrorMessages.CONDUCT_SCORE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    STUDENT_CREDITS_NOT_FOUND("STUDENT_CREDITS_NOT_FOUND", ErrorMessages.STUDENT_CREDITS_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
-    PREREQUISITE_NOT_FOUND("PREREQUISITE_NOT_FOUND", ErrorMessages.PREREQUISITE_NOT_FOUND,
-            ErrorCategory.NOT_FOUND, HttpStatus.NOT_FOUND, Priority.LOW),
+    // ========== NOT FOUND ERRORS (404) ==========
+    NOT_FOUND("NOT_FOUND", HttpStatus.NOT_FOUND),
+    USER_NOT_FOUND("USER_NOT_FOUND", HttpStatus.NOT_FOUND),
+    ROLE_NOT_FOUND("ROLE_NOT_FOUND", HttpStatus.NOT_FOUND),
+    COURSE_NOT_FOUND("COURSE_NOT_FOUND", HttpStatus.NOT_FOUND),
+    CLASS_NOT_FOUND("CLASS_NOT_FOUND", HttpStatus.NOT_FOUND),
+    STUDENT_NOT_FOUND("STUDENT_NOT_FOUND", HttpStatus.NOT_FOUND),
+    TEACHER_NOT_FOUND("TEACHER_NOT_FOUND", HttpStatus.NOT_FOUND),
+    SUBJECT_NOT_FOUND("SUBJECT_NOT_FOUND", HttpStatus.NOT_FOUND),
+    DEPARTMENT_NOT_FOUND("DEPARTMENT_NOT_FOUND", HttpStatus.NOT_FOUND),
+    SEMESTER_NOT_FOUND("SEMESTER_NOT_FOUND", HttpStatus.NOT_FOUND),
+    ASSIGNMENT_NOT_FOUND("ASSIGNMENT_NOT_FOUND", HttpStatus.NOT_FOUND),
+    GRADE_NOT_FOUND("GRADE_NOT_FOUND", HttpStatus.NOT_FOUND),
+    DOCUMENT_NOT_FOUND("DOCUMENT_NOT_FOUND", HttpStatus.NOT_FOUND),
 
-    // ========== RESOURCE ALREADY EXISTS MESSAGES ==========
-    USERNAME_ALREADY_EXISTS("USERNAME_ALREADY_EXISTS",ErrorMessages.USERNAME_ALREADY_EXISTS,
-            ErrorCategory.CONFLICT,HttpStatus.CONFLICT,Priority.LOW);
+    // ========== CONFLICT ERRORS (409) ==========
+    CONFLICT("CONFLICT", HttpStatus.CONFLICT),
+    ALREADY_EXISTS("ALREADY_EXISTS", HttpStatus.CONFLICT),
+    USERNAME_EXISTS("USERNAME_EXISTS", HttpStatus.CONFLICT),
+    EMAIL_EXISTS("EMAIL_EXISTS", HttpStatus.CONFLICT),
+    DUPLICATE_ENTRY("DUPLICATE_ENTRY", HttpStatus.CONFLICT),
+    USER_ALREADY_EXISTS("USER_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    STUDENT_ALREADY_EXISTS("STUDENT_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    TEACHER_ALREADY_EXISTS("TEACHER_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    COURSE_ALREADY_EXISTS("COURSE_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    CLASS_ALREADY_EXISTS("CLASS_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    SUBJECT_ALREADY_EXISTS("SUBJECT_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    DEPARTMENT_ALREADY_EXISTS("DEPARTMENT_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    SEMESTER_ALREADY_EXISTS("SEMESTER_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    ASSIGNMENT_ALREADY_EXISTS("ASSIGNMENT_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    GRADE_ALREADY_EXISTS("GRADE_ALREADY_EXISTS", HttpStatus.CONFLICT),
+    DOCUMENT_ALREADY_EXISTS("DOCUMENT_ALREADY_EXISTS", HttpStatus.CONFLICT),
+
+    // ========== BUSINESS LOGIC ERRORS (422) ==========
+    UNPROCESSABLE_ENTITY("UNPROCESSABLE_ENTITY", HttpStatus.UNPROCESSABLE_ENTITY),
+    INVALID_STATUS_TRANSITION("INVALID_STATUS_TRANSITION", HttpStatus.UNPROCESSABLE_ENTITY),
+    PREREQUISITE_NOT_MET("PREREQUISITE_NOT_MET", HttpStatus.UNPROCESSABLE_ENTITY),
+    ENROLLMENT_CLOSED("ENROLLMENT_CLOSED", HttpStatus.UNPROCESSABLE_ENTITY),
+    CAPACITY_EXCEEDED("CAPACITY_EXCEEDED", HttpStatus.UNPROCESSABLE_ENTITY);
 
     private final String code;
-    private final String message;
-    private final ErrorCategory category;
     private final HttpStatus httpStatus;
-    private final Priority priority;
+
+    @JsonValue
+    public String getCode() {
+        return code;
+    }
 
     public static Optional<ErrorCode> fromCode(String code) {
         return Arrays.stream(values())
@@ -125,27 +94,15 @@ public enum ErrorCode {
                 .findFirst();
     }
 
-    @JsonValue
-    public String getCode() {
-        return code;
+    public static ErrorCode fromValidationCode(String validationCode) {
+        return switch (validationCode) {
+            case "NotNull", "NotBlank", "NotEmpty" -> REQUIRED_FIELD;
+            case "Email" -> INVALID_EMAIL_FORMAT;
+            case "Size" -> INVALID_LENGTH;
+            case "Pattern" -> INVALID_FORMAT;
+            case "Min", "Max" -> INVALID_RANGE;
+            case "ValidEnum" -> INVALID_ENUM;
+            default -> VALIDATION_ERROR;
+        };
     }
-
-    public boolean isCategory(ErrorCategory category) {
-        return this.category == category;
-    }
-
-    public int getLevel() {
-        return this.priority.getLevel();
-    }
-}
-
-@Getter
-@RequiredArgsConstructor
-enum Priority {
-    LOW(1),
-    MEDIUM(2),
-    HIGH(3),
-    CRITICAL(4);
-
-    private final int level;
 }

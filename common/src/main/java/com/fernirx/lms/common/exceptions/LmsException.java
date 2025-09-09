@@ -8,12 +8,11 @@ public class LmsException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public LmsException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
 
-    public LmsException(ErrorCode errorCode, String detailMessage) {
-        super(detailMessage);
+    public LmsException(ErrorCode errorCode, String defaultMessage) {
+        super(defaultMessage);
         this.errorCode = errorCode;
     }
 }

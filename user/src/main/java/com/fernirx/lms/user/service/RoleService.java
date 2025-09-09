@@ -15,6 +15,11 @@ public class RoleService {
 
     public Role getRoleById(Long id) {
         return roleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ROLE_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.ROLE_NOT_FOUND,
+                        "Role",
+                        "id",
+                        id
+                ));
     }
 }

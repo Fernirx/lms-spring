@@ -1,5 +1,6 @@
 package com.fernirx.lms.common.exceptions;
 
+import com.fernirx.lms.common.constants.ApiMessages;
 import com.fernirx.lms.common.enums.ErrorCode;
 import lombok.Getter;
 
@@ -7,6 +8,6 @@ import lombok.Getter;
 public class MalformedTokenException extends LmsException {
 
     public MalformedTokenException() {
-        super(ErrorCode.INVALID_TOKEN_FORMAT);
+        super(ErrorCode.MALFORMED_TOKEN, ApiMessages.TOKEN_MALFORMED);
     }
 }
