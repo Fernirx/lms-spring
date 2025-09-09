@@ -149,6 +149,16 @@ public final class ApiMessages {
     public static final String FIELDS_VALIDATION_FAILED = "Validation failed for one or more fields";
 
     /**
+     * Generic message for invalid input, e.g., type mismatch or format errors.
+     */
+    public static final String INVALID_INPUT = "Invalid input parameters provided";
+
+    /**
+     * Generic message for malformed or unreadable request body.
+     */
+    public static final String MALFORMED_REQUEST_BODY = "Request body is malformed or unreadable";
+
+    /**
      * Validation error message template for required fields.
      * Expects 1 parameter: field name.
      * Example: "Email is required"
