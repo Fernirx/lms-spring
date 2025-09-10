@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping
     @StandardResponseDoc(value = "Get users by status")
     public ResponseEntity<SuccessResponse<List<UserResponse>>> getUsersByStatus(
-            @RequestParam(required = false, defaultValue = "true") boolean status) {
+            @RequestParam(required = false, defaultValue = "false") boolean status) {
         List<UserResponse> users = userService.getUsersByStatus(status);
         return ResponseEntity.ok(SuccessResponse.of(
                 MessageFormatter.resourcesRetrieved("User"),
