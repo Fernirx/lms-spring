@@ -13,10 +13,8 @@ import com.fernirx.lms.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,28 +24,31 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(readOnly = true)
-    public List<UserResponse> getUsersByStatus(boolean deleted) {
-        List<User> users = userRepository.findByIsDelete(deleted);
+    public List<UserResponse> getUsersByStatus(boolean status) {
+        List<User> users = userRepository.findUsersByIsDelete(status);
         return userMapper.toListDto(users);
     }
 
-    @Transactional(readOnly = true)
     public UserResponse getUserById(Long id) {
-        User user = findUserById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        "user",
+                        "id",
+                        id
+                ));
+
         return userMapper.toDto(user);
     }
 
-    @Transactional
     public UserResponse createUser(UserCreateRequest userRequest) {
         // Validate username uniqueness
         validateUsernameNotExists(userRequest.getUsername());
 
         // Build user entity from request
         User user = userMapper.toEntity(userRequest);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Encode password for security
         user.setRole(roleService.getRoleById(userRequest.getRoleId()));
-        user.setIsDelete(false);
 
         // Persist to database
         userRepository.save(user);
@@ -55,10 +56,9 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    @Transactional
     public UserResponse updateUser(Long id, UserUpdateRequest userRequest) {
         // Retrieve existing user
-        User user = findUserById(id);
+        User user = userRepository.getUserById(id);
 
         // Validate username change if applicable
         validateUsernameForUpdate(user, userRequest.getUsername());
@@ -71,36 +71,50 @@ public class UserService {
             user.setRole(roleService.getRoleById(userRequest.getRoleId()));
         }
 
-        // Persist changes to database
-        User updatedUser = userRepository.save(user);
+        // Optional: Update password if provided
+        if (userRequest.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        }
 
-        return userMapper.toDto(updatedUser);
+        // Persist changes to database
+        userRepository.save(user);
+
+        return userMapper.toDto(user);
     }
 
-    @Transactional
     public Boolean softDeleteUser(Long id) {
         checkUserId(id);
-        userRepository.softDeleteById(id);
+
+        // Mark user as deleted instead of removing from DB
+        User user = userRepository.getUsersById(id);
+        user.setIsDelete(true);
+        userRepository.save(user);
+
         return true;
     }
 
-    @Transactional
+    public Boolean hardDeleteUser(Long id) {
+        checkUserId(id);
+        userRepository.removeUserById(id); // Permanent removal
+        return true;
+    }
+
     public void restoreUser(Long id) {
         checkUserId(id);
-        userRepository.restoreById(id);
+
+        User user = userRepository.getUserById(id);
+
+        // Early return if user is already active
+        if (!user.getIsDelete()) {
+            return;
+        }
+
+        // Restore user to active status
+        user.setIsDelete(false);
+        userRepository.save(user);
     }
 
     // ==================== PRIVATE HELPER METHODS ====================
-
-    private User findUserById(Long id) {
-        return userRepository.findActiveById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        ErrorCode.USER_NOT_FOUND,
-                        "User",
-                        "id",
-                        id
-                ));
-    }
 
     private void checkUserId(Long id) {
         if (!userRepository.existsById(id)) {
