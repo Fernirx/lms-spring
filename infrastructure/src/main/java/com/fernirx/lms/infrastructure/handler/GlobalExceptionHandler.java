@@ -5,7 +5,7 @@ import com.fernirx.lms.common.dtos.responses.ErrorDetail;
 import com.fernirx.lms.common.dtos.responses.ErrorResponse;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.LmsException;
-import com.fernirx.lms.common.utils.MessageFormatter;
+import com.fernirx.lms.common.utils.ApiFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +35,7 @@ public class GlobalExceptionHandler {
         String expectedType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unknown";
         ErrorDetail errorDetail = ErrorDetail.of(
                 ErrorCode.INVALID_FIELD_TYPE,
-                MessageFormatter.fieldTypeMismatch(ex.getName(), expectedType),
+                ApiFormatter.fieldTypeMismatch(ex.getName(), expectedType),
                 field,
                 value
         );
@@ -69,7 +68,7 @@ public class GlobalExceptionHandler {
         List<ErrorDetail> details = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> {
                     ErrorCode errorCode = ErrorCode.fromValidationCode(Objects.requireNonNull(fieldError.getCode()));
-                    return ErrorDetail.of(errorCode, MessageFormatter.formatValidationMessage(fieldError), fieldError.getField(), fieldError.getRejectedValue());
+                    return ErrorDetail.of(errorCode, ApiFormatter.formatValidationMessage(fieldError), fieldError.getField(), fieldError.getRejectedValue());
                 }).toList();
 
         return buildErrorResponse(

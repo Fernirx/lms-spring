@@ -25,11 +25,11 @@ import static com.fernirx.lms.common.constants.ApiMessages.*;
  * <h3>Usage Example:</h3>
  * <pre>
  * // Instead of: String.format(ApiMessages.RESOURCE_CREATED, "User")
- * String message = MessageFormatter.resourceCreated("User");
+ * String message = ApiFormatter.resourceCreated("User");
  * // Result: "User created successfully"
  *
  * // Instead of: String.format(ApiMessages.RESOURCE_NOT_FOUND_BY_ID, "Product", 123)
- * String error = MessageFormatter.resourceNotFoundById("Product", 123);
+ * String error = ApiFormatter.resourceNotFoundById("Product", 123);
  * // Result: "Product with ID 123 not found"
  * </pre>
  *
@@ -39,7 +39,7 @@ import static com.fernirx.lms.common.constants.ApiMessages.*;
  * @see ApiMessages
  */
 @UtilityClass
-public class MessageFormatter {
+public class ApiFormatter {
 
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
@@ -672,7 +672,7 @@ public class MessageFormatter {
     /**
      * Formats validation error messages based on the error key and field error details.
      * This method uses pattern matching to handle different types of validation errors
-     * and delegates to appropriate MessageFormatter methods for consistent formatting.
+     * and delegates to appropriate ApiFormatter methods for consistent formatting.
      *
      * @param fieldError the field error object containing validation details and
      * @return formatted validation error message appropriate for the error type
@@ -693,9 +693,9 @@ public class MessageFormatter {
      * // Returns: "Age must be between 18 and 65"
      * </pre>
      *
-     * @see MessageFormatter#fieldRequired(String)
-     * @see MessageFormatter#fieldTooLong(String, int)
-     * @see MessageFormatter#fieldOutOfRange(String, Object, Object)
+     * @see ApiFormatter#fieldRequired(String)
+     * @see ApiFormatter#fieldTooLong(String, int)
+     * @see ApiFormatter#fieldOutOfRange(String, Object, Object)
      * @since 1.0
      */
     public String formatValidationMessage(FieldError fieldError) {
@@ -708,7 +708,7 @@ public class MessageFormatter {
         };
 
         return switch (key) {
-            case "FIELD_REQUIRED" -> MessageFormatter.fieldRequired(fieldError.getField());
+            case "FIELD_REQUIRED" -> ApiFormatter.fieldRequired(fieldError.getField());
 
             case "FIELD_SIZE" -> {
                 Object rejected = fieldError.getRejectedValue();
@@ -718,9 +718,9 @@ public class MessageFormatter {
                     int min = (int) args[2];
                     int actual = value.length();
                     if (actual < min) {
-                        yield MessageFormatter.fieldTooShort(fieldError.getField(), min);
+                        yield ApiFormatter.fieldTooShort(fieldError.getField(), min);
                     } else if (actual > max) {
-                        yield MessageFormatter.fieldTooLong(fieldError.getField(), max);
+                        yield ApiFormatter.fieldTooLong(fieldError.getField(), max);
                     }
                 }
                 yield fieldError.getDefaultMessage(); // fallback
@@ -729,7 +729,7 @@ public class MessageFormatter {
             case "FIELD_OUT_OF_RANGE" -> {
                 Object[] args = fieldError.getArguments();
                 if (args != null && args.length > 2) {
-                    yield MessageFormatter.fieldOutOfRange(
+                    yield ApiFormatter.fieldOutOfRange(
                             fieldError.getField(),
                             args[1],
                             args[2]
@@ -743,7 +743,7 @@ public class MessageFormatter {
                 Object[] args = fieldError.getArguments();
                 if (args != null && args.length > 2) {
                     String pattern = args[2].toString();
-                    yield MessageFormatter.fieldPatternMismatch(
+                    yield ApiFormatter.fieldPatternMismatch(
                             fieldError.getField(),
                             pattern
                     );

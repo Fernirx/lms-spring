@@ -3,7 +3,7 @@ package com.fernirx.lms.user.controller;
 import com.fernirx.lms.common.annotations.docs.StandardResponseDoc;
 import com.fernirx.lms.common.constants.ApiConstants;
 import com.fernirx.lms.common.dtos.responses.SuccessResponse;
-import com.fernirx.lms.common.utils.MessageFormatter;
+import com.fernirx.lms.common.utils.ApiFormatter;
 import com.fernirx.lms.user.dto.request.UserCreateRequest;
 import com.fernirx.lms.user.dto.request.UserUpdateRequest;
 import com.fernirx.lms.user.dto.response.UserResponse;
@@ -28,7 +28,7 @@ public class UserController {
             @RequestParam(required = false, defaultValue = "false") boolean status) {
         List<UserResponse> users = userService.getUsersByStatus(status);
         return ResponseEntity.ok(SuccessResponse.of(
-                MessageFormatter.resourcesRetrieved("User"),
+                ApiFormatter.resourcesRetrieved("User"),
                 users
         ));
     }
@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<SuccessResponse<UserResponse>> getUserById(@PathVariable Long id) {
         UserResponse user = userService.getUserById(id);
         return ResponseEntity.ok(SuccessResponse.of(
-                MessageFormatter.resourcesRetrieved("User"),
+                ApiFormatter.resourcesRetrieved("User"),
                 user
         ));
     }
@@ -55,7 +55,7 @@ public class UserController {
             @Valid @RequestBody UserCreateRequest request) {
         UserResponse userResponse = userService.createUser(request);
         return ResponseEntity.ok(SuccessResponse.of(
-                MessageFormatter.resourceCreated("User"),
+                ApiFormatter.resourceCreated("User"),
                 userResponse
         ));
     }
@@ -70,7 +70,7 @@ public class UserController {
             @Valid @RequestBody UserUpdateRequest request) {
         UserResponse user = userService.updateUser(id, request);
         return ResponseEntity.ok(SuccessResponse.of(
-                MessageFormatter.resourceUpdated("User"),
+                ApiFormatter.resourceUpdated("User"),
                 user
         ));
     }
@@ -83,7 +83,7 @@ public class UserController {
     public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.softDeleteUser(id);
         return ResponseEntity.ok(SuccessResponse.of(
-                MessageFormatter.resourceDeleted("User")
+                ApiFormatter.resourceDeleted("User")
         ));
     }
 
@@ -95,7 +95,7 @@ public class UserController {
     public ResponseEntity<SuccessResponse<Void>> restoreUser(@PathVariable Long id) {
         userService.restoreUser(id);
         return ResponseEntity.ok(SuccessResponse.of(
-                MessageFormatter.resourceUpdated("User")
+                ApiFormatter.resourceUpdated("User")
         ));
     }
 }
