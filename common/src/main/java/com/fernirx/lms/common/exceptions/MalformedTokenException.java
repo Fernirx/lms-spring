@@ -5,7 +5,7 @@ import com.fernirx.lms.common.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class MalformedTokenException extends LmsException {
+public class MalformedTokenException extends JwtException {
 
     public MalformedTokenException() {
         super(ErrorCode.MALFORMED_TOKEN, ApiMessages.TOKEN_MALFORMED);

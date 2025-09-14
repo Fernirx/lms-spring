@@ -5,7 +5,7 @@ import com.fernirx.lms.common.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class UnsupportedTokenException extends LmsException {
+public class UnsupportedTokenException extends JwtException {
 
     public UnsupportedTokenException() {
         super(ErrorCode.UNSUPPORTED_TOKEN, ApiMessages.TOKEN_UNSUPPORTED);
