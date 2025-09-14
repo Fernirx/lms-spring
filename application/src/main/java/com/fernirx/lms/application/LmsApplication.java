@@ -5,11 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication(scanBasePackages = {"com.fernirx.lms"})
 @EnableJpaRepositories(basePackages = "com.fernirx.lms")
 @EntityScan(basePackages = "com.fernirx.lms")
 @ConfigurationPropertiesScan("com.fernirx.lms")
+@EnableAsync
 public class LmsApplication {
 
     public static void main(String[] args) {
