@@ -10,8 +10,15 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    private Long id;
-    private String username;
-    private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+    private final Long id;
+    private final String username;
+    private final String password;
+    private final String email;
+    private final boolean isDeleted;
+    private final Collection<? extends GrantedAuthority> authorities;
+
+    @Override
+    public boolean isEnabled() {
+        return !isDeleted;
+    }
 }
