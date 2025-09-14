@@ -38,8 +38,8 @@ public class User {
 
     @NotNull
     @ColumnDefault("0")
-    @Column(name = "is_delete", nullable = false)
-    private Boolean isDelete = false;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
