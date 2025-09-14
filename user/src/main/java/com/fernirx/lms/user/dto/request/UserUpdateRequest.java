@@ -1,7 +1,8 @@
 package com.fernirx.lms.user.dto.request;
 
 import com.fernirx.lms.common.constants.ValidationConstants;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserUpdateRequest {
     private Long roleId;
+
     @Size(max = ValidationConstants.USERNAME_MAX_LENGTH,
             min = ValidationConstants.USERNAME_MIN_LENGTH)
     private String username;
+
+    @Email
+    @NotBlank
+    @Size(max = ValidationConstants.EMAIL_MAX_LENGTH,
+            min = ValidationConstants.EMAIL_MIN_LENGTH)
+    private String email;
 }

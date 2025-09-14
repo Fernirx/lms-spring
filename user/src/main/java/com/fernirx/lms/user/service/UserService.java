@@ -65,6 +65,7 @@ public class UserService {
 
         // Update basic fields
         user.setUsername(userRequest.getUsername());
+        user.setEmail(userRequest.getEmail());
 
         // Optional: Update role if provided
         if (userRequest.getRoleId() != null) {

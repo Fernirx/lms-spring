@@ -22,12 +22,17 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    @NotNull
     @Column(name = "username")
     private String username;
 
     @NotNull
     @Column(name = "password", nullable = false)
     private String password;
+
+    @NotNull
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @NotNull
     @ColumnDefault("0")
