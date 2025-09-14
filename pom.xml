@@ -24,8 +24,9 @@
     <modules>
         <module>application</module>
         <module>common</module>
-        <module>user</module>
         <module>infrastructure</module>
+        <module>user</module>
+        <module>auth</module>
     </modules>
 
     <!-- ========== Developers ========= -->
