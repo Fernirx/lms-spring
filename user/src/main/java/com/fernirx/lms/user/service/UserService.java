@@ -47,7 +47,7 @@ public class UserService {
         User user = userMapper.toEntity(userRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(roleService.getRoleById(userRequest.getRoleId()));
-        user.setIsDelete(false);
+        user.setIsDeleted(false);
 
         // Persist to database
         userRepository.save(user);
