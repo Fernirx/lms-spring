@@ -28,7 +28,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<UserResponse> getUsersByStatus(boolean deleted) {
-        List<User> users = userRepository.findByIsDelete(deleted);
+        List<User> users = userRepository.findByIsDeleted(deleted);
         return userMapper.toListDto(users);
     }
 

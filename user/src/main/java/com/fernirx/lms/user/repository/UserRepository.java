@@ -32,25 +32,25 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Find all users by deletion status
      */
-    List<User> findByIsDelete(Boolean isDelete);
+    List<User> findByIsDeleted(Boolean isDeleted);
 
     /**
      * Find active user by ID (not deleted)
      */
-    @Query("SELECT u FROM User u WHERE u.id = :id AND u.isDelete = false")
+    @Query("SELECT u FROM User u WHERE u.id = :id AND u.isDeleted = false")
     Optional<User> findActiveById(@Param("id") Long id);
 
     /**
      * Soft delete user
      */
     @Modifying
-    @Query("UPDATE User u SET u.isDelete = true WHERE u.id = :id")
+    @Query("UPDATE User u SET u.isDeleted = true WHERE u.id = :id")
     void softDeleteById(@Param("id") Long id);
 
     /**
      * Restore deleted user
      */
     @Modifying
-    @Query("UPDATE User u SET u.isDelete = false WHERE u.id = :id")
+    @Query("UPDATE User u SET u.isDeleted = false WHERE u.id = :id")
     void restoreById(@Param("id") Long id);
 }
