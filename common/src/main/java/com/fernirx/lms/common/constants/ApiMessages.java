@@ -11,6 +11,16 @@ package com.fernirx.lms.common.constants;
  */
 public final class ApiMessages {
 
+    // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
+
+    /**
+     * Authentication failure message template for invalid credentials.
+     * Expects 1 parameter: username.
+     * Example: "Invalid credentials provided for user 'john@example.com'"
+     */
+    public static final String INVALID_CREDENTIALS = "Invalid credentials provided for user '%s'";
+
+
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
     /**

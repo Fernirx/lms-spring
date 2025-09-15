@@ -41,6 +41,24 @@ import static com.fernirx.lms.common.constants.ApiMessages.*;
 @UtilityClass
 public class ApiFormatter {
 
+    // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
+
+    /**
+     * Creates an error message for invalid credentials during authentication.
+     *
+     * @param username the username/email that failed authentication
+     * @return formatted message indicating invalid credentials
+     *
+     * @example
+     * <pre>
+     * String message = invalidCredentials("john@example.com");
+     * // Returns: "Invalid credentials provided for user 'john@example.com'"
+     * </pre>
+     */
+    public static String invalidCredentials(String username) {
+        return String.format(INVALID_CREDENTIALS, username);
+    }
+
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
     /**
