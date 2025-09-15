@@ -41,6 +41,24 @@ import static com.fernirx.lms.common.constants.ApiMessages.*;
 @UtilityClass
 public class ApiFormatter {
 
+    // ========== AUTHENTICATION & AUTHORIZATION MESSAGES ==========
+
+    /**
+     * Creates a success message for successful login.
+     *
+     * @param username the username/email that logged in
+     * @return formatted message indicating successful login
+     *
+     * @example
+     * <pre>
+     * String message = userLoginSuccess("john@example.com");
+     * // Returns: "User 'john@example.com' logged in successfully"
+     * </pre>
+     */
+    public static String userLoginSuccess(String username) {
+        return String.format(LOGIN_SUCCESS, username);
+    }
+
     // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
 
     /**

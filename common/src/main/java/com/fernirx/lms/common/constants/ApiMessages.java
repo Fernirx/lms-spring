@@ -11,6 +11,15 @@ package com.fernirx.lms.common.constants;
  */
 public final class ApiMessages {
 
+    // ========== AUTHENTICATION & AUTHORIZATION MESSAGES ==========
+
+    /**
+     * Authentication success message template for login.
+     * Expects 1 parameter: username.
+     * Example: "User 'john@example.com' logged in successfully"
+     */
+    public static final String LOGIN_SUCCESS = "User '%s' logged in successfully";
+
     // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
 
     /**
