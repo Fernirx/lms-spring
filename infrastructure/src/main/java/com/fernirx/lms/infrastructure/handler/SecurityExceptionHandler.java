@@ -24,7 +24,7 @@ public class SecurityExceptionHandler {
         return buildErrorResponse(ex);
     }
 
-    public ResponseEntity<ErrorResponse> buildErrorResponse(LmsException ex) {
+    public ResponseEntity<ErrorResponse> buildErrorResponse(SecurityException ex) {
         ErrorCode errorCode = ex.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.of(
                 errorCode,
