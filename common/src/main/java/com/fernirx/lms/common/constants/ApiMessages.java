@@ -20,6 +20,12 @@ public final class ApiMessages {
      */
     public static final String INVALID_CREDENTIALS = "Invalid credentials provided for user '%s'";
 
+    /**
+     * Authentication failure message template for account disabled.
+     * Expects 1 parameter: username.
+     * Example: "Account 'john@example.com' is disabled"
+     */
+    public static final String ACCOUNT_DISABLED = "Account '%s' is disabled";
 
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 

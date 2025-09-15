@@ -59,6 +59,22 @@ public class ApiFormatter {
         return String.format(INVALID_CREDENTIALS, username);
     }
 
+    /**
+     * Creates an error message for disabled account during authentication.
+     *
+     * @param username the username/email of the disabled account
+     * @return formatted message indicating account is disabled
+     *
+     * @example
+     * <pre>
+     * String message = accountDisabled("john@example.com");
+     * // Returns: "Account 'john@example.com' is disabled"
+     * </pre>
+     */
+    public static String accountDisabled(String username) {
+        return String.format(ACCOUNT_DISABLED, username);
+    }
+
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
     /**
