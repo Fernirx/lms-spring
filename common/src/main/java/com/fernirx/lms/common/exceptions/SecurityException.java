@@ -1,0 +1,14 @@
+package com.fernirx.lms.common.exceptions;
+
+import com.fernirx.lms.common.enums.ErrorCode;
+import lombok.Getter;
+
+@Getter
+public class SecurityException extends RuntimeException {
+    private final ErrorCode errorCode;
+
+    public SecurityException(ErrorCode errorCode, String message) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+}
