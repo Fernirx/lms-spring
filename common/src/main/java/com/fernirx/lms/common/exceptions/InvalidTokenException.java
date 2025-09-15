@@ -6,6 +6,6 @@ import com.fernirx.lms.common.enums.ErrorCode;
 public class InvalidTokenException extends JwtException {
 
     public InvalidTokenException() {
-        super(ErrorCode.TOKEN_INVALID, ApiMessages.TOKEN_EXPIRED);
+        super(ErrorCode.TOKEN_INVALID, ApiMessages.TOKEN_INVALID);
     }
 }
