@@ -11,10 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -59,7 +57,7 @@ public class JwtProvider {
 
         long userId = Long.parseLong(extractSubject(refreshToken));
         String username = extractUsername(refreshToken);
-        List<String> authorities = extractAuthoritiesIgnoreExpiry(accessToken);
+        Set<String> authorities = extractAuthoritiesIgnoreExpiry(accessToken);
 
         return createToken(
                 SecurityConstants.JWT_ACCESS_TOKEN,
@@ -105,30 +103,30 @@ public class JwtProvider {
         return username != null ? username.toString() : null;
     }
 
-    public List<String> extractAuthorities(String token) {
+    public Set<String> extractAuthorities(String token) {
         Object authorities = extractAllClaims(token).get(SecurityConstants.JWT_CLAIMS_AUTHORITIES);
-        if (authorities instanceof List<?>) {
-            return ((List<?>) authorities).stream()
+        if (authorities instanceof Collection<?>) {
+            return ((Collection<?>) authorities).stream()
                     .map(Object::toString)
-                    .toList();
+                    .collect(Collectors.toSet());
         }
-        return List.of();
+        return Set.of();
     }
 
-    public List<String> extractAuthoritiesIgnoreExpiry(String token) {
+    public Set<String> extractAuthoritiesIgnoreExpiry(String token) {
         Object authorities = extractAllClaimsIgnoreExpiry(token).get(SecurityConstants.JWT_CLAIMS_AUTHORITIES);
-        if (authorities instanceof List<?>) {
-            return ((List<?>) authorities).stream()
+        if (authorities instanceof Collection<?>) {
+            return ((Collection<?>) authorities).stream()
                     .map(Object::toString)
-                    .toList();
+                    .collect(Collectors.toSet());
         }
-        return List.of();
+        return Set.of();
     }
 
     // ==== PRIVATE HELPERS ====
 
     private String createToken(String type, long userId, String username,
-                               List<String> authorities, long expirationMillis) {
+                               Set<String> authorities, long expirationMillis) {
         Map<String, Object> claims =buildClaims(type, username, authorities);
         return buildJwtToken(String.valueOf(userId), claims, expirationMillis);
     }
@@ -146,7 +144,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    private Map<String, Object> buildClaims(String type, String username,  List<String> authorities) {
+    private Map<String, Object> buildClaims(String type, String username, Set<String> authorities) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(SecurityConstants.JWT_CLAIMS_TYPE, type);
         claims.put(SecurityConstants.JWT_CLAIMS_USERNAME, username);
