@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -19,9 +20,9 @@ public final class SecurityUtils {
         return null;
     }
 
-    public List<String> getAuthorities(CustomUserDetails customUserDetails) {
+    public Set<String> getAuthorities(CustomUserDetails customUserDetails) {
         return customUserDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }
