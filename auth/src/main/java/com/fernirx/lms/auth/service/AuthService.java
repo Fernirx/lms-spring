@@ -1,7 +1,9 @@
 package com.fernirx.lms.auth.service;
 
 import com.fernirx.lms.auth.dto.request.LoginRequest;
+import com.fernirx.lms.auth.dto.request.RefreshTokenRequest;
 import com.fernirx.lms.auth.dto.response.JwtResponse;
+import com.fernirx.lms.auth.dto.response.RefreshTokenResponse;
 import com.fernirx.lms.common.constants.ApiConstants;
 import com.fernirx.lms.common.exceptions.AccountDisabledException;
 import com.fernirx.lms.common.exceptions.InvalidCredentialsException;
@@ -9,6 +11,7 @@ import com.fernirx.lms.infrastructure.message.MailService;
 import com.fernirx.lms.infrastructure.security.CustomUserDetails;
 import com.fernirx.lms.infrastructure.security.JwtProvider;
 import com.fernirx.lms.infrastructure.security.SecurityUtils;
+import com.fernirx.lms.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,6 +29,7 @@ import java.util.Set;
 public class AuthService {
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailsService userDetailsService;
     private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
 
@@ -63,6 +67,18 @@ public class AuthService {
                 .username(username)
                 .email(email)
                 .roles(roles)
+                .build();
+    }
+
+    public RefreshTokenResponse refreshToken(RefreshTokenRequest request) {
+        String username = jwtProvider.extractUsername(request.getRefreshToken());
+        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
+        String accessToken = jwtProvider.refreshAccessToken(request.getRefreshToken(), userDetails);
+        String freshToken = jwtProvider.rotateRefreshToken(request.getRefreshToken());
+
+        return RefreshTokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(freshToken)
                 .build();
     }
 }
