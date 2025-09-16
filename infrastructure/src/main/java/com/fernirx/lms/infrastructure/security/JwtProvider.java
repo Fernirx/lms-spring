@@ -2,6 +2,7 @@ package com.fernirx.lms.infrastructure.security;
 
 import com.fernirx.lms.common.constants.SecurityConstants;
 import com.fernirx.lms.common.exceptions.*;
+import com.fernirx.lms.common.exceptions.SecurityException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -151,19 +152,14 @@ public class JwtProvider {
     }
 
     private boolean validateToken(String token, String expectedType) {
-        try {
-            Claims claims = extractAllClaims(token);
-            String tokenType = claims.get(SecurityConstants.JWT_CLAIMS_TYPE).toString();
+        Claims claims = extractAllClaims(token);
+        String tokenType = claims.get(SecurityConstants.JWT_CLAIMS_TYPE).toString();
 
-            if (!expectedType.equals(tokenType)) {
-                throw new InvalidTokenTypeException(expectedType, tokenType);
-            }
-
-            return true;
-        } catch (JwtException e) {
-            handleJwtException(e);
-            return false;
+        if (!expectedType.equals(tokenType)) {
+            throw new InvalidTokenTypeException(expectedType, tokenType);
         }
+
+        return true;
     }
 
     private void handleJwtException(JwtException e) {
@@ -177,11 +173,16 @@ public class JwtProvider {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (JwtException e) {
+            handleJwtException(e);
+            throw new IllegalStateException("Unreachable");
+        }
     }
 
     private Claims extractAllClaimsIgnoreExpiry(String token) {
