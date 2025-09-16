@@ -52,18 +52,14 @@ public class JwtProvider {
         );
     }
 
-    public String refreshAccessToken(String accessToken, String refreshToken) {
+    public String refreshAccessToken(String refreshToken, CustomUserDetails userDetails) {
         validateRefreshToken(refreshToken);
-
-        long userId = Long.parseLong(extractSubject(refreshToken));
-        String username = extractUsername(refreshToken);
-        Set<String> authorities = extractAuthoritiesIgnoreExpiry(accessToken);
 
         return createToken(
                 SecurityConstants.JWT_ACCESS_TOKEN,
-                userId,
-                username,
-                authorities,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                SecurityUtils.getAuthorities(userDetails),
                 jwtProperties.getExpiration()
         );
     }
