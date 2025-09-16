@@ -1,4 +1,4 @@
-package com.fernirx.lms.infrastructure.security;
+package com.fernirx.lms.infrastructure.properties;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

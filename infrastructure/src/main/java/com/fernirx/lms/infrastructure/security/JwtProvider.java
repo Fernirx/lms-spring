@@ -2,7 +2,7 @@ package com.fernirx.lms.infrastructure.security;
 
 import com.fernirx.lms.common.constants.SecurityConstants;
 import com.fernirx.lms.common.exceptions.*;
-import com.fernirx.lms.common.exceptions.SecurityException;
+import com.fernirx.lms.infrastructure.properties.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
