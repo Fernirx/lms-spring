@@ -36,6 +36,11 @@ public final class ApiMessages {
      */
     public static final String ACCOUNT_DISABLED = "Account '%s' is disabled";
 
+    /**
+     * Success message for refresh token operations.
+     */
+    public static final String REFRESH_TOKEN_SUCCESS = "Token refreshed successfully";
+
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
     /**
