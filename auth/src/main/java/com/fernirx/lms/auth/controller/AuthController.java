@@ -1,9 +1,12 @@
 package com.fernirx.lms.auth.controller;
 
 import com.fernirx.lms.auth.dto.request.LoginRequest;
+import com.fernirx.lms.auth.dto.request.RefreshTokenRequest;
 import com.fernirx.lms.auth.dto.response.JwtResponse;
+import com.fernirx.lms.auth.dto.response.RefreshTokenResponse;
 import com.fernirx.lms.auth.service.AuthService;
 import com.fernirx.lms.common.constants.ApiConstants;
+import com.fernirx.lms.common.constants.ApiMessages;
 import com.fernirx.lms.common.dtos.responses.SuccessResponse;
 import com.fernirx.lms.common.utils.ApiFormatter;
 import jakarta.validation.Valid;
@@ -26,6 +29,15 @@ public class AuthController {
         return ResponseEntity.ok(SuccessResponse.of(
                 ApiFormatter.userLoginSuccess(jwtResponse.getUsername()),
                 jwtResponse
+        ));
+    }
+
+    @PostMapping(ApiConstants.REFRESH_TOKEN_PATH)
+    public ResponseEntity<SuccessResponse<RefreshTokenResponse>> refreshToken(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        RefreshTokenResponse refreshTokenResponse = authService.refreshToken(refreshTokenRequest);
+        return ResponseEntity.ok(SuccessResponse.of(
+                ApiMessages.REFRESH_TOKEN_SUCCESS,
+                refreshTokenResponse
         ));
     }
 }
