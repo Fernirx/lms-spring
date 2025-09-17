@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -123,14 +124,14 @@ public class JwtProvider {
     // ==== PRIVATE HELPERS ====
 
     private String createToken(String type, long userId, String username,
-                               Set<String> authorities, long expirationMillis) {
-        Map<String, Object> claims =buildClaims(type, username, authorities);
-        return buildJwtToken(String.valueOf(userId), claims, expirationMillis);
+                               Set<String> authorities, Duration expiration) {
+        Map<String, Object> claims = buildClaims(type, username, authorities);
+        return buildJwtToken(String.valueOf(userId), claims, expiration);
     }
 
-    private String buildJwtToken(String subject, Map<String, Object> claims, long expirationMillis) {
+    private String buildJwtToken(String subject, Map<String, Object> claims, Duration expiration) {
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + expirationMillis);
+        Date expirationDate = new Date(now.getTime() + expiration.toMillis());
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)

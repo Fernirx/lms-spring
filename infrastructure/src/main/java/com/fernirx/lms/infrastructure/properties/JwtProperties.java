@@ -1,21 +1,35 @@
 package com.fernirx.lms.infrastructure.properties;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.time.DurationMax;
+import org.hibernate.validator.constraints.time.DurationMin;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
+import org.springframework.validation.annotation.Validated;
 
-@ConfigurationProperties(prefix = "jwt")
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
 @Data
+@Validated
+@ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
     @NotBlank(message = "JWT secret cannot be blank")
     private String secret;
 
-    @Positive(message = "JWT expiration must be positive")
-    private long expiration;
+    @NotNull(message = "JWT expiration must be set")
+    @DurationMin(minutes = 1, message = "JWT access token must be at least 1 minute")
+    @DurationMax(hours = 24, message = "JWT access token cannot exceed 24 hours")
+    @DurationUnit(ChronoUnit.MINUTES)
+    private Duration expiration;
 
-    @Positive(message = "JWT refresh expiration must be positive")
-    private long refreshExpiration;
+    @NotNull(message = "JWT refresh expiration must be set")
+    @DurationMin(hours = 1, message = "JWT refresh token must be at least 1 hour")
+    @DurationMax(days = 30, message = "JWT refresh token cannot exceed 30 days")
+    @DurationUnit(ChronoUnit.DAYS)
+    private Duration refreshExpiration;
 
     @NotBlank(message = "JWT issuer cannot be blank")
     private String issuer;
