@@ -66,6 +66,7 @@
         <io.jsonwebtoken.version>0.12.6</io.jsonwebtoken.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <caffeine.version>3.2.2</caffeine.version>
     </properties>
 
     <!-- ========== Dependency Management ========= -->
@@ -128,6 +129,13 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+
+            <!-- Caffeine Cache -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
