@@ -40,7 +40,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("auth/refresh_token").permitAll()
+                        .requestMatchers("/auth/refresh_token").permitAll()
+                        .requestMatchers("/auth/reset_password/request").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/swagger-docs/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
