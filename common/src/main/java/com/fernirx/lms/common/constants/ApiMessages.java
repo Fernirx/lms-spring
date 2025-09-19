@@ -373,6 +373,29 @@ public final class ApiMessages {
      */
     public static final String TOKEN_VALIDATION_FAILED = "Failed to validate the JWT token";
 
+    // ========== OTP MESSAGE ==========
+
+    /**
+     * OTP error message for invalid OTP code.
+     */
+    public static final String OTP_INVALID = "The OTP code is invalid";
+
+    /**
+     * OTP error message for expired OTP code.
+     */
+    public static final String OTP_EXPIRED = "The OTP code has expired";
+
+    /**
+     * OTP error message when no OTP found for user.
+     */
+    public static final String OTP_NOT_FOUND = "No OTP found for the specified user";
+
+    /**
+     * OTP error message when the number of failed OTP validation attempts hs exceeded
+     */
+    public static final String OTP_MAX_ATTEMPTS_EXCEED = "Maximum number of attempts exceeded";
+
+
     // ========== FILE MESSAGE ==========
 
     /**

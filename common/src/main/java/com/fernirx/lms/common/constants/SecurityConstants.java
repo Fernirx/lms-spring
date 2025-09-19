@@ -9,6 +9,9 @@ public final class SecurityConstants {
     public static final String JWT_CLAIMS_USERNAME = "username";
     public static final String JWT_CLAIMS_AUTHORITIES = "authorities";
 
+    // ========== OTP ==========
+    public static final int OTP_LENGTH = 6;
+
     private SecurityConstants() {
         throw new UnsupportedOperationException("This is a constants class and cannot be instantiated");
     }
