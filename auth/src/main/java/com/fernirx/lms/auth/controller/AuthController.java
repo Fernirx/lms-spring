@@ -2,6 +2,7 @@ package com.fernirx.lms.auth.controller;
 
 import com.fernirx.lms.auth.dto.request.LoginRequest;
 import com.fernirx.lms.auth.dto.request.RefreshTokenRequest;
+import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
 import com.fernirx.lms.auth.dto.response.JwtResponse;
 import com.fernirx.lms.auth.dto.response.RefreshTokenResponse;
 import com.fernirx.lms.auth.service.AuthService;
@@ -38,6 +39,14 @@ public class AuthController {
         return ResponseEntity.ok(SuccessResponse.of(
                 ApiMessages.REFRESH_TOKEN_SUCCESS,
                 refreshTokenResponse
+        ));
+    }
+
+    @PostMapping(ApiConstants.RESET_PASSWORD_REQUEST_PATH)
+    public ResponseEntity<SuccessResponse<Void>> resetPasswordRequest(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        authService.requestPasswordReset(resetPasswordRequest);
+        return ResponseEntity.ok(SuccessResponse.of(
+                ApiMessages.RESET_PASSWORD_REQUEST_SUCCESS
         ));
     }
 }
