@@ -27,11 +27,6 @@ public class OtpProperties {
     @DurationUnit(ChronoUnit.MINUTES)
     private Duration expireAfterWrite;
 
-    @NotNull(message = "Expire-after-access must be set")
-    @DurationMax(minutes = 30, message = "Expire-after-access cannot exceed 30 minutes")
-    @DurationUnit(ChronoUnit.MINUTES)
-    private Duration expireAfterAccess;
-
     @PositiveOrZero(message = "Initial capacity must be >= 0")
     @Max(value = 10_000, message = "Initial capacity cannot exceed 10,000")
     private int initialCapacity;

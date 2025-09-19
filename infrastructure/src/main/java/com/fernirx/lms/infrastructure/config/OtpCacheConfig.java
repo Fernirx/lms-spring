@@ -10,15 +10,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class CaffeineConfig {
+public class OtpCacheConfig {
     private final OtpProperties otpProperties;
 
     @Bean
-    public Cache<@NonNull String, @NonNull String> otpCache() {
+    public Cache<@NonNull Object, @NonNull Object> otpCache() {
         return Caffeine.newBuilder()
                 .maximumSize(otpProperties.getMaximumSize())
                 .expireAfterWrite(otpProperties.getExpireAfterWrite())
-                .expireAfterAccess(otpProperties.getExpireAfterAccess())
                 .initialCapacity(otpProperties.getInitialCapacity())
                 .build();
     }
