@@ -31,6 +31,12 @@ public class JwtProperties {
     @DurationUnit(ChronoUnit.DAYS)
     private Duration refreshExpiration;
 
+    @NotNull(message = "JWT reset password expiration must be set")
+    @DurationMin(minutes = 5, message = "JWT reset password token must be at least 5 minutes")
+    @DurationMax(hours = 1, message = "JWT reset password token cannot exceed 24 hours")
+    @DurationUnit(ChronoUnit.MINUTES)
+    private Duration resetPasswordExpiration;
+
     @NotBlank(message = "JWT issuer cannot be blank")
     private String issuer;
 }

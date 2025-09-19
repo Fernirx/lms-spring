@@ -54,6 +54,16 @@ public class JwtProvider {
         );
     }
 
+    public String generateResetPasswordToken(long userId, String username) {
+        return createToken(
+                SecurityConstants.JWT_RESET_PASSWORD_TOKEN,
+                userId,
+                username,
+                null,
+                jwtProperties.getResetPasswordExpiration()
+        );
+    }
+
     public String refreshAccessToken(String refreshToken, CustomUserDetails userDetails) {
         validateRefreshToken(refreshToken);
 
@@ -81,6 +91,10 @@ public class JwtProvider {
 
     public boolean validateRefreshToken(String token) {
         return validateToken(token, SecurityConstants.JWT_REFRESH_TOKEN);
+    }
+
+    public boolean validateResetPasswordToken(String token) {
+        return validateToken(token, SecurityConstants.JWT_RESET_PASSWORD_TOKEN);
     }
 
     public boolean isTokenExpired(String token) {
