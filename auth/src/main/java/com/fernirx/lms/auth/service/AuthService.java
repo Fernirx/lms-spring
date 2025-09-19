@@ -1,7 +1,9 @@
 package com.fernirx.lms.auth.service;
 
+import com.fernirx.lms.auth.dto.OTPData;
 import com.fernirx.lms.auth.dto.request.LoginRequest;
 import com.fernirx.lms.auth.dto.request.RefreshTokenRequest;
+import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
 import com.fernirx.lms.auth.dto.response.JwtResponse;
 import com.fernirx.lms.auth.dto.response.RefreshTokenResponse;
 import com.fernirx.lms.common.constants.ApiConstants;
@@ -11,7 +13,9 @@ import com.fernirx.lms.infrastructure.message.MailService;
 import com.fernirx.lms.infrastructure.security.CustomUserDetails;
 import com.fernirx.lms.infrastructure.security.JwtProvider;
 import com.fernirx.lms.infrastructure.security.SecurityUtils;
+import com.fernirx.lms.user.entity.User;
 import com.fernirx.lms.user.service.CustomUserDetailsService;
+import com.fernirx.lms.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +23,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -31,7 +34,8 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
     private final MailService mailService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final OtpService otpService;
 
     public JwtResponse login(LoginRequest request) {
         Authentication authentication;
@@ -80,5 +84,12 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(freshToken)
                 .build();
+    }
+
+    public void requestPasswordReset(ResetPasswordRequest request) {
+        userService.getUserByEmailForReset(request.getEmail()).ifPresent(user -> {
+            OTPData otp = otpService.generateOtp(user.getUsername());
+            mailService.sendResetPassword(user.getEmail(), user.getUsername(), otp.getOtp());
+        });
     }
 }
