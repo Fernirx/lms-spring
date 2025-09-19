@@ -44,6 +44,11 @@ public class UserService {
         return findUserByEmail(email);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<User> getUserByEmailForReset(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     @Transactional
     public UserResponse createUser(UserCreateRequest userRequest) {
         // Validate username uniqueness
