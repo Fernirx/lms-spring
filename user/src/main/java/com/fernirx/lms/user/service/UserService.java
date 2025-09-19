@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +37,11 @@ public class UserService {
     public UserResponse getUserById(Long id) {
         User user = findUserById(id);
         return userMapper.toDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByEmail(String email) {
+        return findUserByEmail(email);
     }
 
     @Transactional
@@ -92,6 +98,16 @@ public class UserService {
     }
 
     // ==================== PRIVATE HELPER METHODS ====================
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        "User",
+                        "email",
+                        email
+                ));
+    }
 
     private User findUserById(Long id) {
         return userRepository.findActiveById(id)
