@@ -41,6 +41,11 @@ public final class ApiMessages {
      */
     public static final String REFRESH_TOKEN_SUCCESS = "Token refreshed successfully";
 
+    /**
+     * Success message for reset password request.
+     */
+    public static final String RESET_PASSWORD_REQUEST_SUCCESS = "If the email exists, a reset link has been sent";
+
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
     /**
