@@ -16,7 +16,7 @@ import java.time.temporal.ChronoUnit;
 
 @Data
 @Validated
-@ConfigurationProperties(prefix = "otp.cache")
+@ConfigurationProperties(prefix = "app.cache.otp")
 public class OtpProperties {
     @Min(value = 1, message = "Maximum size must be at least 1")
     @Max(value = 100_000, message = "Maximum size cannot exceed 100,000")
@@ -26,6 +26,11 @@ public class OtpProperties {
     @DurationMax(minutes = 60, message = "Expire-after-write cannot exceed 60 minutes")
     @DurationUnit(ChronoUnit.MINUTES)
     private Duration expireAfterWrite;
+
+    @NotNull(message = "Max attempts must be specified")
+    @Min(value = 1, message = "Max attempts must be at least 1")
+    @Max(value = 10, message = "Max attempts cannot exceed 10")
+    private Integer maxAttempts;
 
     @PositiveOrZero(message = "Initial capacity must be >= 0")
     @Max(value = 10_000, message = "Initial capacity cannot exceed 10,000")
