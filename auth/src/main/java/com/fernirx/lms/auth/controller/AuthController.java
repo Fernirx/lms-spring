@@ -49,4 +49,12 @@ public class AuthController {
                 ApiMessages.RESET_PASSWORD_REQUEST_SUCCESS
         ));
     }
+
+    @PostMapping(ApiConstants.RESEND_OTP_PATH)
+    public ResponseEntity<SuccessResponse<Void>> resendOtp(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        authService.resendOtp(resetPasswordRequest);
+        return ResponseEntity.ok(SuccessResponse.of(
+                ApiMessages.RESEND_OTP_SUCCESS
+        ));
+    }
 }
