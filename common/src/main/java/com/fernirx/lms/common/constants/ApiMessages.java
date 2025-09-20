@@ -44,7 +44,22 @@ public final class ApiMessages {
     /**
      * Success message for reset password request.
      */
-    public static final String RESET_PASSWORD_REQUEST_SUCCESS = "If the email exists, a reset link has been sent";
+    public static final String RESET_PASSWORD_REQUEST_SUCCESS = "If the email exists, a reset otp has been sent";
+
+    /**
+     * Success message for resend OTP request.
+     */
+    public static final String RESEND_OTP_SUCCESS = "If the email exists, a new OTP has been sent";
+
+    /**
+     * Error message when OTP resend count exceeded.
+     */
+    public static final String OTP_MAX_RESEND_EXCEEDED = "Maximum OTP resend attempts exceeded";
+
+    /**
+     * Error message when OTP resend requested too soon (cooldown not passed).
+     */
+    public static final String OTP_RESEND_COOLDOWN = "You must wait before requesting another OTP";
 
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
