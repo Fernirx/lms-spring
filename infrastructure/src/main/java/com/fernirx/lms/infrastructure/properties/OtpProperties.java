@@ -32,6 +32,17 @@ public class OtpProperties {
     @Max(value = 10, message = "Max attempts cannot exceed 10")
     private Integer maxAttempts;
 
+    @NotNull(message = "Max resend must be specified")
+    @Min(value = 1, message = "Max resend must be at least 1")
+    @Max(value = 10, message = "Max resend cannot exceed 10")
+    private Integer maxResend;
+
+    @NotNull(message = "Resend cooldown must be set")
+    @DurationMin(seconds = 1, message = "Resend cooldown must be at least 1 second")
+    @DurationMax(seconds = 60, message = "Resend cooldown cannot exceed 60 seconds")
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration resendCooldown;
+
     @PositiveOrZero(message = "Initial capacity must be >= 0")
     @Max(value = 10_000, message = "Initial capacity cannot exceed 10,000")
     private int initialCapacity;

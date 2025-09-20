@@ -35,17 +35,47 @@ public class OtpService {
 
         String otp = generateRandomOtp();
         Instant expireAt = Instant.now().plus(otpProperties.getExpireAfterWrite());
+        Instant lastResetAt = Instant.now().plus(otpProperties.getResendCooldown());
+
         OTPData otpData = OTPData.builder()
                 .otp(otp)
                 .expireAt(expireAt)
                 .maxAttempts(0)
+                .resendCount(0)
+                .lastResendAt(lastResetAt)
                 .build();
+
         cache.put(key, otpData);
         return otpData;
     }
 
+    public OTPData regenerateOtp(String key) {
+        validateKey(key);
+        OTPData existingOtp = cache.get(key, OTPData.class);
+        if (existingOtp != null) {
+            if (existingOtp.getResendCount() >= otpProperties.getMaxResend()){
+                cache.evict(key);
+                throw new OtpException(ErrorCode.OTP_MAX_RESEND_EXCEEDED, ApiMessages.OTP_MAX_RESEND_EXCEEDED);
+            }
+            if (existingOtp.getLastResendAt().isAfter(Instant.now())) {
+                throw new OtpException(ErrorCode.OTP_RESEND_COOLDOWN, ApiMessages.OTP_RESEND_COOLDOWN);
+            }
+            Instant expireAt = Instant.now().plus(otpProperties.getExpireAfterWrite());
+            Instant lastResetAt = Instant.now().plus(otpProperties.getResendCooldown());
+
+            existingOtp.setOtp(generateRandomOtp());
+            existingOtp.incrementResendCount();
+            existingOtp.setExpireAt(expireAt);
+            existingOtp.setLastResendAt(lastResetAt);
+
+            cache.put(key, existingOtp);
+            return existingOtp;
+        }
+        throw new OtpException(ErrorCode.OTP_NOT_FOUND, ApiMessages.OTP_NOT_FOUND);
+    }
+
     public Boolean validateOtp(String key, String inputOtp) {
-        OTPData otpData = (OTPData) cache.get(key);
+        OTPData otpData = cache.get(key, OTPData.class);
         if (otpData == null) {
             throw new OtpException(ErrorCode.OTP_NOT_FOUND, ApiMessages.OTP_NOT_FOUND);
         }
