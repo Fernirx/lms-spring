@@ -92,4 +92,11 @@ public class AuthService {
             mailService.sendResetPassword(user.getEmail(), user.getUsername(), otp.getOtp());
         });
     }
+
+    public void resendOtp(ResetPasswordRequest request) {
+        userService.getUserByEmailForReset(request.getEmail()).ifPresent(user -> {
+            OTPData otp = otpService.regenerateOtp(user.getUsername());
+            mailService.sendResetPassword(user.getEmail(), user.getUsername(), otp.getOtp());
+        });
+    }
 }
