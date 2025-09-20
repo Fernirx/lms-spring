@@ -5,6 +5,7 @@ import com.fernirx.lms.common.dtos.responses.ErrorDetail;
 import com.fernirx.lms.common.dtos.responses.ErrorResponse;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.LmsException;
+import com.fernirx.lms.common.exceptions.OtpException;
 import com.fernirx.lms.common.utils.ApiFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +77,12 @@ public class GlobalExceptionHandler {
                 ApiMessages.FIELDS_VALIDATION_FAILED,
                 details
         );
+    }
+
+    @ExceptionHandler(OtpException.class)
+    public ResponseEntity<ErrorResponse> handleOtpException(OtpException ex) {
+        logException(ex);
+        return buildErrorResponse(ex);
     }
 
     private void logException(Exception ex) {
