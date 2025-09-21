@@ -1,9 +1,11 @@
 package com.fernirx.lms.auth.controller;
 
 import com.fernirx.lms.auth.dto.request.LoginRequest;
+import com.fernirx.lms.auth.dto.request.OtpVerifyRequest;
 import com.fernirx.lms.auth.dto.request.RefreshTokenRequest;
 import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
 import com.fernirx.lms.auth.dto.response.JwtResponse;
+import com.fernirx.lms.auth.dto.response.OtpVerifyResponse;
 import com.fernirx.lms.auth.dto.response.RefreshTokenResponse;
 import com.fernirx.lms.auth.service.AuthService;
 import com.fernirx.lms.common.constants.ApiConstants;
@@ -55,6 +57,15 @@ public class AuthController {
         authService.resendOtp(resetPasswordRequest);
         return ResponseEntity.ok(SuccessResponse.of(
                 ApiMessages.RESEND_OTP_SUCCESS
+        ));
+    }
+
+    @PostMapping(ApiConstants.VERIFY_OTP_PATH)
+    public ResponseEntity<SuccessResponse<OtpVerifyResponse>> resendOtp(@Valid @RequestBody OtpVerifyRequest otpVerifyRequest) {
+        OtpVerifyResponse otpVerifyResponse = authService.verifyOtp(otpVerifyRequest);
+        return ResponseEntity.ok(SuccessResponse.of(
+                ApiMessages.OTP_VERIFY_SUCCESS,
+                otpVerifyResponse
         ));
     }
 }
