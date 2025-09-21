@@ -88,14 +88,14 @@ public class AuthService {
 
     public void requestPasswordReset(ResetPasswordRequest request) {
         userService.getUserByEmailForReset(request.getEmail()).ifPresent(user -> {
-            OTPData otp = otpService.generateOtp(user.getUsername());
+            OTPData otp = otpService.generateOtp(user.getEmail());
             mailService.sendResetPassword(user.getEmail(), user.getUsername(), otp.getOtp());
         });
     }
 
     public void resendOtp(ResetPasswordRequest request) {
         userService.getUserByEmailForReset(request.getEmail()).ifPresent(user -> {
-            OTPData otp = otpService.regenerateOtp(user.getUsername());
+            OTPData otp = otpService.regenerateOtp(user.getEmail());
             mailService.sendResetPassword(user.getEmail(), user.getUsername(), otp.getOtp());
         });
     }
