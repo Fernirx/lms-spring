@@ -2,13 +2,18 @@ package com.fernirx.lms.auth.service;
 
 import com.fernirx.lms.auth.dto.OTPData;
 import com.fernirx.lms.auth.dto.request.LoginRequest;
+import com.fernirx.lms.auth.dto.request.OtpVerifyRequest;
 import com.fernirx.lms.auth.dto.request.RefreshTokenRequest;
 import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
 import com.fernirx.lms.auth.dto.response.JwtResponse;
+import com.fernirx.lms.auth.dto.response.OtpVerifyResponse;
 import com.fernirx.lms.auth.dto.response.RefreshTokenResponse;
 import com.fernirx.lms.common.constants.ApiConstants;
+import com.fernirx.lms.common.constants.ApiMessages;
+import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.AccountDisabledException;
 import com.fernirx.lms.common.exceptions.InvalidCredentialsException;
+import com.fernirx.lms.common.exceptions.OtpException;
 import com.fernirx.lms.infrastructure.message.MailService;
 import com.fernirx.lms.infrastructure.security.CustomUserDetails;
 import com.fernirx.lms.infrastructure.security.JwtProvider;
@@ -98,5 +103,20 @@ public class AuthService {
             OTPData otp = otpService.regenerateOtp(user.getEmail());
             mailService.sendResetPassword(user.getEmail(), user.getUsername(), otp.getOtp());
         });
+    }
+
+    public OtpVerifyResponse verifyOtp(OtpVerifyRequest request) {
+        otpService.validateOtp(request.getEmail(), request.getOtp());
+        User user = userService.getUserByEmailForReset(request.getEmail())
+                .orElseThrow(() -> new OtpException(
+                        ErrorCode.OTP_INVALID,
+                        ApiMessages.OTP_INVALID
+                ));
+        String resetPasswordToken =
+                jwtProvider.generateResetPasswordToken(user.getId(), user.getUsername());
+
+        return OtpVerifyResponse.builder()
+                .resetPasswordToken(resetPasswordToken)
+                .build();
     }
 }
