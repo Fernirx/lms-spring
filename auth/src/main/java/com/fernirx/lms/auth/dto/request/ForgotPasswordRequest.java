@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ResetPasswordRequest {
+public class ForgotPasswordRequest {
     @Email
     @NotBlank
     @Size(max = ValidationConstants.EMAIL_MAX_LENGTH,

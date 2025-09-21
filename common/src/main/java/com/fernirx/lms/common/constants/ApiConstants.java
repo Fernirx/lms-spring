@@ -5,10 +5,11 @@ public final class ApiConstants {
     // ========== BASE PATHS ==========
     public static final String AUTH_PATH = "/auth";
     public static final String REFRESH_TOKEN_PATH = "/refresh_token";
-    public static final String RESET_PASSWORD_REQUEST_PATH = "/reset_password/request";
+    public static final String PASSWORD_PATH = "/password";
+    public static final String FORGOT_PASSWORD_PATH = "/forgot";
     public static final String RESEND_OTP_PATH = "/resend_otp";
     public static final String VERIFY_OTP_PATH = "/verify_otp";
-    public static final String RESET_PASSWORD_PATH = "/reset_password";
+    public static final String RESET_PASSWORD_PATH = "/reset";
     public static final String LOGIN_PATH = "/login";
     public static final String USERS_PATH = "/users";
     public static final String STUDENTS_PATH = "/students";
