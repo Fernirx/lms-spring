@@ -52,6 +52,11 @@ public final class ApiMessages {
     public static final String RESEND_OTP_SUCCESS = "If the email exists, a new OTP has been sent";
 
     /**
+     * Success message for OTP verification.
+     */
+    public static final String OTP_VERIFY_SUCCESS = "OTP verified successfully. Reset token has been generated";
+
+    /**
      * Error message when OTP resend count exceeded.
      */
     public static final String OTP_MAX_RESEND_EXCEEDED = "Maximum OTP resend attempts exceeded";
