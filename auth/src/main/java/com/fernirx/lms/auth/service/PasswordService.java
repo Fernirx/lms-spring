@@ -1,6 +1,7 @@
 package com.fernirx.lms.auth.service;
 
 import com.fernirx.lms.auth.dto.OTPData;
+import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
 import com.fernirx.lms.auth.dto.request.OtpVerifyRequest;
 import com.fernirx.lms.auth.dto.request.ForgotPasswordRequest;
 import com.fernirx.lms.auth.dto.request.ResendOtpRequest;
@@ -50,5 +51,11 @@ public class PasswordService {
         return OtpVerifyResponse.builder()
                 .resetPasswordToken(resetPasswordToken)
                 .build();
+    }
+
+    public void resetPassword(ResetPasswordRequest request) {
+        jwtProvider.validateResetPasswordToken(request.getResetPasswordToken());
+        String username = jwtProvider.extractUsername(request.getResetPasswordToken());
+        userService.resetPassword(username, request.getPassword());
     }
 }
