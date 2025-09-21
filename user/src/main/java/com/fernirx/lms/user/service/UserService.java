@@ -102,17 +102,14 @@ public class UserService {
         userRepository.restoreById(id);
     }
 
-    // ==================== PRIVATE HELPER METHODS ====================
-
-    private User findUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        ErrorCode.USER_NOT_FOUND,
-                        "User",
-                        "email",
-                        email
-                ));
+    @Transactional
+    public void resetPassword(String username, String newPassword) {
+        User user = findUserByUsername(username);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
+
+    // ==================== PRIVATE HELPER METHODS ====================
 
     private User findUserById(Long id) {
         return userRepository.findActiveById(id)
@@ -121,6 +118,26 @@ public class UserService {
                         "User",
                         "id",
                         id
+                ));
+    }
+
+    private User findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        "User",
+                        "username",
+                        username
+                ));
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        "User",
+                        "email",
+                        email
                 ));
     }
 
