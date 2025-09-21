@@ -57,6 +57,11 @@ public final class ApiMessages {
     public static final String OTP_VERIFY_SUCCESS = "OTP verified successfully. Reset token has been generated";
 
     /**
+     * Success message for password reset confirmation.
+     */
+    public static final String RESET_PASSWORD_SUCCESS = "Password has been reset successfully.";
+
+    /**
      * Error message when OTP resend count exceeded.
      */
     public static final String OTP_MAX_RESEND_EXCEEDED = "Maximum OTP resend attempts exceeded";

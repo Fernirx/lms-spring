@@ -1,5 +1,6 @@
 package com.fernirx.lms.auth.controller;
 
+import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
 import com.fernirx.lms.auth.dto.request.OtpVerifyRequest;
 import com.fernirx.lms.auth.dto.request.ForgotPasswordRequest;
 import com.fernirx.lms.auth.dto.request.ResendOtpRequest;
@@ -44,6 +45,14 @@ public class PasswordController {
         return ResponseEntity.ok(SuccessResponse.of(
                 ApiMessages.OTP_VERIFY_SUCCESS,
                 otpVerifyResponse
+        ));
+    }
+
+    @PostMapping(ApiConstants.RESET_PASSWORD_PATH)
+    public ResponseEntity<SuccessResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        passwordService.resetPassword(resetPasswordRequest);
+        return ResponseEntity.ok(SuccessResponse.of(
+                ApiMessages.RESET_PASSWORD_SUCCESS
         ));
     }
 }
