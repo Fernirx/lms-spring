@@ -40,12 +40,27 @@ server:
   servlet:
     context-path: ${SERVER_CONTEXT_PATH:/api/your-project-name}
 
-# === JWT Configuration ===
-jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${JWT_EXPIRATION:86400000}
-  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
-  issuer: ${JWT_ISSUER:LMS}
+# === App Configuration ===
+application:
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION:15m}
+      refresh-expiration: ${JWT_REFRESH_EXPIRATION:7d}
+      reset-password-expiration: ${JWT_RESET_PASSWORD_EXPIRATION:15m}
+      issuer: ${JWT_ISSUER:LMS}
+
+  frontend:
+    login-url: ${FRONTEND_LOGIN_URL}
+
+  cache:
+    otp:
+      maximumSize: ${OTP_MAXIMUM_SIZE:10000}
+      expireAfterWrite: ${OTP_EXPIRE_AFTER:5m}
+      maxAttempts: ${OTP_MAX_ATTEMPTS:5}
+      initialCapacity: ${OTP_INITIAL_CAPACITY:100}
+      max-resend: ${OTP_MAX_RESEND:3}
+      resend-cooldown: ${OTP_RESEND_COOLDOWN:60s}
 
 # === Swagger/OpenAPI Configuration ===
 springdoc:
