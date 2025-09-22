@@ -16,7 +16,7 @@ import java.time.temporal.ChronoUnit;
 
 @Data
 @Validated
-@ConfigurationProperties(prefix = "app.cache.otp")
+@ConfigurationProperties(prefix = "application.cache.otp")
 public class OtpProperties {
     @Min(value = 1, message = "Maximum size must be at least 1")
     @Max(value = 100_000, message = "Maximum size cannot exceed 100,000")

@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
 
 @Data
 @Validated
-@ConfigurationProperties(prefix = "jwt")
+@ConfigurationProperties(prefix = "application.security.jwt")
 public class JwtProperties {
     @NotBlank(message = "JWT secret cannot be blank")
     private String secret;

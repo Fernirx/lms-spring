@@ -21,7 +21,7 @@ public class MailService {
     private final SpringTemplateEngine templateEngine;
     private final OtpProperties otpProperties;
 
-    @Value("${app.frontend.login-url}")
+    @Value("${application.frontend.login-url}")
     private String loginUrl;
 
     @Async
