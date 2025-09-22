@@ -53,7 +53,7 @@ public class OtpService {
         validateKey(key);
         OTPData existingOtp = cache.get(key, OTPData.class);
         if (existingOtp != null) {
-            if (existingOtp.getResendCount() >= otpProperties.getMaxResend()){
+            if (existingOtp.getResendCount() >= otpProperties.getMaxResend()) {
                 cache.evict(key);
                 throw new OtpException(ErrorCode.OTP_MAX_RESEND_EXCEEDED, ApiMessages.OTP_MAX_RESEND_EXCEEDED);
             }
@@ -99,7 +99,7 @@ public class OtpService {
         return true;
     }
 
-    private String generateRandomOtp(){
+    private String generateRandomOtp() {
         int otpValue = secureRandom.nextInt((int) Math.pow(10, SecurityConstants.OTP_LENGTH));
         return String.format("%0" + SecurityConstants.OTP_LENGTH + "d", otpValue);
     }

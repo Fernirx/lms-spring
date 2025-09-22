@@ -1,9 +1,9 @@
 package com.fernirx.lms.auth.controller;
 
-import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
-import com.fernirx.lms.auth.dto.request.OtpVerifyRequest;
 import com.fernirx.lms.auth.dto.request.ForgotPasswordRequest;
+import com.fernirx.lms.auth.dto.request.OtpVerifyRequest;
 import com.fernirx.lms.auth.dto.request.ResendOtpRequest;
+import com.fernirx.lms.auth.dto.request.ResetPasswordRequest;
 import com.fernirx.lms.auth.dto.response.OtpVerifyResponse;
 import com.fernirx.lms.auth.service.PasswordService;
 import com.fernirx.lms.common.constants.ApiConstants;
