@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to LMS System</title>
+</head>
+
+<body
+        style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa;">
+<div
+        style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+
+    <!-- Header -->
+    <div
+            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 300;">Welcome to LMS System</h1>
+        <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 14px;">Your Learning Journey Starts
+            Here</p>
+    </div>
+
+    <!-- Content -->
+    <div style="padding: 40px 30px;">
+        <h2 style="color: #2d3748; margin: 0 0 20px 0; font-size: 24px;">
+            Hello <span th:text="${userName}" style="color: #667eea;">User</span>! 🎉
+        </h2>
+
+        <p style="font-size: 16px; line-height: 1.6; color: #4a5568; margin-bottom: 25px;">
+            Congratulations! Your LMS account has been created successfully. Below are your login credentials to
+            access the system:
+        </p>
+
+        <!-- Account Info Box -->
+        <div
+                style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); padding: 30px; border-radius: 12px; margin: 30px 0; border-left: 4px solid #667eea;">
+            <h3 style="color: #553c9a; margin: 0 0 20px 0; font-size: 18px; text-align: center;">
+                🔍 Your Account Details
+            </h3>
+
+            <!-- Username -->
+            <div
+                    style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #cbd5e0;">
+                <p
+                        style="margin: 0 0 8px 0; font-size: 14px; color: #553c9a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                    👤 Username
+                </p>
+                <div style="font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; color: #2d3748;"
+                     th:text="${username}">
+                    john.doe@example.com
+                </div>
+            </div>
+
+            <!-- Temporary Password -->
+            <div style="background-color: white; padding: 20px; border-radius: 8px; border: 2px solid #cbd5e0;">
+                <p
+                        style="margin: 0 0 8px 0; font-size: 14px; color: #553c9a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                    🔑 Temporary Password
+                </p>
+                <div style="font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; color: #2d3748; letter-spacing: 2px;"
+                     th:text="${temporaryPassword}">
+                    TempPass123!
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Notice -->
+        <div
+                style="background-color: #fef5e7; padding: 20px; border-radius: 8px; border-left: 4px solid #f6ad55; margin: 25px 0;">
+            <div style="display: flex; align-items: start;">
+                <span style="font-size: 20px; margin-right: 10px;">⚠️</span>
+                <div>
+                    <h4 style="color: #c05621; margin: 0 0 8px 0; font-size: 16px;">Important - Change Password
+                        Required</h4>
+                    <p style="margin: 0; color: #9c4221; font-size: 14px; line-height: 1.5;">
+                        <strong>For your security, you must change this temporary password after your first
+                            login.</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Button -->
+        <div style="text-align: center; margin: 35px 0;">
+            <a th:href="${loginUrl}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                          color: white;
+                          padding: 15px 40px;
+                          text-decoration: none;
+                          border-radius: 25px;
+                          display: inline-block;
+                          font-weight: 600;
+                          font-size: 16px;
+                          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                          transition: transform 0.2s ease;">
+                🎯 Access Your Account
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

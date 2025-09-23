@@ -5,7 +5,7 @@ import com.fernirx.lms.common.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class InvalidTokenTypeException extends LmsException {
+public class InvalidTokenTypeException extends TokenException {
     private final String expectedType;
     private final String tokenType;
 

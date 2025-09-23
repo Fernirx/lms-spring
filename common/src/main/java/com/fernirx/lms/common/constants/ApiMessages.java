@@ -11,6 +11,66 @@ package com.fernirx.lms.common.constants;
  */
 public final class ApiMessages {
 
+    // ========== AUTHENTICATION & AUTHORIZATION MESSAGES ==========
+
+    /**
+     * Authentication success message template for login.
+     * Expects 1 parameter: username.
+     * Example: "User 'john@example.com' logged in successfully"
+     */
+    public static final String LOGIN_SUCCESS = "User '%s' logged in successfully";
+
+    // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
+
+    /**
+     * Authentication failure message template for invalid credentials.
+     * Expects 1 parameter: username.
+     * Example: "Invalid credentials provided for user 'john@example.com'"
+     */
+    public static final String INVALID_CREDENTIALS = "Invalid credentials provided for user '%s'";
+
+    /**
+     * Authentication failure message template for account disabled.
+     * Expects 1 parameter: username.
+     * Example: "Account 'john@example.com' is disabled"
+     */
+    public static final String ACCOUNT_DISABLED = "Account '%s' is disabled";
+
+    /**
+     * Success message for refresh token operations.
+     */
+    public static final String REFRESH_TOKEN_SUCCESS = "Token refreshed successfully";
+
+    /**
+     * Success message for reset password request.
+     */
+    public static final String RESET_PASSWORD_REQUEST_SUCCESS = "If the email exists, a reset otp has been sent";
+
+    /**
+     * Success message for resend OTP request.
+     */
+    public static final String RESEND_OTP_SUCCESS = "If the email exists, a new OTP has been sent";
+
+    /**
+     * Success message for OTP verification.
+     */
+    public static final String OTP_VERIFY_SUCCESS = "OTP verified successfully. Reset token has been generated";
+
+    /**
+     * Success message for password reset confirmation.
+     */
+    public static final String RESET_PASSWORD_SUCCESS = "Password has been reset successfully.";
+
+    /**
+     * Error message when OTP resend count exceeded.
+     */
+    public static final String OTP_MAX_RESEND_EXCEEDED = "Maximum OTP resend attempts exceeded";
+
+    /**
+     * Error message when OTP resend requested too soon (cooldown not passed).
+     */
+    public static final String OTP_RESEND_COOLDOWN = "You must wait before requesting another OTP";
+
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
     /**
@@ -342,6 +402,29 @@ public final class ApiMessages {
      * Authentication error message for JWT token validation failures.
      */
     public static final String TOKEN_VALIDATION_FAILED = "Failed to validate the JWT token";
+
+    // ========== OTP MESSAGE ==========
+
+    /**
+     * OTP error message for invalid OTP code.
+     */
+    public static final String OTP_INVALID = "The OTP code is invalid";
+
+    /**
+     * OTP error message for expired OTP code.
+     */
+    public static final String OTP_EXPIRED = "The OTP code has expired";
+
+    /**
+     * OTP error message when no OTP found for user.
+     */
+    public static final String OTP_NOT_FOUND = "No OTP found for the specified user";
+
+    /**
+     * OTP error message when the number of failed OTP validation attempts hs exceeded
+     */
+    public static final String OTP_MAX_ATTEMPTS_EXCEED = "Maximum number of attempts exceeded";
+
 
     // ========== FILE MESSAGE ==========
 

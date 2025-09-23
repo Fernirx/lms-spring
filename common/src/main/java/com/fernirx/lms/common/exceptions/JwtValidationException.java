@@ -5,7 +5,7 @@ import com.fernirx.lms.common.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class JwtValidationException extends LmsException {
+public class JwtValidationException extends TokenException {
 
     public JwtValidationException() {
         super(ErrorCode.JWT_VALIDATION_FAILED, ApiMessages.TOKEN_VALIDATION_FAILED);

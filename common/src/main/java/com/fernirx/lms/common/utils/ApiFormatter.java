@@ -41,6 +41,58 @@ import static com.fernirx.lms.common.constants.ApiMessages.*;
 @UtilityClass
 public class ApiFormatter {
 
+    // ========== AUTHENTICATION & AUTHORIZATION MESSAGES ==========
+
+    /**
+     * Creates a success message for successful login.
+     *
+     * @param username the username/email that logged in
+     * @return formatted message indicating successful login
+     *
+     * @example
+     * <pre>
+     * String message = userLoginSuccess("john@example.com");
+     * // Returns: "User 'john@example.com' logged in successfully"
+     * </pre>
+     */
+    public static String userLoginSuccess(String username) {
+        return String.format(LOGIN_SUCCESS, username);
+    }
+
+    // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
+
+    /**
+     * Creates an error message for invalid credentials during authentication.
+     *
+     * @param username the username/email that failed authentication
+     * @return formatted message indicating invalid credentials
+     *
+     * @example
+     * <pre>
+     * String message = invalidCredentials("john@example.com");
+     * // Returns: "Invalid credentials provided for user 'john@example.com'"
+     * </pre>
+     */
+    public static String invalidCredentials(String username) {
+        return String.format(INVALID_CREDENTIALS, username);
+    }
+
+    /**
+     * Creates an error message for disabled account during authentication.
+     *
+     * @param username the username/email of the disabled account
+     * @return formatted message indicating account is disabled
+     *
+     * @example
+     * <pre>
+     * String message = accountDisabled("john@example.com");
+     * // Returns: "Account 'john@example.com' is disabled"
+     * </pre>
+     */
+    public static String accountDisabled(String username) {
+        return String.format(ACCOUNT_DISABLED, username);
+    }
+
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
     /**

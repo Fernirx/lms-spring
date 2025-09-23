@@ -12,6 +12,7 @@ public class UserResponse {
     private Long id;
     private String roleName;
     private String username;
+    private String email;
     private Boolean isDelete;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

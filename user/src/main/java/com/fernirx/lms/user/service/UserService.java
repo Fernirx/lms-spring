@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +29,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<UserResponse> getUsersByStatus(boolean deleted) {
-        List<User> users = userRepository.findByIsDelete(deleted);
+        List<User> users = userRepository.findByIsDeleted(deleted);
         return userMapper.toListDto(users);
     }
 
@@ -36,6 +37,16 @@ public class UserService {
     public UserResponse getUserById(Long id) {
         User user = findUserById(id);
         return userMapper.toDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByEmail(String email) {
+        return findUserByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<User> getUserByEmailForReset(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Transactional
@@ -47,7 +58,7 @@ public class UserService {
         User user = userMapper.toEntity(userRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(roleService.getRoleById(userRequest.getRoleId()));
-        user.setIsDelete(false);
+        user.setIsDeleted(false);
 
         // Persist to database
         userRepository.save(user);
@@ -65,6 +76,7 @@ public class UserService {
 
         // Update basic fields
         user.setUsername(userRequest.getUsername());
+        user.setEmail(userRequest.getEmail());
 
         // Optional: Update role if provided
         if (userRequest.getRoleId() != null) {
@@ -90,6 +102,13 @@ public class UserService {
         userRepository.restoreById(id);
     }
 
+    @Transactional
+    public void resetPassword(String username, String newPassword) {
+        User user = findUserByUsername(username);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
     // ==================== PRIVATE HELPER METHODS ====================
 
     private User findUserById(Long id) {
@@ -99,6 +118,26 @@ public class UserService {
                         "User",
                         "id",
                         id
+                ));
+    }
+
+    private User findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        "User",
+                        "username",
+                        username
+                ));
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        "User",
+                        "email",
+                        email
                 ));
     }
 

@@ -2,15 +2,17 @@ package com.fernirx.lms.user.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,7 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    @NotNull
     @Column(name = "username")
     private String username;
 
@@ -30,9 +33,13 @@ public class User {
     private String password;
 
     @NotNull
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @NotNull
     @ColumnDefault("0")
-    @Column(name = "is_delete", nullable = false)
-    private Boolean isDelete = false;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
