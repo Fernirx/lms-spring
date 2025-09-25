@@ -14,7 +14,7 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./docker/sql/init_lms_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./database/init:/docker-entrypoint-initdb.d:ro
     networks:
       - lms-net
 

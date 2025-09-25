@@ -46,7 +46,7 @@ Thumbs.db
 
 # Docker
 docker-compose.override.yml
-docker/sql/*
+database/init/*
 
 # Runtime logs
 logs/
