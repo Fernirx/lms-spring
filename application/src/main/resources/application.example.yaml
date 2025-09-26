@@ -11,8 +11,8 @@
     # Works out of the box with local MySQL
     datasource:
       url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:lms_db}?serverTimezone=${DB_TIMEZONE:Asia/Ho_Chi_Minh}&createDatabaseIfNotExist=${DB_CREATE_IF_NOT_EXIST:true}&useSSL=${DB_USE_SSL:false}&allowPublicKeyRetrieval=${DB_ALLOW_PUBLIC_KEY_RETRIEVAL:true}
-      username: ${DATABASE_USERNAME:root}
-      password: ${DATABASE_PASSWORD:password}
+      username: ${DB_USERNAME:root}
+      password: ${DB_PASSWORD:password}
       driver-class-name: com.mysql.cj.jdbc.Driver
   
       hikari:
