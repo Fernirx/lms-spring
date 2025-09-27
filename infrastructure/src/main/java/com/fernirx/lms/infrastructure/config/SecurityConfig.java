@@ -39,18 +39,20 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/refresh_token").permitAll()
-                        .requestMatchers("/password/forgot").permitAll()
-                        .requestMatchers("/password/resend_otp").permitAll()
-                        .requestMatchers("/password/verify_otp").permitAll()
-                        .requestMatchers("/password/reset").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        .requestMatchers("/swagger-docs/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
-                        .requestMatchers("/webjars/**").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/refresh_token",
+                                "/password/forgot",
+                                "/password/resend_otp",
+                                "/password/verify_otp",
+                                "/password/reset",
+                                "/error",
+                                "/swagger-docs/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/webjars/**",
+                                "/actuator/health"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
