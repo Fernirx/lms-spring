@@ -12,20 +12,20 @@ import org.springframework.validation.annotation.Validated;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Validated
 @ConfigurationProperties(prefix = "application.cors")
 public class CORSProperties {
     @NotEmpty(message = "CORS allowedOrigins must not be empty")
-    private Set<@NotBlank(message = "CORS origin cannot be blank") String> allowedOrigins;
+    private List<@NotBlank(message = "CORS origin cannot be blank") String> allowedOrigins;
 
     @NotEmpty(message = "CORS allowedMethods must not be empty")
-    private Set<@NotBlank(message = "CORS method cannot be blank") String> allowedMethods;
+    private List<@NotBlank(message = "CORS method cannot be blank") String> allowedMethods;
 
     @NotEmpty(message = "CORS allowedHeaders must not be empty")
-    private Set<@NotBlank(message = "CORS header cannot be blank") String> allowedHeaders;
+    private List<@NotBlank(message = "CORS header cannot be blank") String> allowedHeaders;
 
     @NotNull(message = "CORS allowCredentials must be set (true/false)")
     private Boolean allowCredentials;
