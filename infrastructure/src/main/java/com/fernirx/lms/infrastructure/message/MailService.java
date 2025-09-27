@@ -1,11 +1,11 @@
 package com.fernirx.lms.infrastructure.message;
 
+import com.fernirx.lms.infrastructure.properties.FrontendProperties;
 import com.fernirx.lms.infrastructure.properties.OtpProperties;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -20,9 +20,7 @@ public class MailService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
     private final OtpProperties otpProperties;
-
-    @Value("${application.frontend.login-url}")
-    private String loginUrl;
+    private final FrontendProperties frontendProperties;
 
     @Async
     public void sendMail(String to, String subject, String htmlContent) {
@@ -57,7 +55,7 @@ public class MailService {
         context.setVariable("username", username);
         context.setVariable("username", username);
         context.setVariable("temporaryPassword", newPassword);
-        context.setVariable("loginUrl", loginUrl);
+        context.setVariable("loginUrl", frontendProperties.getLoginUrl());
         String htmlContent = templateEngine.process("emails/new-user-account", context);
         sendMail(to, subject, htmlContent);
     }
