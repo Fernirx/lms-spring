@@ -10,12 +10,18 @@
     # === Database Configuration ===
     # Works out of the box with local MySQL
     datasource:
-      url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:lms_db}?serverTimezone=${DB_TIMEZONE:Asia/Ho_Chi_Minh}&createDatabaseIfNotExist=${DB_CREATE_IF_NOT_EXIST:true}&useSSL=${DB_USE_SSL:false}&allowPublicKeyRetrieval=${DB_ALLOW_PUBLIC_KEY_RETRIEVAL:true}
+      url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:lms_db}
       username: ${DB_USERNAME:root}
       password: ${DB_PASSWORD:password}
       driver-class-name: com.mysql.cj.jdbc.Driver
   
       hikari:
+        data-source-properties:
+          serverTimezone: ${DB_TIMEZONE:Asia/Ho_Chi_Minh}
+          useSSL: ${DB_USE_SSL:true}
+          createDatabaseIfNotExist: ${DB_CREATE_IF_NOT_EXIST:true}
+          allowPublicKeyRetrieval: ${DB_ALLOW_PUBLIC_KEY_RETRIEVAL:true}
+
         maximum-pool-size: ${DB_POOL_SIZE:10}
         minimum-idle: ${DB_POOL_MIN_IDLE:5}
         connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
