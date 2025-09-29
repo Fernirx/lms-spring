@@ -1,103 +1,173 @@
-# application.template.yaml
+  # === LMS Application Configuration ===
+  spring:
+    application:
+      name: ${APP_NAME:lms-application}
+  
+    config:
+      activate:
+        on-profile: example
+  
+    # === Database Configuration ===
+    # Works out of the box with local MySQL
+    datasource:
+      url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:lms_db}
+      username: ${DB_USERNAME:root}
+      password: ${DB_PASSWORD:password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  
+      hikari:
+        data-source-properties:
+          serverTimezone: ${DB_TIMEZONE:Asia/Ho_Chi_Minh}
+          useSSL: ${DB_USE_SSL:true}
+          createDatabaseIfNotExist: ${DB_CREATE_IF_NOT_EXIST:true}
+          allowPublicKeyRetrieval: ${DB_ALLOW_PUBLIC_KEY_RETRIEVAL:true}
 
-# === Profile Activation ===
-spring:
-  config:
-    activate:
-      on-profile: profile-name
-
-  # === Application Metadata ===
-  application:
-    name: your-application-name
-
-  # === Database Configuration ===
-  datasource:
-    # URL to your MySQL database inside Docker network
-    url: jdbc:mysql://localhost:3306/your_database_name?serverTimezone=${database.timezone:Asia/Ho_Chi_Minh}&createDatabaseIfNotExist=true
-    username: your_db_username
-    password: your_db_password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  # === JPA & Hibernate ===
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
+        maximum-pool-size: ${DB_POOL_SIZE:10}
+        minimum-idle: ${DB_POOL_MIN_IDLE:5}
+        connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
+        idle-timeout: ${DB_IDLE_TIMEOUT:600000}
+        max-lifetime: ${DB_MAX_LIFETIME:1800000}
+        connection-test-query: ${DB_TEST_QUERY:SELECT 1}
+  
+    # === JPA/Hibernate Configuration ===
+    jpa:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-
-  mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:your-email@gmail.com}
-    password: ${MAIL_PASSWORD:your-app-password}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
-  # === File Upload Configuration ===
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 15MB
-
-# === Server Configuration ===
-server:
-  port: ${server.port:8080}
-  servlet:
-    context-path: /api/your-project-name
-
-# === App Configuration ===
-application:
-  security:
-    jwt:
-      secret: ${JWT_SECRET}
-      expiration: 15m
-      refresh-expiration: 7d
-      reset-password-expiration: 15m
-      issuer: LMS
-
-  frontend:
-    login-url: ${FRONTEND_LOGIN_URL}
-
-  cache:
-    otp:
-      maximumSize: 10000
-      expireAfterWrite: 5m
-      maxAttempts: 5
-      initialCapacity: 100
-      max-resend: 3
-      resend-cooldown: 60s
-
-# === Swagger/OpenAPI Configuration ===
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-docs
-    operations-sorter: method
-    tags-sorter: alpha
-    display-request-duration: true
-  show-actuator: true
-
-# === Actuator Configuration ===
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,env,metrics,beans
-  endpoint:
+        ddl-auto: ${JPA_DDL_AUTO:update}
+      show-sql: ${JPA_SHOW_SQL:true}
+      properties:
+        hibernate:
+          dialect: ${HIBERNATE_DIALECT:org.hibernate.dialect.MySQL8Dialect}
+          format_sql: ${HIBERNATE_FORMAT_SQL:true}
+          use_sql_comments: ${HIBERNATE_SQL_COMMENTS:true}
+          jdbc:
+            batch_size: ${HIBERNATE_BATCH_SIZE:20}
+          order_inserts: ${HIBERNATE_ORDER_INSERTS:true}
+          order_updates: ${HIBERNATE_ORDER_UPDATES:true}
+  
+    # === Email Configuration ===
+    # Update with your Gmail credentials
+    mail:
+      host: ${MAIL_HOST:smtp.gmail.com}
+      port: ${MAIL_PORT:587}
+      username: ${MAIL_USERNAME:your-email@gmail.com}
+      password: ${MAIL_PASSWORD:your-app-password}
+      properties:
+        mail:
+          smtp:
+            auth: ${MAIL_SMTP_AUTH:true}
+            starttls:
+              enable: ${MAIL_STARTTLS_ENABLE:true}
+            connection-timeout: ${MAIL_CONNECTION_TIMEOUT:5000}
+            timeout: ${MAIL_TIMEOUT:5000}
+            write-timeout: ${MAIL_WRITE_TIMEOUT:5000}
+  
+    # === File Upload Configuration ===
+    servlet:
+      multipart:
+        max-file-size: ${MAX_FILE_SIZE:10MB}
+        max-request-size: ${MAX_REQUEST_SIZE:15MB}
+        file-size-threshold: ${FILE_SIZE_THRESHOLD:2KB}
+        location: ${UPLOAD_TEMP_DIR:/tmp}
+  
+    # === JSON Configuration ===
+    jackson:
+      time-zone: ${JACKSON_TIMEZONE:Asia/Ho_Chi_Minh}
+      date-format: ${JACKSON_DATE_FORMAT:yyyy-MM-dd HH:mm:ss}
+      default-property-inclusion: ${JACKSON_INCLUSION:NON_NULL}
+  
+  # === Server Configuration ===
+  server:
+    port: ${SERVER_PORT:8080}
+    servlet:
+      context-path: ${SERVER_CONTEXT_PATH:/api/lms}
+      encoding:
+        charset: UTF-8
+        enabled: true
+        force: true
+  
+    error:
+      include-message: ${ERROR_INCLUDE_MESSAGE:always}
+      include-binding-errors: ${ERROR_INCLUDE_BINDING:always}
+      include-stacktrace: ${ERROR_INCLUDE_STACKTRACE:on_param}
+  
+    tomcat:
+      threads:
+        max: ${SERVER_MAX_THREADS:200}
+        min-spare: ${SERVER_MIN_THREADS:10}
+      connection-timeout: ${SERVER_CONNECTION_TIMEOUT:20000}
+      accept-count: ${SERVER_ACCEPT_COUNT:100}
+  
+  # === Application Security ===
+  application:
+    security:
+      jwt:
+        # IMPORTANT: Change this secret in production!
+        secret: ${JWT_SECRET:ChangeThisJWTSecretInProductionUse256BitKeyHere}
+        expiration: ${JWT_EXPIRATION:PT30M}
+        refresh-expiration: ${JWT_REFRESH_EXPIRATION:P7D}
+        reset-password-expiration: ${JWT_RESET_PASSWORD_EXPIRATION:PT15M}
+        issuer: ${JWT_ISSUER:LMS-System}
+  
+    # === CORS Configuration ===
+    cors:
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:https://yourdomain}
+      allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
+      allowed-headers: ${CORS_ALLOWED_HEADERS:*}
+      allow-credentials: ${CORS_ALLOW_CREDENTIALS:true}
+      max-age: ${CORS_MAX_AGE:PT1H}
+  
+    # === Frontend URLs ===
+    frontend:
+      base-url: ${FRONTEND_BASE_URL:https://yourdomain}
+      login-url: ${FRONTEND_LOGIN_URL:https://yourdomain/login}
+  
+    # === Caching Configuration ===
+    cache:
+      otp:
+        maximum-size: ${OTP_MAXIMUM_SIZE:10000}
+        expire-after-write: ${OTP_EXPIRE_AFTER:PT5M}
+        max-attempts: ${OTP_MAX_ATTEMPTS:5}
+        initial-capacity: ${OTP_INITIAL_CAPACITY:100}
+        max-resend: ${OTP_MAX_RESEND:3}
+        resend-cooldown: ${OTP_RESEND_COOLDOWN:PT1M}
+  
+  # === API Documentation (Swagger) ===
+  springdoc:
+    api-docs:
+      path: ${SWAGGER_API_DOCS_PATH:/v3/api-docs}
+      enabled: ${SWAGGER_ENABLED:true}
+    swagger-ui:
+      path: ${SWAGGER_UI_PATH:/swagger-ui}
+      enabled: ${SWAGGER_UI_ENABLED:true}
+      operations-sorter: method
+      tags-sorter: alpha
+      display-request-duration: true
+      disable-swagger-default-url: true
+    show-actuator: ${SWAGGER_SHOW_ACTUATOR:false}
+  
+  # === Monitoring & Health Checks ===
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: ${ACTUATOR_EXPOSED_ENDPOINTS:health,info,metrics}
+        base-path: ${ACTUATOR_BASE_PATH:/actuator}
+    endpoint:
+      health:
+        show-details: ${ACTUATOR_HEALTH_SHOW_DETAILS:when-authorized}
+        show-components: ${ACTUATOR_HEALTH_SHOW_COMPONENTS:when-authorized}
     health:
-      show-details: always
-
-# === Logging Configuration ===
-logging:
-  level:
-    root: INFO
-    org.springframework.web: DEBUG
-    com.yourcompany.yourproject: DEBUG
+      db:
+        enabled: ${ACTUATOR_HEALTH_DB:true}
+      mail:
+        enabled: ${ACTUATOR_HEALTH_MAIL:true}
+  
+  # === Logging Configuration ===
+  logging:
+    level:
+      root: ${LOG_LEVEL_ROOT:INFO}
+      com.lms: ${LOG_LEVEL_APP:DEBUG}
+      org.springframework.web: ${LOG_LEVEL_SPRING_WEB:INFO}
+      org.springframework.security: ${LOG_LEVEL_SPRING_SECURITY:INFO}
+      org.hibernate.SQL: ${LOG_LEVEL_HIBERNATE_SQL:DEBUG}
+      org.hibernate.type.descriptor.sql.BasicBinder: ${LOG_LEVEL_HIBERNATE_PARAMS:INFO}

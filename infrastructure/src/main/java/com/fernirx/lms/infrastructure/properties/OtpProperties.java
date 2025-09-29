@@ -24,7 +24,6 @@ public class OtpProperties {
 
     @NotNull(message = "Expire-after-write must be set")
     @DurationMax(minutes = 60, message = "Expire-after-write cannot exceed 60 minutes")
-    @DurationUnit(ChronoUnit.MINUTES)
     private Duration expireAfterWrite;
 
     @NotNull(message = "Max attempts must be specified")
@@ -40,7 +39,6 @@ public class OtpProperties {
     @NotNull(message = "Resend cooldown must be set")
     @DurationMin(seconds = 1, message = "Resend cooldown must be at least 1 second")
     @DurationMax(seconds = 60, message = "Resend cooldown cannot exceed 60 seconds")
-    @DurationUnit(ChronoUnit.SECONDS)
     private Duration resendCooldown;
 
     @PositiveOrZero(message = "Initial capacity must be >= 0")

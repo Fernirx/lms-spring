@@ -13,7 +13,7 @@
 
     <!-- ========== Project Info ========= -->
     <artifactId>infrastructure</artifactId>
-    <name>infrastructure-common</name>
+    <name>lms-infrastructure</name>
     <packaging>jar</packaging>
     <description>Infrastructure Spring Boot application module</description>
 
