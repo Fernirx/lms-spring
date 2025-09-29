@@ -110,7 +110,7 @@
   
     # === CORS Configuration ===
     cors:
-      allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://127.0.0.1:3000}
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:https://yourdomain}
       allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
       allowed-headers: ${CORS_ALLOWED_HEADERS:*}
       allow-credentials: ${CORS_ALLOW_CREDENTIALS:true}
@@ -118,8 +118,8 @@
   
     # === Frontend URLs ===
     frontend:
-      base-url: ${FRONTEND_BASE_URL:http://localhost:3000}
-      login-url: ${FRONTEND_LOGIN_URL:http://localhost:3000/login}
+      base-url: ${FRONTEND_BASE_URL:https://yourdomain}
+      login-url: ${FRONTEND_LOGIN_URL:https://yourdomain/login}
   
     # === Caching Configuration ===
     cache:
