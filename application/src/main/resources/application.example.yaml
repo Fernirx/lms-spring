@@ -103,9 +103,9 @@
       jwt:
         # IMPORTANT: Change this secret in production!
         secret: ${JWT_SECRET:ChangeThisJWTSecretInProductionUse256BitKeyHere}
-        expiration: ${JWT_EXPIRATION:30m}
-        refresh-expiration: ${JWT_REFRESH_EXPIRATION:7d}
-        reset-password-expiration: ${JWT_RESET_PASSWORD_EXPIRATION:15m}
+        expiration: ${JWT_EXPIRATION:PT30M}
+        refresh-expiration: ${JWT_REFRESH_EXPIRATION:P7D}
+        reset-password-expiration: ${JWT_RESET_PASSWORD_EXPIRATION:PT15M}
         issuer: ${JWT_ISSUER:LMS-System}
   
     # === CORS Configuration ===
@@ -114,7 +114,7 @@
       allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
       allowed-headers: ${CORS_ALLOWED_HEADERS:*}
       allow-credentials: ${CORS_ALLOW_CREDENTIALS:true}
-      max-age: ${CORS_MAX_AGE:3600s}
+      max-age: ${CORS_MAX_AGE:PT1H}
   
     # === Frontend URLs ===
     frontend:
@@ -125,11 +125,11 @@
     cache:
       otp:
         maximum-size: ${OTP_MAXIMUM_SIZE:10000}
-        expire-after-write: ${OTP_EXPIRE_AFTER:5m}
+        expire-after-write: ${OTP_EXPIRE_AFTER:PT5M}
         max-attempts: ${OTP_MAX_ATTEMPTS:5}
         initial-capacity: ${OTP_INITIAL_CAPACITY:100}
         max-resend: ${OTP_MAX_RESEND:3}
-        resend-cooldown: ${OTP_RESEND_COOLDOWN:60s}
+        resend-cooldown: ${OTP_RESEND_COOLDOWN:PT1M}
   
   # === API Documentation (Swagger) ===
   springdoc:

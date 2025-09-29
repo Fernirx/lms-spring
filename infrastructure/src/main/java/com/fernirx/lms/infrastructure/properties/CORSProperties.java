@@ -33,6 +33,5 @@ public class CORSProperties {
     @NotNull(message = "CORS maxAge must be set")
     @DurationMin(seconds = 60, message = "CORS maxAge must be at least 60 seconds")
     @DurationMax(hours = 24, message = "CORS maxAge cannot exceed 24 hours")
-    @DurationUnit(ChronoUnit.SECONDS)
     private Duration maxAge;
 }
