@@ -15,26 +15,25 @@ public final class ApiMessages {
 
     /**
      * Authentication success message template for login.
-     * Expects 1 parameter: username.
-     * Example: "User 'john@example.com' logged in successfully"
+     * Example: "Login successful"
      */
-    public static final String LOGIN_SUCCESS = "User '%s' logged in successfully";
+    public static final String LOGIN_SUCCESS = "Login successful";
 
     // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
 
     /**
      * Authentication failure message template for invalid credentials.
      * Expects 1 parameter: username.
-     * Example: "Invalid credentials provided for user 'john@example.com'"
+     * Example: "Invalid credentials provided"
      */
-    public static final String INVALID_CREDENTIALS = "Invalid credentials provided for user '%s'";
+    public static final String INVALID_CREDENTIALS = "Invalid credentials provided";
 
     /**
      * Authentication failure message template for account disabled.
      * Expects 1 parameter: username.
      * Example: "Account 'john@example.com' is disabled"
      */
-    public static final String ACCOUNT_DISABLED = "Account '%s' is disabled";
+    public static final String ACCOUNT_DISABLED = "Account is disabled";
 
     /**
      * Success message for refresh token operations.
@@ -171,7 +170,7 @@ public final class ApiMessages {
      * Expects 3 parameters: resource name, field name, field value.
      * Example: "User not found with email: john@example.com"
      */
-    public static final String RESOURCE_NOT_FOUND_WITH_FIELD = "%s not found with %s: %s";
+    public static final String RESOURCE_NOT_FOUND_WITH_FIELD = "%s not found with %s";
 
     /**
      * Error message template when a resource is not found by ID.
@@ -192,7 +191,7 @@ public final class ApiMessages {
      * Expects 3 parameters: resource name, field name, field value.
      * Example: "User with email 'john@example.com' already exists"
      */
-    public static final String RESOURCE_ALREADY_EXISTS_WITH_FIELD = "%s with %s '%s' already exists";
+    public static final String RESOURCE_ALREADY_EXISTS_WITH_FIELD = "%s with %s already exists";
 
     /**
      * Error message template when a resource cannot be deleted because it's in use.
@@ -343,10 +342,10 @@ public final class ApiMessages {
 
     /**
      * Business rule error message template for duplicate entries.
-     * Expects 3 parameters: resource name, field name, field value.
-     * Example: "Order already exists with order number: ORD-001"
+     * Expects 3 parameters: resource name, field name.
+     * Example: "Order already exists with order number"
      */
-    public static final String DUPLICATE_ENTRY = "%s already exists with %s: %s";
+    public static final String DUPLICATE_ENTRY = "%s already exists with %s";
 
     // ========== AUTHENTICATION/AUTHORIZATION MESSAGE ==========
 

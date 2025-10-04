@@ -27,7 +27,7 @@ public class AuthController {
     public ResponseEntity<SuccessResponse<JwtResponse>> login(@Valid @RequestBody LoginRequest loginRequest) {
         JwtResponse jwtResponse = authService.login(loginRequest);
         return ResponseEntity.ok(SuccessResponse.of(
-                ApiFormatter.userLoginSuccess(jwtResponse.getUsername()),
+                ApiMessages.LOGIN_SUCCESS,
                 jwtResponse
         ));
     }

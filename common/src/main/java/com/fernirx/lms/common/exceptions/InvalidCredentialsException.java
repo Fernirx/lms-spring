@@ -1,5 +1,6 @@
 package com.fernirx.lms.common.exceptions;
 
+import com.fernirx.lms.common.constants.ApiMessages;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.utils.ApiFormatter;
 import lombok.Getter;
@@ -9,7 +10,7 @@ public class InvalidCredentialsException extends SecurityException {
     private final String username;
 
     public InvalidCredentialsException(String username) {
-        super(ErrorCode.INVALID_CREDENTIALS, ApiFormatter.invalidCredentials(username));
+        super(ErrorCode.INVALID_CREDENTIALS, ApiMessages.INVALID_CREDENTIALS);
         this.username = username;
     }
 }

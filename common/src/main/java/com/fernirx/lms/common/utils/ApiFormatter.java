@@ -27,10 +27,6 @@ import static com.fernirx.lms.common.constants.ApiMessages.*;
  * // Instead of: String.format(ApiMessages.RESOURCE_CREATED, "User")
  * String message = ApiFormatter.resourceCreated("User");
  * // Result: "User created successfully"
- *
- * // Instead of: String.format(ApiMessages.RESOURCE_NOT_FOUND_BY_ID, "Product", 123)
- * String error = ApiFormatter.resourceNotFoundById("Product", 123);
- * // Result: "Product with ID 123 not found"
  * </pre>
  *
  * @author Your Name
@@ -42,56 +38,6 @@ import static com.fernirx.lms.common.constants.ApiMessages.*;
 public class ApiFormatter {
 
     // ========== AUTHENTICATION & AUTHORIZATION MESSAGES ==========
-
-    /**
-     * Creates a success message for successful login.
-     *
-     * @param username the username/email that logged in
-     * @return formatted message indicating successful login
-     *
-     * @example
-     * <pre>
-     * String message = userLoginSuccess("john@example.com");
-     * // Returns: "User 'john@example.com' logged in successfully"
-     * </pre>
-     */
-    public static String userLoginSuccess(String username) {
-        return String.format(LOGIN_SUCCESS, username);
-    }
-
-    // ========== AUTHENTICATION & AUTHORIZATION ERROR MESSAGES ==========
-
-    /**
-     * Creates an error message for invalid credentials during authentication.
-     *
-     * @param username the username/email that failed authentication
-     * @return formatted message indicating invalid credentials
-     *
-     * @example
-     * <pre>
-     * String message = invalidCredentials("john@example.com");
-     * // Returns: "Invalid credentials provided for user 'john@example.com'"
-     * </pre>
-     */
-    public static String invalidCredentials(String username) {
-        return String.format(INVALID_CREDENTIALS, username);
-    }
-
-    /**
-     * Creates an error message for disabled account during authentication.
-     *
-     * @param username the username/email of the disabled account
-     * @return formatted message indicating account is disabled
-     *
-     * @example
-     * <pre>
-     * String message = accountDisabled("john@example.com");
-     * // Returns: "Account 'john@example.com' is disabled"
-     * </pre>
-     */
-    public static String accountDisabled(String username) {
-        return String.format(ACCOUNT_DISABLED, username);
-    }
 
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
@@ -323,62 +269,26 @@ public class ApiFormatter {
      *
      * @param resourceName the name of the resource that was not found
      * @param fieldName the name of the field used in the search
-     * @param fieldValue the value of the field used in the search
      * @return formatted error message indicating resource not found with specific field
      * @throws IllegalArgumentException if any parameter is null
      *
      * @example
      * <pre>
      * String error = resourceNotFound("User", "email", "john@example.com");
-     * // Returns: "User not found with email: john@example.com"
+     * // Returns: "User not found with email"
      * </pre>
      */
-    public static String resourceNotFound(String resourceName, String fieldName, Object fieldValue) {
+    public static String resourceNotFound(String resourceName, String fieldName) {
         return String.format(RESOURCE_NOT_FOUND_WITH_FIELD,
-                resourceName, fieldName, fieldValue);
+                resourceName, fieldName);
     }
 
-    /**
-     * Creates an error message when a resource is not found by ID.
-     *
-     * @param resourceName the name of the resource that was not found
-     * @param id the ID value used in the search
-     * @return formatted error message indicating resource not found by ID
-     * @throws IllegalArgumentException if resourceName is null
-     *
-     * @example
-     * <pre>
-     * String error = resourceNotFoundById("Product", 12345);
-     * // Returns: "Product with ID 12345 not found"
-     * </pre>
-     */
-    public static String resourceNotFoundById(String resourceName, Object id) {
-        return String.format(RESOURCE_NOT_FOUND_BY_ID, resourceName, id);
-    }
-
-    /**
-     * Creates an error message when a resource already exists.
-     *
-     * @param resourceName the name of the resource that already exists
-     * @return formatted error message indicating resource already exists
-     * @throws IllegalArgumentException if resourceName is null
-     *
-     * @example
-     * <pre>
-     * String error = resourceAlreadyExists("User");
-     * // Returns: "User already exists"
-     * </pre>
-     */
-    public static String resourceAlreadyExists(String resourceName) {
-        return String.format(RESOURCE_ALREADY_EXISTS, resourceName);
-    }
 
     /**
      * Creates an error message when a resource already exists with a specific field value.
      *
      * @param resourceName the name of the resource that already exists
      * @param fieldName the name of the conflicting field
-     * @param fieldValue the value of the conflicting field
      * @return formatted error message indicating resource already exists with specific field
      * @throws IllegalArgumentException if any parameter is null
      *
@@ -388,9 +298,9 @@ public class ApiFormatter {
      * // Returns: "User with username 'john_doe' already exists"
      * </pre>
      */
-    public static String resourceAlreadyExists(String resourceName, String fieldName, Object fieldValue) {
+    public static String resourceAlreadyExists(String resourceName, String fieldName) {
         return String.format(RESOURCE_ALREADY_EXISTS_WITH_FIELD,
-                resourceName, fieldName, fieldValue);
+                resourceName, fieldName);
     }
 
     /**
@@ -629,41 +539,21 @@ public class ApiFormatter {
     }
 
     /**
-     * Creates a business rule error message for insufficient quantity.
-     *
-     * @param itemType the type of item with insufficient quantity
-     * @param required the required quantity
-     * @param available the available quantity
-     * @return formatted error message indicating insufficient quantity
-     * @throws IllegalArgumentException if itemType is null or quantities are negative
-     *
-     * @example
-     * <pre>
-     * String error = insufficientQuantity("Stock", 10, 5);
-     * // Returns: "Insufficient Stock: required 10, available 5"
-     * </pre>
-     */
-    public static String insufficientQuantity(String itemType, int required, int available) {
-        return String.format(INSUFFICIENT_QUANTITY, itemType, required, available);
-    }
-
-    /**
      * Creates a business rule error message for duplicate entries.
      *
      * @param resourceName the name of the resource with duplicate entry
      * @param fieldName the name of the field that has duplicate value
-     * @param value the duplicate value
      * @return formatted error message indicating duplicate entry
      * @throws IllegalArgumentException if any parameter is null
      *
      * @example
      * <pre>
      * String error = duplicateEntry("Order", "order number", "ORD-001");
-     * // Returns: "Order already exists with order number: ORD-001"
+     * // Returns: "Order already exists with order number"
      * </pre>
      */
-    public static String duplicateEntry(String resourceName, String fieldName, Object value) {
-        return String.format(DUPLICATE_ENTRY, resourceName, fieldName, value);
+    public static String duplicateEntry(String resourceName, String fieldName) {
+        return String.format(DUPLICATE_ENTRY, resourceName, fieldName);
     }
 
     // ========== FILE MESSAGES ==========

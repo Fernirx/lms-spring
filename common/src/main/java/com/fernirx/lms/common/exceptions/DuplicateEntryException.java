@@ -11,7 +11,7 @@ public class DuplicateEntryException extends LmsException{
     private final Object fieldValue;
 
     public DuplicateEntryException(ErrorCode errorCode, String resourceName, String fieldName, Object fieldValue)  {
-        super(errorCode, ApiFormatter.duplicateEntry(resourceName, fieldName, fieldValue));
+        super(errorCode, ApiFormatter.duplicateEntry(resourceName, fieldName));
         this.resourceName = resourceName;
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;

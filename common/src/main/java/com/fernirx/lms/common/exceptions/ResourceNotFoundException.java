@@ -11,7 +11,7 @@ public class ResourceNotFoundException extends LmsException {
     private final Object fieldValue;
 
     public ResourceNotFoundException(ErrorCode errorCode,  String resourceName, String fieldName, Object fieldValue) {
-        super(errorCode, ApiFormatter.resourceNotFound(resourceName, fieldName, fieldValue));
+        super(errorCode, ApiFormatter.resourceNotFound(resourceName, fieldName));
         this.resourceName = resourceName;
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
