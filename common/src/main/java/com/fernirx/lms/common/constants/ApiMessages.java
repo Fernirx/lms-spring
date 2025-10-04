@@ -358,6 +358,14 @@ public final class ApiMessages {
     public static final String ACCESS_DENIED_RESOURCE = "Access denied";
 
     /**
+     * Authentication error message for unauthenticated requests.
+     * Used when user is not logged in or token is missing/invalid/expired.
+     * Example: "Authentication required"
+     */
+    public static final String AUTHENTICATION_REQUIRED = "Authentication required";
+
+
+    /**
      * Authorization error message template for missing permissions.
      * Expects 1 parameter: permission name.
      * Example: "Permission 'READ_ADMIN_REPORTS' is required to access this resource"

@@ -2,6 +2,7 @@ package com.fernirx.lms.infrastructure.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fernirx.lms.common.constants.ApiConstants;
+import com.fernirx.lms.common.constants.ApiMessages;
 import com.fernirx.lms.common.dtos.responses.ErrorResponse;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.TokenException;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final ObjectMapper objectMapper;
 
     @Override
@@ -31,6 +32,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             ErrorCode errorCode = ex.getErrorCode();
             errorResponse = ErrorResponse.of(errorCode, ex.getMessage());
             statusCode = errorCode.getHttpStatus().value();
+        } else {
+            ErrorCode errorCode = ErrorCode.AUTHENTICATION_REQUIRED;
+            errorResponse = ErrorResponse.of(errorCode, ApiMessages.AUTHENTICATION_REQUIRED);
         }
         response.setStatus(statusCode);
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));

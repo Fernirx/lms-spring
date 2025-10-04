@@ -1,13 +1,11 @@
 package com.fernirx.lms.infrastructure.config;
 
-import com.fernirx.lms.common.constants.ApiConstants;
 import com.fernirx.lms.infrastructure.handler.CustomAccessDeniedHandler;
-import com.fernirx.lms.infrastructure.handler.JwtAuthenticationEntryPoint;
+import com.fernirx.lms.infrastructure.handler.CustomAuthenticationEntryPoint;
 import com.fernirx.lms.infrastructure.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -26,7 +24,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CustomAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CorsConfigurationSource corsConfigurationSource;
 

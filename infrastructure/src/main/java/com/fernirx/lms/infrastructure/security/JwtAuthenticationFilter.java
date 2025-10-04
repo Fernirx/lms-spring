@@ -2,7 +2,7 @@ package com.fernirx.lms.infrastructure.security;
 
 import com.fernirx.lms.common.constants.ApiConstants;
 import com.fernirx.lms.common.exceptions.TokenException;
-import com.fernirx.lms.infrastructure.handler.JwtAuthenticationEntryPoint;
+import com.fernirx.lms.infrastructure.handler.CustomAuthenticationEntryPoint;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -32,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
-    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     // ==== Filter ====
 
