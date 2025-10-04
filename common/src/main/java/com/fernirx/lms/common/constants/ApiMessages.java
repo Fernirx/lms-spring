@@ -355,7 +355,7 @@ public final class ApiMessages {
      * Expects 2 parameters: resource type, resource identifier.
      * Example: "Access denied to Document: DOC-123"
      */
-    public static final String ACCESS_DENIED_RESOURCE = "Access denied to %s: %s";
+    public static final String ACCESS_DENIED_RESOURCE = "Access denied";
 
     /**
      * Authorization error message template for missing permissions.
