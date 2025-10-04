@@ -11,6 +11,7 @@ import com.fernirx.lms.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class UserController {
 
     @GetMapping
     @StandardResponseDoc(value = "Get users by status")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEPT_HEAD', 'ACAD_AFFAIRS')")
     public ResponseEntity<SuccessResponse<List<UserResponse>>> getUsersByStatus(
             @RequestParam(required = false, defaultValue = "false") boolean status) {
         List<UserResponse> users = userService.getUsersByStatus(status);
@@ -38,6 +40,7 @@ public class UserController {
             value = "Get a user",
             description = "Get a user by ID from LMS System"
     )
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEPT_HEAD', 'ACAD_AFFAIRS') or #id == authentication.principal.id")
     public ResponseEntity<SuccessResponse<UserResponse>> getUserById(@PathVariable Long id) {
         UserResponse user = userService.getUserById(id);
         return ResponseEntity.ok(SuccessResponse.of(
@@ -51,6 +54,7 @@ public class UserController {
             value = "Create a user",
             description = "Create a new user in the LMS System with Username, Password, RoleId"
     )
+    @PreAuthorize("hasAnyRole('ADMIN', 'ACAD_AFFAIRS')")
     public ResponseEntity<SuccessResponse<UserResponse>> createUser(
             @Valid @RequestBody UserCreateRequest request) {
         UserResponse userResponse = userService.createUser(request);
@@ -65,6 +69,7 @@ public class UserController {
             value = "Update user information",
             description = "Update user information in the LMS System"
     )
+    @PreAuthorize("hasAnyRole('ADMIN', 'ACAD_AFFAIRS')")
     public ResponseEntity<SuccessResponse<UserResponse>> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserUpdateRequest request) {
@@ -80,6 +85,7 @@ public class UserController {
             value = "Delete a user",
             description = "Soft delete a user by ID from LMS System"
     )
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<SuccessResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.softDeleteUser(id);
         return ResponseEntity.ok(SuccessResponse.of(
@@ -92,6 +98,7 @@ public class UserController {
             value = "Restore user",
             description = "Restore user activity status"
     )
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<SuccessResponse<Void>> restoreUser(@PathVariable Long id) {
         userService.restoreUser(id);
         return ResponseEntity.ok(SuccessResponse.of(
