@@ -1,11 +1,9 @@
 package com.fernirx.lms.infrastructure.handler;
 
-import com.fernirx.lms.common.dtos.responses.ErrorDetail;
 import com.fernirx.lms.common.dtos.responses.ErrorResponse;
 import com.fernirx.lms.common.enums.ErrorCode;
 import com.fernirx.lms.common.exceptions.*;
 import com.fernirx.lms.common.exceptions.SecurityException;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,10 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class SecurityExceptionHandler {
 
-    @ExceptionHandler({
-            InvalidCredentialsException.class,
-            AccountDisabledException.class
-    })
+    @ExceptionHandler(SecurityException.class)
     public ResponseEntity<ErrorResponse> handleAuthenticationException(SecurityException ex) {
         log.warn("[SecurityException] {} - {}", ex.getClass().getSimpleName(), ex.getMessage());
         return buildErrorResponse(ex);
