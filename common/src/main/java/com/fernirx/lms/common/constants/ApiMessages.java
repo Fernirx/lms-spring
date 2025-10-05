@@ -68,7 +68,7 @@ public final class ApiMessages {
     /**
      * Error message when OTP resend requested too soon (cooldown not passed).
      */
-    public static final String OTP_RESEND_COOLDOWN = "You must wait before requesting another OTP";
+    public static final String OTP_RESEND_COOLDOWN_EXCEEDED = "You must wait before requesting another OTP";
 
     // ========== RESOURCE OPERATIONS SUCCESS ==========
 
