@@ -55,10 +55,10 @@ public class OtpService {
         if (existingOtp != null) {
             if (existingOtp.getResendCount() >= otpProperties.getMaxResend()) {
                 cache.evict(key);
-                throw new OtpException(ErrorCode.OTP_MAX_RESEND_EXCEEDED, ApiMessages.OTP_MAX_RESEND_EXCEEDED);
+                throw OtpException.maxResendExceeded();
             }
             if (existingOtp.getLastResendAt().isAfter(Instant.now())) {
-                throw new OtpException(ErrorCode.OTP_RESEND_COOLDOWN, ApiMessages.OTP_RESEND_COOLDOWN);
+                throw OtpException.resendCooldownExceeded();
             }
             Instant expireAt = Instant.now().plus(otpProperties.getExpireAfterWrite());
             Instant lastResetAt = Instant.now().plus(otpProperties.getResendCooldown());
@@ -71,28 +71,28 @@ public class OtpService {
             cache.put(key, existingOtp);
             return existingOtp;
         }
-        throw new OtpException(ErrorCode.OTP_NOT_FOUND, ApiMessages.OTP_NOT_FOUND);
+        throw OtpException.notFound();
     }
 
     public Boolean validateOtp(String key, String inputOtp) {
         OTPData otpData = cache.get(key, OTPData.class);
         if (otpData == null) {
-            throw new OtpException(ErrorCode.OTP_NOT_FOUND, ApiMessages.OTP_NOT_FOUND);
+            throw OtpException.notFound();
         }
         if (otpData.getExpireAt().isBefore(Instant.now())) {
             cache.evict(key);
-            throw new OtpException(ErrorCode.OTP_EXPIRED, ApiMessages.OTP_EXPIRED);
+            throw OtpException.expired();
         }
         if (Objects.equals(otpData.getMaxAttempts(), otpProperties.getMaxAttempts())) {
             cache.evict(key);
-            throw new OtpException(ErrorCode.OTP_MAX_ATTEMPTS_EXCEED, ApiMessages.OTP_MAX_ATTEMPTS_EXCEED);
+            throw OtpException.maxAttemptsExceeded();
         }
 
         otpData.incrementAttempts();
         cache.put(key, otpData);
 
         if (!otpData.getOtp().equalsIgnoreCase(inputOtp)) {
-            throw new OtpException(ErrorCode.OTP_INVALID, ApiMessages.OTP_INVALID);
+            throw OtpException.invalid();
         }
 
         cache.evict(key);

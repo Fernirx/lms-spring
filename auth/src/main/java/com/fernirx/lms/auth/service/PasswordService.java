@@ -41,10 +41,7 @@ public class PasswordService {
     public OtpVerifyResponse verifyOtp(OtpVerifyRequest request) {
         otpService.validateOtp(request.getEmail(), request.getOtp());
         User user = userService.getUserByEmailForReset(request.getEmail())
-                .orElseThrow(() -> new OtpException(
-                        ErrorCode.OTP_INVALID,
-                        ApiMessages.OTP_INVALID
-                ));
+                .orElseThrow(OtpException::invalid);
         String resetPasswordToken =
                 jwtProvider.generateResetPasswordToken(user.getId(), user.getUsername());
 
