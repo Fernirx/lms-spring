@@ -173,7 +173,7 @@ public class JwtProvider {
         String tokenType = claims.get(SecurityConstants.JWT_CLAIMS_TYPE).toString();
 
         if (!expectedType.equals(tokenType)) {
-            throw new TokenException(ErrorCode.INVALID_TOKEN_TYPE, ApiMessages.INVALID_TOKEN_TYPE);
+            throw TokenException.invalidType();
         }
 
         return true;
@@ -181,11 +181,11 @@ public class JwtProvider {
 
     private void handleJwtException(JwtException e) {
         switch (e) {
-            case ExpiredJwtException ex -> throw new TokenException(ErrorCode.TOKEN_EXPIRED, ApiMessages.TOKEN_EXPIRED);
-            case MalformedJwtException ex -> throw new TokenException(ErrorCode.MALFORMED_TOKEN, ApiMessages.TOKEN_MALFORMED);
-            case UnsupportedJwtException ex -> throw new TokenException(ErrorCode.UNSUPPORTED_TOKEN, ApiMessages.TOKEN_UNSUPPORTED);
-            case io.jsonwebtoken.security.SecurityException ex -> throw new TokenException(ErrorCode.TOKEN_INVALID, ApiMessages.TOKEN_INVALID);
-            default -> throw new TokenException(ErrorCode.JWT_VALIDATION_FAILED, ApiMessages.TOKEN_VALIDATION_FAILED);
+            case ExpiredJwtException ex -> throw TokenException.expired();
+            case MalformedJwtException ex -> throw TokenException.malformed();
+            case UnsupportedJwtException ex -> throw TokenException.unsupported();
+            case io.jsonwebtoken.security.SecurityException ex -> throw TokenException.invalid();
+            default -> throw TokenException.validationFailed();
         }
     }
 
