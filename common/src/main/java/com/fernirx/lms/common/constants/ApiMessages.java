@@ -273,6 +273,13 @@ public final class ApiMessages {
      */
     public static final String FIELD_TYPE_MISMATCH = "%s must be of type %s";
 
+    /**
+     * Validation error message template for missing required request parameters.
+     * Expects 1 parameter: the missing parameter name.
+     * Example: "Missing required request parameter"
+     */
+    public static final String MISSING_REQUEST_PARAMETER = "Missing required request parameter";
+
     // ========== DATE/TIME MESSAGE ==========
 
     /**
