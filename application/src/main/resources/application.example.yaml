@@ -74,6 +74,10 @@
       time-zone: ${JACKSON_TIMEZONE:Asia/Ho_Chi_Minh}
       date-format: ${JACKSON_DATE_FORMAT:yyyy-MM-dd HH:mm:ss}
       default-property-inclusion: ${JACKSON_INCLUSION:NON_NULL}
+
+    web:
+      resources:
+        add-mappings: false
   
   # === Server Configuration ===
   server:
