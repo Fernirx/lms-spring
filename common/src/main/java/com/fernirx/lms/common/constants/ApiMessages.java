@@ -280,6 +280,16 @@ public final class ApiMessages {
      */
     public static final String MISSING_REQUEST_PARAMETER = "Missing required request parameter";
 
+    /**
+     * Message for a missing or invalid endpoint.
+     */
+    public static final String ENDPOINT_NOT_FOUND = "Requested endpoint %s not found.";
+
+    /**
+     * Message for an unsupported HTTP method on a valid endpoint.
+     */
+    public static final String HTTP_METHOD_NOT_ALLOWED = "HTTP method not supported for this endpoint.";
+
     // ========== DATE/TIME MESSAGE ==========
 
     /**

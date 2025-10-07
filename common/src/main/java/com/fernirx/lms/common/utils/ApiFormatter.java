@@ -265,6 +265,22 @@ public class ApiFormatter {
     }
 
     /**
+     * Creates an error message when the requested endpoint cannot be found.
+     *
+     * @param endpoint the endpoint path that was not found
+     * @return formatted error message indicating the missing endpoint
+     *
+     * @example
+     * <pre>
+     * String error = endpointNotFound("/api/lms/users");
+     * // Returns: "Requested endpoint /api/lms/users not found."
+     * </pre>
+     */
+    public static String endpointNotFound(String endpoint) {
+        return String.format(ENDPOINT_NOT_FOUND, endpoint);
+    }
+
+    /**
      * Creates an error message when a resource is not found with a specific field value.
      *
      * @param resourceName the name of the resource that was not found
