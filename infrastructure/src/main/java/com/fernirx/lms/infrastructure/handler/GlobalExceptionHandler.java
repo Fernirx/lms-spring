@@ -10,11 +10,13 @@ import com.fernirx.lms.common.utils.ApiFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +37,26 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(
                 ErrorCode.MISSING_REQUEST_PARAMETER,
                 ApiMessages.MISSING_REQUEST_PARAMETER,
+                null
+        );
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        logException(ex);
+        return buildErrorResponse(
+                ErrorCode.ENDPOINT_NOT_FOUND,
+                ApiFormatter.endpointNotFound(ex.getRequestURL()),
+                null
+        );
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        logException(ex);
+        return buildErrorResponse(
+                ErrorCode.HTTP_METHOD_NOT_ALLOWED,
+                ApiMessages.HTTP_METHOD_NOT_ALLOWED,
                 null
         );
     }
