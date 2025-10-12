@@ -5,7 +5,7 @@ import com.fernirx.lms.common.utils.ApiFormatter;
 import lombok.Getter;
 
 @Getter
-public class ResourceNotFoundException extends LmsException {
+public class ResourceNotFoundException extends BaseException {
     private final String resourceName;
     private final String fieldName;
     private final Object fieldValue;

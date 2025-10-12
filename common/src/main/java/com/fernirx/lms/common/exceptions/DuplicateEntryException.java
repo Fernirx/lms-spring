@@ -5,7 +5,7 @@ import com.fernirx.lms.common.utils.ApiFormatter;
 import lombok.Getter;
 
 @Getter
-public class DuplicateEntryException extends LmsException{
+public class DuplicateEntryException extends BaseException {
     private final String resourceName;
     private final String fieldName;
     private final Object fieldValue;

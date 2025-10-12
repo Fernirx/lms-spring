@@ -3,7 +3,7 @@ package com.fernirx.lms.common.exceptions;
 import com.fernirx.lms.common.constants.ApiMessages;
 import com.fernirx.lms.common.enums.ErrorCode;
 
-public class OtpException extends LmsException {
+public class OtpException extends BaseException {
 
     public OtpException(ErrorCode errorCode) {
         super(errorCode);

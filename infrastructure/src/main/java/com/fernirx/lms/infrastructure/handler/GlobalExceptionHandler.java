@@ -4,7 +4,7 @@ import com.fernirx.lms.common.constants.ApiMessages;
 import com.fernirx.lms.common.dtos.responses.ErrorDetail;
 import com.fernirx.lms.common.dtos.responses.ErrorResponse;
 import com.fernirx.lms.common.enums.ErrorCode;
-import com.fernirx.lms.common.exceptions.LmsException;
+import com.fernirx.lms.common.exceptions.BaseException;
 import com.fernirx.lms.common.exceptions.OtpException;
 import com.fernirx.lms.common.utils.ApiFormatter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +24,6 @@ import java.util.Objects;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(LmsException.class)
-    public ResponseEntity<ErrorResponse> handleBusinessExceptions(LmsException ex) {
-        logException(ex);
-        return buildErrorResponse(ex);
-    }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
@@ -122,7 +116,7 @@ public class GlobalExceptionHandler {
         log.error("[BusinessException] {} - {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
     }
 
-    public ResponseEntity<ErrorResponse> buildErrorResponse(LmsException ex) {
+    public ResponseEntity<ErrorResponse> buildErrorResponse(BaseException ex) {
         ErrorCode errorCode = ex.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.of(
                 errorCode,
